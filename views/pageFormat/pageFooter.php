@@ -31,18 +31,18 @@
 		<footer id="footer">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-6">
-						<span class="footerHighlight">Imagining Futures</span>
-						<br/>
-						<br/>Imagining Futures is an Arts and Humanities Research Council, GCRF Network+ funded by the UKRI
-						<br/>
-						<img decoding="async" loading="lazy" class="" src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-ukri.png" width="180" height="46">
-						<img decoding="async" loading="lazy" class="" src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-gcrf.png" width="140" height="49">
-						<img decoding="async" loading="lazy" class="" src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer_logo_exeter.png" width="139" height="52">
-
+					<div class="col-sm-12 col-md-6">
+					<p><a href="https://imaginingfutures.world/" target="_blank"><?php print caGetThemeGraphic($this->request, 'logo-one-line-light-bg.png', array('alt' => "Imagining Futures, Trough Un/Archived Pasts")); ?></a></p>
+						<br/><b><span class="glyphicon glyphicon-envelope"></b> <a href="mailto:imaginingfutures@exeter.ac.uk">imaginingfutures@exeter.ac.uk</a>	
+				
 					</div>
-					<div class="col-sm-12 col-md-3 col-md-offset-3">
-						<br/><b><span class="glyphicon glyphicon-envelope"></b> <a href="mailto:imaginingfutures@exeter.ac.uk">imaginingfutures@exeter.ac.uk</a>
+					<div class="col-sm-12 col-md-4 col-md-offset-2">
+					<br/>Imagining Futures is an Arts and Humanities Research Council, GCRF Network+ funded by the UKRI
+					<div id="footerLogos" class="d-flex flex-wrap justify-content-between">
+							<a href="https://www.ukri.org/councils/ahrc/" target="_blank"><img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-ukri.png" alt="UK Research and Innovation" class="img-fluid"></a>
+							<a href="https://www.ukri.org/what-we-do/our-main-funds-and-areas-of-support/browse-our-areas-of-investment-and-support/global-challenges-research-fund/" target="_blank"><img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-gcrf.png" alt="Global Challenges Research Fund" class="img-fluid"></a>
+							<a href="https://www.exeter.ac.uk/" target="_blank"><img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer_logo_exeter.png" alt="University of Exeter" class="img-fluid"></a>
+						</div>
 
 					</div>
 				</div>

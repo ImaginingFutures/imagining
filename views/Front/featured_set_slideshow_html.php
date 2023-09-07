@@ -29,7 +29,6 @@
  *
  * ----------------------------------------------------------------------
  */
-	require_once(__CA_THEMES_DIR__."/stolaf/lib/elevatorAPI.php");
 	$va_access_values = $this->getVar("access_values");
 	$qr_res = $this->getVar('featured_set_items_as_search_result');
 	$o_config = $this->getVar("config");
@@ -39,31 +38,22 @@
 	}
 	if($qr_res && $qr_res->numHits()){
 ?>
-<div class="row"><div class="col-sm-12"> 
+<div class="row"><div class="col-sm-12"><H2 class="highlights">Highlights</H2>  
 		<div class="jcarousel-wrapper">
 			<!-- Carousel -->
 			<div class="jcarousel featured">
 				<ul>
 <?php
 					while($qr_res->nextHit()){
-						$media_url = null;
-						if(($elevator_url = $qr_res->get('ca_objects.url')) && preg_match("!viewAsset/([a-z0-9]{24})[/]?$!", $elevator_url, $m)) {
-							$elevator_id = $m[1];
-							$e = new elevatorAPI("https://elevator.stolaf.edu/archives/api/v1/", __ELEVATOR_KEY__, __ELEVATOR_SECRET__);
-							$children = $e->getAssetChildren($elevator_id);
-							if(is_array($children) && is_array($children['matches'])  && is_array($children['matches'][0])) {
-								$media_url = $children['matches'][0]['primaryHandlerThumbnail2x'];
-							}
-						}
-						#if($media_url){
-							print "<li><div class='frontSlide'>".caDetailLink($this->request, "<img src='".$media_url."'>", "", "ca_objects", $qr_res->get('ca_objects.object_id'));
+						if($vs_media = $qr_res->getWithTemplate('<l>^ca_object_representations.media.large</l>', array("checkAccess" => $va_access_values))){
+							print "<li><div class='frontSlide'>".$vs_media;
 							$vs_caption = $qr_res->getWithTemplate($vs_caption_template);
 							if($vs_caption){
 								print "<div class='frontSlideCaption'>".$vs_caption."</div>";
 							}
 							print "</div></li>";
 							$vb_item_output = true;
-						#}
+						}
 					}
 ?>
 				</ul>

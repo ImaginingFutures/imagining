@@ -60,8 +60,79 @@
 		<div class="container"><div class="row">
 			<div class='col-sm-6 col-md-6'>
 				{{{representationViewer}}}
+
+				<!-- Licences display. TODO: simplify this -->
+
+				{{{<ifdef code="ca_objects.license">
+					<div class="unit">
+						<label>License</label>
+						<?php
+							$licenses = [
+								"989" => [
+									"url" => "http://creativecommons.org/licenses/by/4.0/",
+									"img" => "https://i.creativecommons.org/l/by/4.0/88x31.png",
+									"name" => "CC BY 4.0",
+								],
+								"993" => [
+									"url" => "http://creativecommons.org/licenses/by-nc-nd/4.0/",
+									"img" => "https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png",
+									"name" => "CC BY-NC-ND 4.0",
+								],
+								"992" => [
+									"url" => "http://creativecommons.org/licenses/by-nc-sa/4.0/",
+									"img" => "https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png",
+									"name" => "CC BY-NC-SA 4.0",
+								],
+								"991" => [
+									"url" => "http://creativecommons.org/licenses/by-nd/4.0/",
+									"img" => "https://i.creativecommons.org/l/by-nd/4.0/88x31.png",
+									"name" => "CC BY-ND 4.0",
+								],
+								"990" => [
+									"url" => "http://creativecommons.org/licenses/by-sa/4.0/",
+									"img" => "https://i.creativecommons.org/l/by-sa/4.0/88x31.png",
+									"name" => "CC BY-SA 4.0",
+								],
+								"994" => [
+									"url" => "https://creativecommons.org/publicdomain/zero/1.0/",
+									"img" => "https://i.creativecommons.org/p/zero/1.0/88x31.png",
+									"name" => "CC0",
+								],
+							];
+
+							$licence = $t_object->get("ca_objects.license");
+
+							if (isset($licenses[$licence])) {
+								$licenseInfo = $licenses[$licence];
+								echo "<a rel='license' href='{$licenseInfo['url']}' target='_blank'><img alt='Creative Commons License' style='border-width:0' src='{$licenseInfo['img']}' /></a>&nbsp;&nbsp;<a rel='license' href='{$licenseInfo['url']}' target='_blank'>{$licenseInfo['name']}</a>";
+							}
+							?>
+
+					</div>
+				</ifdef>}}}
 				
-				
+				{{{
+					<ifdef code="ca_objects.rightownership"><div class="unit"><label>Right Ownership:</label>
+					^ca_objects.rightowership</div></ifdef>
+				}}}
+
+				{{{
+					<ifdef code="ca_objects.culturalsensitivity"><div class="unit"><label>Cultural Sensitivity:</label>^ca_objects.culturalsensitivity</div></ifdef>
+
+				}}}
+
+				{{{
+					<ifdef code="ca_objects.accessrestriction"><div class="unit"><label>Acccess Restriction:</label>^ca_objects.accessrestriction</div></ifdef>
+				}}}
+
+				{{{
+					<ifdef code="ca_objects.reasonsforrestriction"><div class="unit"><label>Reasons for Restriction:</label>^ca_objects.reasonsforrestriction</div></ifdef>
+				}}}
+
+				{{{
+					<ifdef code="ca_objects.useandreproduction"><div class="unit"><label>Use and Reproduction:</label>^ca_objects.useandreproduction</div></ifdef>
+				}}}
+
 				<div id="detailAnnotations"></div>
 				
 				<?php print caObjectRepresentationThumbnails($this->request, $this->getVar("representation_id"), $t_object, array("returnAs" => "bsCols", "linkTo" => "carousel", "bsColClasses" => "smallpadding col-sm-3 col-md-3 col-xs-4", "primaryOnly" => $this->getVar('representationViewerPrimaryOnly') ? 1 : 0)); ?>
@@ -76,7 +147,9 @@
 					print '<div id="detailTools">';
 					if ($vn_comments_enabled) {
 ?>				
-						<div class="detailTool"><a href='#' onclick='jQuery("#detailComments").slideToggle(); return false;'><span class="glyphicon glyphicon-comment"></span>Comments and Tags (<?php print sizeof($va_comments) + sizeof($va_tags); ?>)</a></div><!-- end detailTool -->
+						<div class="detailTool">
+							<a href='#' onclick='jQuery("#detailComments").slideToggle(); return false;'><span class="glyphicon glyphicon-comment"></span>Comments and Tags (<?php print sizeof($va_comments) + sizeof($va_tags); ?>)</a>
+						</div><!-- end detailTool -->
 						<div id='detailComments'><?php print $this->getVar("itemComments");?></div><!-- end itemComments -->
 <?php				
 					}
@@ -100,25 +173,68 @@
 				print "<div class='inquireButton'>".caNavLink($this->request, "<span class='glyphicon glyphicon-envelope'></span> Inquire", "btn btn-default btn-small", "", "Contact", "Form", array("table" => "ca_objects", "id" => $t_object->get("object_id")))."</div>";
 ?>
 
-				<H4>{{{<unit relativeTo="ca_collections" delimiter="<br/>"><l>^ca_collections.preferred_labels.name</l></unit><ifcount min="1" code="ca_collections"> ➔ </ifcount>}}}{{{ca_objects.preferred_labels.name}}}</H4>
-				<H5>{{{
+				<H1>{{{ca_objects.preferred_labels.name}}}</H1>
+				{{{
 					<ifdef code="ca_objects.alternativetitle"><div class="unit"><label>Translated title:</label>^ca_objects.alternativetitle</div></ifdef>
 					}}}
-				</H5>
 				<HR>
+				{{{<unit relativeTo="ca_collections" delimiter="<br/>"><label>Is part of:</label><l>^ca_collections.preferred_labels.name</l></unit><ifcount min="1" code="ca_collections"></ifcount>}}}
+				<HR>
+
+				<!-- identification -->
+
 				{{{
-					<ifdef code="ca_objects.description"><div class="unit"><label>Description</label>^ca_objects.description</div></ifdef>
+					<ifdef code="ca_objects.external_link.url_source"><div class="unit"><label>External Link:</label><a href="^ca_objects.external_link.url_entry" target="_blank" class="url"><i class="fa fa-external-link" aria-hidden="true"></i>^ca_objects.external_link.url_source</a></div></ifdef>
+					}}}
+				
+
+				<!-- end of identification labels -->
+				<!-- Content and Scope -->
+
+				{{{
+					<ifdef code="ca_object_representations.media_class"><div class="unit"><label>Format:</label><unit relativeTo="ca_object_representations.media_class" delimiter="<br/>">^ca_object_representations.media_class</unit></div></ifdef>
 					}}}
 
-				{{{<ifdef code="ca_objects.translationofdescription"><div class="unit"><label>Translated description</label>^ca_objects.translationofdescription</div></ifdef>}}}
-				
+				{{{
+					<ifdef code="ca_object_representations.media_filesize"><div class="unit"><label>Extent:</label><unit relativeTo="ca_object_representations.media_filesize" delimiter="<br/>">^ca_object_representations.media_filesize</unit></div></ifdef>
+					}}}
+
+					{{{
+					<ifcode code="ca_object_representations.media_dimensions"><div class="unit"><label>Media dimensions:</label><unit relativeTo="ca_object_representations.media_dimensions" delimiter="<br/>">^ca_object_representations.media_dimensions</unit></div></ifcode>
+				}}}
+
+				{{{
+					<ifcode code="ca_object_representations.media_format"><div class="unit"><label>Media format:</label><unit relativeTo="ca_object_representations.media_format" delimiter="<br/>">^ca_object_representations.media_format</unit></div></ifcode>
+				}}}
+
 				<HR>
-				{{{<ifdef code="ca_objects.abstract"><div class="unit"><label>Abstract</label><div class="trimText">^ca_objects.abstract%delimiter=,_</div></div></ifdef>}}}
-					
-				{{{<ifdef code="ca_objects.material_type"><div class="unit"><label>Material Type</label>^ca_objects.material_type%delimiter=,_</div></ifdef>}}}
-				{{{<ifdef code="ca_objects.langmaterial"><div class="unit"><label>Language</label>^ca_objects.langmaterial%delimiter=,_</div></ifdef>}}}
-				{{{<ifdef code="ca_objects.unitdate.dacs_date_text"><div class="unit"><label>Date</label><unit relativeTo="ca_objects.unitdate" delimiter="<br/>"><ifdef code="ca_objects.unitdate.dacs_dates_labels">^ca_objects.unitdate.dacs_dates_labels: </ifdef>^ca_objects.unitdate.dacs_date_text <ifdef code="ca_objects.unitdate.dacs_dates_types">^ca_objects.unitdate.dacs_dates_types</ifdef></unit></div></ifdef>}}}
+
+				{{{
+					<ifdef code="ca_objects.description"><div class="unit"><label>Description:</label>^ca_objects.description</div></ifdef>
+					}}}
+
+				{{{<ifdef code="ca_objects.translationofdescription"><div class="unit"><label>Translated description:</label>^ca_objects.translationofdescription</div></ifdef>}}}
+
+				{{{<ifcount code="ca_objects.langmaterial.language" min="1"><div class="unit"><label>Language:</label><unit relativeTo="ca_objects.langmaterial" delimiter="<br/>">^ca_objects.langmaterial.material: ^ca_objects.langmaterial.language</unit></div></ifcount>}}}
+
+
+				{{{
+					<ifcount code="ca_objects.theme" min="1"><div class="unit"><label>Theme:</label><unit relativeTo="ca_objects.theme" delimiter="<br/>">^ca_objects.theme</unit></div></ifcount>
+					}}}
 				
+					{{{
+						<ifcount code="ca_objects.keywords" min="1"><div class="unit"><label>Keywords:</label><unit relativeTo="ca_objects.keywords" delimiter="<br/>">^ca_objects.keywords</unit></div></ifcount>
+						}}}
+				
+
+				{{{
+					<ifdef code="ca_objects.note"><div class="unit"><label>Notes:</label>^ca_objects.note</div></ifdef>
+					}}}
+				
+				<!-- end of Content and Scope labels -->
+				
+				<!-- Custom labels -->
+
 				<HR>
 
 				{{{<ifdef code="ca_objects.time_period">
@@ -167,6 +283,88 @@
 				</ifdef>}}}
 
 				<HR>
+				
+				<!-- end of Custom labels -->
+				<!-- Geographical coverage -->
+
+				{{{<ifcount code="ca_places" min="1"><div class="unit"><ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount><ifcount code="ca_places" min="2"><label>Related places</label></ifcount><unit relativeTo="ca_places" delimiter="<br/>"><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
+				
+				<br/>{{{map}}}<!-- map -->
+
+				<!-- end of Geographical coverage labels -->
+
+				<!-- Socio-cultural Context -->
+
+				{{{
+					<ifcount code="ca_objects.culturalgroup" min="1"><div class="unit">
+						<label>Cultural Group</label>
+						<unit relativeTo="ca_objects.culturalgroup" delimiter="<br/>">
+							^ca_objects.culturalgroup
+						</unit>
+					</div></ifcount>
+					}}}
+				
+					{{{
+						<ifdef code="ca_objects.culturalcontext"><div class="unit"><label>Cultural Context</label>^ca_objects.culturalcontext</div></ifdef>
+						}}}
+					
+					{{{
+						<ifdef code="ca_objects.socialgroupsetting"><div class="unit"><label>Social Group</label>^ca_objects.socialgroupsetting</div></ifdef>
+						}}}
+
+				<!-- end of Socio-cultural Context -->
+
+				<!-- Dates -->
+
+				{{{<ifcount code="ca_objects.unitdate.date_value" min="1"><div class="unit"><label>Dates:</label><unit relativeTo="ca_objects.unitdate" delimiter="<br/>">^ca_objects.unitdate.dates_types: ^ca_objects.unitdate.date_value</unit></div></ifcount>}}}
+
+				<!-- end of Dates labels -->
+
+				<!-- Intellectual Property	-->
+
+				<?php
+				if ($va_entity_rels = $t_object->get('ca_objects_x_entities.relation_id', array('returnAsArray' => true))) {
+					$va_entities_by_type = array();
+					foreach ($va_entity_rels as $va_key => $va_entity_rel) {
+						$t_rel = new ca_objects_x_entities($va_entity_rel);
+						$vn_type_id = $t_rel->get('ca_relationship_types.preferred_labels');
+						$va_entities_by_type[$vn_type_id][] = caNavLink($this->request, $t_rel->get('ca_entities.preferred_labels'), '', '', 'Detail', 'entities/'.$t_rel->get('ca_entities.entity_id'));
+					}
+					print "<div class='unit'><label>Intellectual Property:</label>";
+					foreach ($va_entities_by_type as $va_type => $va_entity_id) {
+						foreach ($va_entity_id as $va_key => $va_entity_link) {
+							$output = $va_type . ": " . $va_entity_link . "<br/>";
+							print $output;
+						}
+					}
+					print "</div>";
+				}
+				?>
+
+				<!-- end of Intellectual Property labels -->
+
+				<!-- Technology -->
+
+				{{{
+					<ifdef code="ca_objects.productiontechnique"><div class="unit"><label>Production Technique</label>^ca_objects.productiontechnique</div></ifcode>
+
+				}}}
+
+				{{{
+					<ifcount code="ca_objects.equipment" min="1"><div class="unit"><label>Equipment</label><unit relativeTo="ca_objects.equipment" delimiter="<br/>">^ca_objects.equipment</unit></div></ifcount>
+				}}}
+
+				<!-- From this point, this is all legacy code. Check if it's necessary to keept it or remove it -->
+
+				
+
+				{{{<ifdef code="ca_objects.abstract"><div class="unit"><label>Abstract</label><div class="trimText">^ca_objects.abstract%delimiter=,_</div></div></ifdef>}}}
+					
+				{{{<ifdef code="ca_objects.material_type"><div class="unit"><label>Material Type</label>^ca_objects.material_type%delimiter=,_</div></ifdef>}}}
+				
+				{{{<ifdef code="ca_objects.unitdate.dacs_date_text"><div class="unit"><label>Date</label><unit relativeTo="ca_objects.unitdate" delimiter="<br/>"><ifdef code="ca_objects.unitdate.dacs_dates_labels">^ca_objects.unitdate.dacs_dates_labels: </ifdef>^ca_objects.unitdate.dacs_date_text <ifdef code="ca_objects.unitdate.dacs_dates_types">^ca_objects.unitdate.dacs_dates_types</ifdef></unit></div></ifdef>}}}
+				
+				
 
 				{{{<ifdef code="ca_objects.url"><div class="unit"><label>Url To External Media</label><a href="^ca_objects.url" target="_blank" class="url"><i class="fa fa-external-link" aria-hidden="true"></i> ^ca_objects.url</a></div></ifdef>}}}
 				{{{<ifcount code="ca_storage_locations" min="1"><div class="unit"><label>Location</label>
@@ -177,105 +375,19 @@
 				{{{<ifdef code="ca_objects.physaccessrestrict"><div class="unit"><label>Physical Access</label>^ca_objects.physaccessrestrict%delimiter=<br/></div></ifdef>}}}
 				
 				
-				
-				
-				<hr></hr>
+				<hr>
 					
-<?php
 
-					# --- entity name should be the loc name when Entity Source is LCNAF
-					print preg_replace('/\[[^)]+\]/', '', $t_object->getWithTemplate('<ifcount code="ca_entities" min="1" restrictToTypes="ind"><div class="unit"><ifcount code="ca_entities" min="1" max="1" restrictToTypes="ind"><label>Related person</label></ifcount><ifcount code="ca_entities" min="2" restrictToTypes="ind"><label>Related people</label></ifcount><unit relativeTo="ca_entities" restrictToTypes="ind" delimiter="<br/>"><if rule="^ca_entities.entity_source =~ /LCNAF/">^ca_entities.LcshNames<ifnotdef code="ca_entities.LcshNames">^ca_entities.preferred_labels</ifnofdef></if><if rule="^ca_entities.entity_source !~ /LCNAF/">^ca_entities.preferred_labels</if> (^relationship_typename)</unit></div></ifcount>'));
-					print preg_replace('/\[[^)]+\]/', '', $t_object->getWithTemplate('<ifcount code="ca_entities" min="1" restrictToTypes="org"><div class="unit"><ifcount code="ca_entities" min="1" max="1" restrictToTypes="org"><label>Related organization</label></ifcount><ifcount code="ca_entities" min="2" restrictToTypes="org"><label>Related organizations</label></ifcount><unit relativeTo="ca_entities" restrictToTypes="org" delimiter="<br/>"><if rule="^ca_entities.entity_source =~ /LCNAF/">^ca_entities.LcshNames<ifnotdef code="ca_entities.LcshNames">^ca_entities.preferred_labels</ifnofdef></if><if rule="^ca_entities.entity_source !~ /LCNAF/">^ca_entities.preferred_labels</if> (^relationship_typename)</unit></div></ifcount>'));
-					print preg_replace('/\[[^)]+\]/', '', $t_object->getWithTemplate('<ifcount code="ca_entities" min="1" restrictToTypes="fam"><div class="unit"><ifcount code="ca_entities" min="1" max="1" restrictToTypes="fam"><label>Related family</label></ifcount><ifcount code="ca_entities" min="2" restrictToTypes="fam"><label>Related families</label></ifcount><unit relativeTo="ca_entities" restrictToTypes="fam" delimiter="<br/>"><if rule="^ca_entities.entity_source =~ /LCNAF/">^ca_entities.LcshNames<ifnotdef code="ca_entities.LcshNames">^ca_entities.preferred_labels</ifnofdef></if><if rule="^ca_entities.entity_source !~ /LCNAF/">^ca_entities.preferred_labels</if> (^relationship_typename)</unit></div></ifcount>'));
-					
-					$va_LcshSubjects = $t_object->get("ca_objects.LcshSubjects", array("returnAsArray" => true));
-					$va_LcshSubjects_processed = array();
-					if(is_array($va_LcshSubjects) && sizeof($va_LcshSubjects)){
-						foreach($va_LcshSubjects as $vs_LcshSubjects){
-							if($vs_LcshSubjects && (strpos($vs_LcshSubjects, " [") !== false)){
-								$va_LcshSubjects_processed[] = mb_substr($vs_LcshSubjects, 0, strpos($vs_LcshSubjects, " ["));
-							}else{
-								$va_LcshSubjects_processed[] = $vs_LcshSubjects;
-							}
-						}
-						$vs_LcshSubjects = join("<br/>", $va_LcshSubjects_processed);
-					}
-					if($vs_LcshSubjects){
-						print "<div class='unit'><label>Subjects</label>".$vs_LcshSubjects."</div>";	
-					}
-
-					$va_LcshGenre = $t_object->get("ca_objects.LcshGenre", array("returnAsArray" => true));
-					$va_LcshGenre_processed = array();
-					if(is_array($va_LcshGenre) && sizeof($va_LcshGenre)){
-						foreach($va_LcshGenre as $vs_LcshGenre){
-							if($vs_LcshGenre && (strpos($vs_LcshGenre, " [") !== false)){
-								$va_LcshGenre_processed[] = mb_substr($vs_LcshGenre, 0, strpos($vs_LcshGenre, " ["));
-							}else{
-								$va_LcshGenre_processed[] = $vs_LcshGenre;
-							}
-						}
-						$vs_LcshGenre = join("<br/>", $va_LcshGenre_processed);
-					}
-					$va_aat = $t_object->get("ca_objects.aat", array("returnAsArray" => true));
-					$va_aat_processed = array();
-					if(is_array($va_aat) && sizeof($va_aat)){
-						foreach($va_aat as $vs_aat){
-							if($vs_aat && (strpos($vs_aat, " [") !== false)){
-								$va_aat_processed[] = mb_substr($vs_aat, 0, strpos($vs_aat, " ["));
-							}else{
-								$va_aat_processed[] = $vs_aat;
-							}
-						}
-						$vs_aat = join("<br/>", $va_aat_processed);
-					}
-					if($vs_LcshGenre || $vs_aat){
-						print "<div class='unit'><label>Genres</label>";
-						if($vs_LcshGenre){
-							print $vs_LcshGenre;
-						}
-						if($vs_LcshGenre && $vs_aat){
-							print "<br/>";
-						}
-						if($vs_aat){
-							print $vs_aat;
-						}
-						print "</div>";	
-					}
-					$va_LcshNames = $t_object->get("ca_objects.LcshNames", array("returnAsArray" => true));
-					$va_LcshNames_processed = array();
-					if(is_array($va_LcshNames) && sizeof($va_LcshNames)){
-						foreach($va_LcshNames as $vs_LcshNames){
-							if($vs_LcshNames && (strpos($vs_LcshNames, " [") !== false)){
-								$va_LcshNames_processed[] = mb_substr($vs_LcshNames, 0, strpos($vs_LcshNames, " ["));
-							}else{
-								$va_LcshNames_processed[] = $vs_LcshNames;
-							}
-						}
-						$vs_LcshNames = join("<br/>", $va_LcshNames_processed);
-					}
-					if($vs_LcshNames){
-						print "<div class='unit'><label>Library of Congress Names</label>".$vs_LcshNames."</div>";	
-					}
-?>				
 				{{{
 					<ifcount code="ca_occurrences" min="1"><div class="unit"><label>Related events</label><unit relativeTo="ca_occurrences" delimiter="<br/>"><l>^ca_occurrences.preferred_labels.name</l></unit></div></ifcount>
 					}}}
 					
 
-				{{{<ifcount code="ca_places" min="1"><div class="unit"><ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount><ifcount code="ca_places" min="2"><label>Related places</label></ifcount><unit relativeTo="ca_places" delimiter="<br/>"><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
 				
-				<br/>{{{map}}}
 
 				<HR>
 
-				{{{<ifdef code="ca_objects.licence">
-					<div class="unit">
-						<label>License</label>
-						<unit relativeTo="ca_objects.licence" delimiter="<br/>">
-							^ca_objects.licence
-						</unit>
-					</div>
-				</ifdef>}}}
+				
 						
 			</div><!-- end col -->
 		</div><!-- end row --></div><!-- end container -->

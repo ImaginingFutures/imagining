@@ -117,7 +117,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a href="http://157.245.30.79/ifrepo/" class="navbar-brand">Imagining Futures</a>
+				<a href="https://ifrepo.world/" class="navbar-brand">Imagining Futures</a>
 			</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
