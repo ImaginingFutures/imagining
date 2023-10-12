@@ -179,6 +179,24 @@ a:hover {
 	color: #378bc7;
 }
 
+.button-circled {
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	padding: 2px 0;
+	font-size: 14px;
+	margin: 2px;
+}
+
+.warning-translation-button {
+	background: none;
+	color: #ca870d;
+	text-shadow: none;
+	letter-spacing: normal;
+	margin: 2px;
+	border: none;
+}
+
 .browse .btn .glyphicon {
 	color: #000 !important;
 }
