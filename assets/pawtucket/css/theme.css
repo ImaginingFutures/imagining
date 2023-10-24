@@ -855,6 +855,24 @@ a.readmore-js-toggle:hover {
 }
 
 
+/* Collection hierarchy */
+#collectionHierarchy{
+	padding-top:26px;
+   }
+
+/* Position of browse items buttons */
+@media (min-width: 768px) {
+	#main .collectionBrowseItems {
+	  position: relative;
+	  top: 25px;
+	  float: right;
+	}
+
+	#collectionsWrapper {
+	  margin-top: 20px;
+	}
+  }
+
 .detail .unit.sponsorImage {
 	text-align: center;
 }

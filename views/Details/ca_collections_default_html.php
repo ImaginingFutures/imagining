@@ -41,6 +41,25 @@
 	# --- get the collection hierarchy parent to use for exportin finding aid
 	$vn_top_level_collection_id = array_shift($t_item->get('ca_collections.hierarchy.collection_id', array("returnWithStructure" => true)));
 
+	# Prepare values for search inside collection
+
+	$va_access_values = caGetUserAccessValues($this->request);
+
+	$o_browse = caGetBrowseInstance("ca_objects");
+	$o_browse->addCriteria("collection_facet", $t_item->get("ca_collections.collection_id"));
+	$o_browse->execute(array('checkAccess' => $va_access_values));
+	$vb_show_objects_link = false;
+	# include conditional to display only where is not hierarchical tree
+	if($o_browse->numResults() && ! $t_item->get("ca_collections.children.collection_id", array("checkAccess" => $va_access_values))){
+		$vb_show_objects_link = true;
+	}
+	$vb_show_collections_link = false;
+	if($t_item->get("ca_collections.children.collection_id", array("checkAccess" => $va_access_values))){
+		$vb_show_collections_link = true;
+	}
+
+	# --------------------
+
 ?>
 <div class="row">
 	<div class='col-xs-12 navTop'><!--- only shown at small screen size -->
@@ -67,7 +86,25 @@
 			</div><!-- end row -->
 			<div class="row">
 				<div class='col-sm-12'>
+
 <?php
+			if($vb_show_objects_link || $vb_show_collections_link){
+?>
+			<div class='collectionBrowseItems'>
+
+<?php
+				if($vb_show_objects_link){
+					print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-search' aria-label='Buscar'></span> Navegar dentro de la subcolección</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+				}
+				if($vb_show_collections_link){
+					print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-search' aria-label='Buscar'></span> Navegar en toda la colección</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id"))); 											
+				}
+
+?>
+
+				</div>
+<?php
+			}
 			if ($vb_show_hierarchy_viewer) {	
 ?>
 				<div id="collectionHierarchy"><?php print caBusyIndicatorIcon($this->request).' '.addslashes(_t('Loading...')); ?></div>
