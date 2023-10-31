@@ -62,6 +62,7 @@
 	
 	<meta property="og:url" content="<?php print $this->request->config->get("site_host").caNavUrl($this->request, "*", "*", "*"); ?>" />
 	<meta property="og:type" content="website" />
+	<script src="https://kit.fontawesome.com/122ccc1a9c.js" crossorigin="anonymous"></script>
 <?php
 	if(!in_array(strToLower($this->request->getAction), array("objects"))){
 		# --- this is set on detail page
@@ -106,7 +107,7 @@
 ?>
 				<button type="button" class="navbar-toggle navbar-toggle-user" data-toggle="collapse" data-target="#user-navbar-toggle">
 					<span class="sr-only">User Options</span>
-					<span class="glyphicon glyphicon-user"></span>
+					<i class="fas fa-user-circle"></i>
 				</button>
 <?php
 	}
@@ -139,7 +140,7 @@
 ?>
 				<ul class="nav navbar-nav navbar-right" id="user-navbar" role="list" aria-label="<?php print _t("User Navigation"); ?>">
 					<li class="dropdown" style="position:relative;">
-						<a href="#" class="dropdown-toggle icon" data-toggle="dropdown"><span class="glyphicon glyphicon-user" aria-label="<?php print _t("User options"); ?>"></span> <?php print ($this->request->isLoggedIn()) ? "Account" : "LOGIN"; ?></a>
+						<a href="#" class="dropdown-toggle icon" data-toggle="dropdown"><i class="fas fa-user-alt" aria-label="<?php print _t("User options"); ?>"></i> <?php print ($this->request->isLoggedIn()) ? "Account" : "LOGIN"; ?></a>
 						<ul class="dropdown-menu" role="list"><?php print join("\n", $va_user_links); ?></ul>
 					</li>
 				</ul>
@@ -151,23 +152,36 @@
 						<div class="form-group">
 							<input type="text" class="form-control" id="headerSearchInput" placeholder="<?php print _t("Search"); ?>" name="search" autocomplete="off" aria-label="<?php print _t("Search text"); ?>" />
 						</div>
-						<button type="submit" class="btn-search" id="headerSearchButton"><span class="glyphicon glyphicon-search" aria-label="<?php print _t("Submit"); ?>"></span></button>
+						<div class="btn-group">
+							<button type="submit" class="btn-search" id="headerSearchButton"><i class="fas fa-search" aria-label="<?php print _t("Submit"); ?>"></i></button>
+							<button type="button" class="btn btn-search dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-chevron-down"></i>
+							</button>
+							<div class="dropdown-menu advancedSearchContainer" aria-labelledby="headerSearchButton">
+								<div id="advancedSearchOptions" class="headerAdvancedSearch">
+									<?php print caNavLink($this->request, _t("Advanced Search"), "", "", "Search", "advanced/objects"); ?>
+								</div>
+							</div>
+						</div>
 					</div>
 				</form>
+
+
 				<script type="text/javascript">
-					$(document).ready(function(){
-						$('#headerSearchButton').prop('disabled',true);
-						$('#headerSearchInput').on('keyup', function(){
-							$('#headerSearchButton').prop('disabled', this.value == "" ? true : false);     
-						})
-					});
+
+						$(document).ready(function () {
+							$('#headerSearchButton').prop('disabled', true);
+							$('#headerSearchInput').on('keyup', function () {
+								$('#headerSearchButton').prop('disabled', this.value == "" ? true : false);
+							});
+						});
+					
 				</script>
+
 				<ul class="nav navbar-nav navbar-right menuItems" role="list" aria-label="<?php print _t("Primary Navigation"); ?>">
 					<li <?php print (strToLower($this->request->getController()) == "Front") ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Home"), "", "", "", ""); ?></li>				
-					<li <?php print ((strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "collections") || (strToLower($this->request->getAction()) == "archival_collections"))) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Projects"), "", "", "Browse", "archival_collections"); ?></li>				
+					<li <?= ($this->request->getController() == "Collections") ? 'class="active"' : ''; ?>><?= caNavLink($this->request, _t("Projects"), "", "", "Collections", "index"); ?></li>				
 					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "objects")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Archival Items"), "", "", "Browse", "objects"); ?></li>				
-					<li <?php print (($this->request->getController() == "Search") && ($this->request->getAction() == "advanced")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Advanced Search"), "", "Search", "advanced", "collections"); ?></li>
-					<li <?php print ($this->request->getController() == "Gallery") ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Featured Records"), "", "", "Gallery", "Index"); ?></li>
 					<li><a href="https://imaginingfutures.world/imagining-futures-overview/" target="_blank">About</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
@@ -175,3 +189,4 @@
 	</nav>
 	<div class="container"><div class="row"><div class="col-xs-12">
 		<div role="main" id="main"><div id="pageArea" <?php print caGetPageCSSClasses(); ?>>
+

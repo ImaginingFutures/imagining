@@ -268,7 +268,22 @@ a:hover {
 }
 
 .headerAdvancedSearch a {
-	font-size: 13px;
+	font-size: 12px;
+	text-decoration: none;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-family: "Calluna Sans", verdana, sans-serif;
+	color: #378bc7;
+	padding: 3px 20px;
+	display: block;
+	clear: both;
+	font-weight: normal;
+	white-space: nowrap;
+}
+
+.advancedSearchContainer {
+    background-color: #000;
+	border: none;
 }
 
 #headerSearchButton {
@@ -589,6 +604,21 @@ a.navbar-brand,
 	font-family: "Calluna Sans", verdana, sans-serif;
 	font-weight: 400;
 	font-size: 18px;
+}
+
+.collectionTile .collectionThumbnail {
+	position:relative;
+    overflow:hidden;
+    padding-bottom:100%;
+}
+
+.collectionTile .collectionThumbnail img {
+	position: absolute;
+      max-width: 100%;
+      max-height: 100%;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
 }
 
 .detailNavBgLeft,
@@ -1144,9 +1174,10 @@ body.frontContainer #footer {
 
 .heroSearch .formOutline {
 	border: 0px;
-	-webkit-box-shadow: none;
+	/* -webkit-box-shadow: none; */
 	box-shadow: none;
-	-webkit-transition: none;
+	/* -webkit-transition: none; */
+	transition: none;
 	position: relative;
 	border-radius: 0px;
 	margin-top: 20px;
