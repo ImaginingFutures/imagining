@@ -79,7 +79,7 @@
 					{{{<ifdef code="ca_collections.parent_id"><div class="unit">Part of: <unit relativeTo="ca_collections.hierarchy" delimiter=" &gt; "><l>^ca_collections.preferred_labels.name</l></unit></div></ifdef>}}}
 <?php					
 					if ($vn_pdf_enabled) {
-						print "<div class='exportCollection'><span class='glyphicon glyphicon-file' aria-label='"._t("Download")."'></span> ".caDetailLink($this->request, "Download as PDF", "", "ca_collections",  $vn_top_level_collection_id, array('view' => 'pdf', 'export_format' => '_pdf_ca_collections_summary'))."</div>";
+						print "<div class='exportCollection'><i class='far fa-file-pdf' aria-label='"._t("Download")."'></i> ".caDetailLink($this->request, "Download as PDF", "", "ca_collections",  $vn_top_level_collection_id, array('view' => 'pdf', 'export_format' => '_pdf_ca_collections_summary'))."</div>";
 					}
 ?>
 				</div><!-- end col -->
@@ -94,10 +94,10 @@
 
 <?php
 				if($vb_show_objects_link){
-					print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-search' aria-label='Buscar'></span> Navegar dentro de la subcolección</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+					print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-search' aria-label='Buscar'></i> Navegar dentro de la subcolección</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
 				}
 				if($vb_show_collections_link){
-					print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-search' aria-label='Buscar'></span> Navegar en toda la colección</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id"))); 											
+					print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-search' aria-label='Buscar'></i> Navegar en toda la colección</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id"))); 											
 				}
 
 ?>
@@ -129,12 +129,12 @@
 					print '<div id="detailTools">';
 					if ($vn_comments_enabled) {
 ?>				
-						<div class="detailTool"><a href='#' onclick='jQuery("#detailComments").slideToggle(); return false;'><span class="glyphicon glyphicon-comment" aria-label="<?php print _t("Comments and tags"); ?>"></span>Comments (<?php print sizeof($va_comments); ?>)</a></div><!-- end detailTool -->
+						<div class="detailTool"><a href='#' onclick='jQuery("#detailComments").slideToggle(); return false;'><i class="far fa-comment-dots" aria-label="<?php print _t("Comments and tags"); ?>"></i>Comments (<?php print sizeof($va_comments); ?>)</a></div><!-- end detailTool -->
 						<div id='detailComments'><?php print $this->getVar("itemComments");?></div><!-- end itemComments -->
 <?php				
 					}
 					if ($vn_share_enabled) {
-						print '<div class="detailTool"><span class="glyphicon glyphicon-share-alt" aria-label="'._t("Share").'"></span>'.$this->getVar("shareLink").'</div><!-- end detailTool -->';
+						print '<div class="detailTool"><i class="fas fa-share" aria-label="'._t("Share").'"></i>'.$this->getVar("shareLink").'</div><!-- end detailTool -->';
 					}
 					print '</div><!-- end detailTools -->';
 				}				
