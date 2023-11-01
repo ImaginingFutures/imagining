@@ -33,7 +33,7 @@
 				<div class="row">
 					<div class="col-sm-12 col-md-6">
 					<p><a href="https://imaginingfutures.world/" target="_blank"><?php print caGetThemeGraphic($this->request, 'logo-one-line-light-bg.png', array('alt' => "Imagining Futures, Trough Un/Archived Pasts")); ?></a></p>
-						<br/><b><span class="glyphicon glyphicon-envelope"></b> <a href="mailto:imaginingfutures@exeter.ac.uk">imaginingfutures@exeter.ac.uk</a>	
+						<br/><b><i class="fas fa-envelope"></i> <a href="mailto:imaginingfutures@exeter.ac.uk">imaginingfutures@exeter.ac.uk</a>	
 				
 					</div>
 					<div class="col-sm-12 col-md-4 col-md-offset-2">

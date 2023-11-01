@@ -56,7 +56,7 @@
 			{{{
 					<ifdef code="ca_objects.idno"><div class="unit">Object ID: ^ca_objects.idno
 		<button class="btn btn-default btn-xs pull-left button-circled" id="togglePanel" data-toggle="tooltip" data-placement="top" title="Media info">
-                    <span class="glyphicon glyphicon-info-sign"></span>
+					<i class="fas fa-info-circle"></i>
 					</button></div></ifdef>
 				}}}
 		</div>
@@ -96,7 +96,7 @@
 				{{{
 					<ifdef code="ca_objects.alternativetitle"><div class="unit">
 					<ifdef code="ca_objects.ai"><button class="btn btn-warning btn-xs pull-left warning-translation-button" id="togglePanel" data-toggle="tooltip" data-placement="top" title="^ca_objects.ai">
-                    <span class="glyphicon glyphicon-warning-sign"></span>
+                    <i class="fas fa-hand-point-right"></i>
 					</button></ifdef>
 					<label>Translated title:</label>^ca_objects.alternativetitle
 					</div><HR></ifdef>
@@ -123,7 +123,7 @@
 
 				{{{<ifdef code="ca_objects.translationofdescription"><div class="unit">
 					<ifdef code="ca_objects.ai"><button class="btn btn-warning btn-xs pull-left warning-translation-button" id="togglePanel" data-toggle="tooltip" data-placement="top" title="^ca_objects.ai">
-                    <span class="glyphicon glyphicon-warning-sign"></span>
+                    <i class="fas fa-hand-point-right"></i>
 					</button></ifdef>
 					<label>Translated description:</label>^ca_objects.translationofdescription
 					
@@ -273,7 +273,7 @@
 			<div class='col-sm-1 col-md-2 col-lg-2'></div><!-- end col -->
 			<div class='col-sm-5 col-md-4 col-lg-4'>
 			<?php
-								print "<div class='inquireButton'>".caNavLink($this->request, "<span class='glyphicon glyphicon-envelope'></span> Inquire", "btn btn-default btn-small", "", "Contact", "Form", array("table" => "ca_objects", "id" => $t_object->get("object_id")))."</div>";
+								print "<div class='inquireButton'>".caNavLink($this->request, "<i class='fas fa-envelope'></i> Inquire", "btn btn-default btn-small", "", "Contact", "Form", array("table" => "ca_objects", "id" => $t_object->get("object_id")))."</div>";
 				?>	
 			
 			<!-- Licences display. TODO: simplify this -->
@@ -433,19 +433,19 @@
 					if ($vn_comments_enabled) {
 ?>				
 						<div class="detailTool">
-							<a href='#' onclick='jQuery("#detailComments").slideToggle(); return false;'><span class="glyphicon glyphicon-comment"></span>Comments and Tags (<?php print sizeof($va_comments) + sizeof($va_tags); ?>)</a>
+							<a href='#' onclick='jQuery("#detailComments").slideToggle(); return false;'><i class="fas fa-comments"></i>Comments and Tags (<?php print sizeof($va_comments) + sizeof($va_tags); ?>)</a>
 						</div><!-- end detailTool -->
 						<div id='detailComments'><?php print $this->getVar("itemComments");?></div><!-- end itemComments -->
 <?php				
 					}
 					if ($vn_share_enabled) {
-						print '<div class="detailTool"><span class="glyphicon glyphicon-share-alt"></span>'.$this->getVar("shareLink").'</div><!-- end detailTool -->';
+						print '<div class="detailTool"><i class="fas fa-share"></i>'.$this->getVar("shareLink").'</div><!-- end detailTool -->';
 					}
 					if ($vn_pdf_enabled) {
-						print "<div class='detailTool'><span class='glyphicon glyphicon-file'></span>".caDetailLink($this->request, "Download as PDF", "faDownload", "ca_objects",  $vn_id, array('view' => 'pdf', 'export_format' => '_pdf_ca_objects_summary'))."</div>";
+						print "<div class='detailTool'><i class='fas fa-file-pdf'></i>".caDetailLink($this->request, "Download as PDF", "faDownload", "ca_objects",  $vn_id, array('view' => 'pdf', 'export_format' => '_pdf_ca_objects_summary'))."</div>";
 					}
 ?>
-					<div class='detailTool'><a href='#' onclick='caMediaPanel.showPanel("<?= caNavUrl($this->request, '', 'Lightbox', 'addItemForm', array('object_id' => $vn_id)); ?>"); return false;' title='Add to lightbox'><span class='fa fa-suitcase'></span><?= _t('Add to favorites'); ?></a></div>
+					<div class='detailTool'><a href='#' onclick='caMediaPanel.showPanel("<?= caNavUrl($this->request, '', 'Lightbox', 'addItemForm', array('object_id' => $vn_id)); ?>"); return false;' title='Add to lightbox'><span class='fas fa-suitcase'></span><?= _t('Add to favorites'); ?></a></div>
 <?php
 					print '</div><!-- end detailTools -->';
 				}				
