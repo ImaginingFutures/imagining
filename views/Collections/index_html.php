@@ -20,10 +20,12 @@
 			if ( $vn_i == 0) { print "<div class='row'>"; } 
 			print "<div class='col-4 col-xs-6 col-sm-6 col-md-3'>";
 			print "<div class='grid-item collectionTile'>";
-			print "<div class='title'>".caDetailLink($this->request, $qr_collections->get("ca_collections.preferred_labels"), "", "ca_collections",  $qr_collections->get("ca_collections.collection_id"))."</div>";
-			if ($vs_thumbnail) {
-				print "<div class='collectionThumbnail'>". $vs_thumbnail. "</div>";
+			
+			if (!$vs_thumbnail) {
+				$vs_thumbnail = caGetThemeGraphic($this->request, 'IF_logo.png');
 			}
+			print "<div class='collectionThumbnail'>". $vs_thumbnail. "</div>";
+			print caDetailLink($this->request, "<div class='title'>".$qr_collections->get("ca_collections.preferred_labels")."</div>", "", "ca_collections",  $qr_collections->get("ca_collections.collection_id"));
 			if (($o_collections_config->get("description_template")) && ($vs_scope = $qr_collections->getWithTemplate($o_collections_config->get("description_template")))) {
 				print "<div>".$vs_scope."</div>";
 			}
