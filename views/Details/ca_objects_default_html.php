@@ -136,18 +136,13 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 					{{{<ifcount code="ca_objects.langmaterial.lang" min="1"><div class="unit"><label>Language:</label><unit relativeTo="ca_objects.langmaterial" delimiter="<br/>">^ca_objects.langmaterial.langlabel: ^ca_objects.langmaterial.language</unit></div></ifcount>}}}
 
 
-
-{{{
-<ifcount code="ca_objects.themes" restrictToRelationshipTypes="themeslist" min="1">
-    <div class="unit">
-        <label>Schlagworte:</label>
-        <unit relativeTo="ca_objects.themes" restrictToRelationshipTypes="themeslist" delimiter="<br/">
-            <a href="/ifrepo/index.php/Detail/terms/^ca_objects.themes.rank">^ca_objects.themes</a>
-        </unit>
-    </div>
+					<!-- Creating relation from ca_list_items (BOTH WORKS) -->
+					{{{
+<ifcount code="ca_list_items" restrictToRelationshipTypes="theme" min="1">    
+     <label>Themes:</label>
+        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="theme" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
 </ifcount>
 }}}
-
 
 
 
@@ -166,8 +161,19 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 
 
 					<!-- Geographical Coverage -->
+					{{{
+					<ifcount code="ca_places" restrictToItemTypes="country" min="1">    
+     <label>Country:</label>
+        <unit relativeTo="ca_places" restrictToItemTypes="country" delimiter="</br>"> <l>^ca_places.preferred_labels</l></unit><HR>
+</ifcount>
+}}}
 
-					{{{<ifcount code="ca_places" min="1"><div class="unit"><ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount><ifcount code="ca_places" min="2"><label>Related places</label></ifcount><unit relativeTo="ca_places" delimiter="<br/>"><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
+
+					{{{<ifcount code="ca_places" restrictToItemTypes="country" min="1"><div class="unit" relativeTo="ca_places" restrictToItemTypes="country"> <label>Related Country</label><ifcount code="ca_places" min="2"></ifcount> delimiter="<br/><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
+					{{{<ifcount code="ca_places" restrictToItemTypes="region" min="1"><div class="unit"><ifcount code="ca_places" min="1" max="1"><label>Related Region</label></ifcount><ifcount code="ca_places" min="2"><label>Related places</label></ifcount><unit relativeTo="ca_places" delimiter="<br/>"><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
+					{{{<ifcount code="ca_places" restrictToItemTypes="city" min="1"><div class="unit"><ifcount code="ca_places" min="1" max="1"><label>Related City</label></ifcount><ifcount code="ca_places" min="2"><label>Related places</label></ifcount><unit relativeTo="ca_places" delimiter="<br/>"><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
+					{{{<ifcount code="ca_places" restrictToItemTypes="address" min="1"><div class="unit"><ifcount code="ca_places" min="1" max="1"><label>Related Address</label></ifcount><ifcount code="ca_places" min="2"><label>Related places</label></ifcount><unit relativeTo="ca_places" delimiter="<br/>"><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
+					{{{<ifcount code="ca_places" restrictToItemTypes="imaginary" min="1"><div class="unit"><ifcount code="ca_places" min="1" max="1"><label>Related Imaginary Location</label></ifcount><ifcount code="ca_places" min="2"><label>Related places</label></ifcount><unit relativeTo="ca_places" delimiter="<br/>"><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
 
 					<br />{{{map}}}<!-- map -->
 
@@ -179,7 +185,7 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 
 					{{{
 					<ifcount code="ca_objects.cultgroup" min="1"><div class="unit">
-						<label>Cultural Group</label>
+						<label>Cultural Group:</label>
 						<unit relativeTo="ca_objects.cultgroup" delimiter="<br/>">
 							^ca_objects.cultgroup
 						</unit>
@@ -187,11 +193,14 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 					}}}
 
 					{{{
-						<ifdef code="ca_objects.cultcontext"><div class="unit"><label>Cultural Context</label>^ca_objects.cultcontext</div></ifdef>
-						}}}
+<ifcount code="ca_list_items" restrictToRelationshipTypes="culturalcontext" min="1">    
+    <label>Cultural Context:</label>
+        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="culturalcontext" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+</ifcount>
+}}}
 
 					{{{
-						<ifdef code="ca_objects.socialgroup"><div class="unit"><label>Social Group</label>^ca_objects.socialgroup</div></ifdef>
+						<ifdef code="ca_objects.socialgroup"><div class="unit"><label>Social Group:</label>^ca_objects.socialgroup</div></ifdef>
 						}}}
 
 					<!-- end of Socio-cultural Context -->
@@ -251,50 +260,50 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 					<!-- Licences display. TODO: simplify this -->
 
 
-			{{{<ifdef code="ca_objects.licence">
+					{{{<ifdef code="ca_objects.licence">
 					<div class="unit">
 						<label>licence</label>
 						<?php
-							$licences = [
-								"989" => [
-									"url" => "http://creativecommons.org/licenses/by/4.0/",
-									"img" => "https://i.creativecommons.org/l/by/4.0/88x31.png",
-									"name" => "CC BY 4.0",
-								],
-								"993" => [
-									"url" => "http://creativecommons.org/licenses/by-nc-nd/4.0/",
-									"img" => "https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png",
-									"name" => "CC BY-NC-ND 4.0",
-								],
-								"992" => [
-									"url" => "http://creativecommons.org/licenses/by-nc-sa/4.0/",
-									"img" => "https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png",
-									"name" => "CC BY-NC-SA 4.0",
-								],
-								"991" => [
-									"url" => "http://creativecommons.org/licenses/by-nd/4.0/",
-									"img" => "https://i.creativecommons.org/l/by-nd/4.0/88x31.png",
-									"name" => "CC BY-ND 4.0",
-								],
-								"990" => [
-									"url" => "http://creativecommons.org/licenses/by-sa/4.0/",
-									"img" => "https://i.creativecommons.org/l/by-sa/4.0/88x31.png",
-									"name" => "CC BY-SA 4.0",
-								],
-								"994" => [
-									"url" => "https://creativecommons.org/publicdomain/zero/1.0/",
-									"img" => "https://i.creativecommons.org/p/zero/1.0/88x31.png",
-									"name" => "CC0",
-								],
-							];
+						$licences = [
+							"989" => [
+								"url" => "http://creativecommons.org/licenses/by/4.0/",
+								"img" => "https://i.creativecommons.org/l/by/4.0/88x31.png",
+								"name" => "CC BY 4.0",
+							],
+							"993" => [
+								"url" => "http://creativecommons.org/licenses/by-nc-nd/4.0/",
+								"img" => "https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png",
+								"name" => "CC BY-NC-ND 4.0",
+							],
+							"992" => [
+								"url" => "http://creativecommons.org/licenses/by-nc-sa/4.0/",
+								"img" => "https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png",
+								"name" => "CC BY-NC-SA 4.0",
+							],
+							"991" => [
+								"url" => "http://creativecommons.org/licenses/by-nd/4.0/",
+								"img" => "https://i.creativecommons.org/l/by-nd/4.0/88x31.png",
+								"name" => "CC BY-ND 4.0",
+							],
+							"990" => [
+								"url" => "http://creativecommons.org/licenses/by-sa/4.0/",
+								"img" => "https://i.creativecommons.org/l/by-sa/4.0/88x31.png",
+								"name" => "CC BY-SA 4.0",
+							],
+							"994" => [
+								"url" => "https://creativecommons.org/publicdomain/zero/1.0/",
+								"img" => "https://i.creativecommons.org/p/zero/1.0/88x31.png",
+								"name" => "CC0",
+							],
+						];
 
-							$licencex = $t_object->get("ca_objects.licence");
+						$licencex = $t_object->get("ca_objects.licence");
 
-							if (isset($licences[$licencex])) {
-								$licenceInfo = $licences[$licencex];
-								echo "<a rel='license' href='{$licenceInfo['url']}' target='_blank'><img alt='Creative Commons license' style='border-width:0' src='{$licenceInfo['img']}' /></a>&nbsp;&nbsp;<a rel='license' href='{$licenceInfo['url']}' target='_blank'>{$licenceInfo['name']}</a>";
-							}
-							?>
+						if (isset($licences[$licencex])) {
+							$licenceInfo = $licences[$licencex];
+							echo "<a rel='license' href='{$licenceInfo['url']}' target='_blank'><img alt='Creative Commons license' style='border-width:0' src='{$licenceInfo['img']}' /></a>&nbsp;&nbsp;<a rel='license' href='{$licenceInfo['url']}' target='_blank'>{$licenceInfo['name']}</a>";
+						}
+						?>
 
 					</div>
 				</ifdef>}}}
@@ -319,9 +328,9 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 
 
 
-				<!-- Custom labels -->
+					<!-- Custom labels -->
 
-				{{{<ifdef code="ca_objects.time_period">
+					{{{<ifdef code="ca_objects.time_period">
 					<div class="unit">
 						<label>Time Period</label>
 						<unit relativeTo="ca_objects.time_period" delimiter="<br/>">
@@ -379,9 +388,9 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 					?>
 
 
-<HR>
-				<H3>History</H3>
-				<?php
+					<HR>
+					<H3>History</H3>
+					<?php
 					$date_created = intval($t_object->get('ca_objects.created.timestamp'));
 					$item_creator = $t_object->get('ca_objects.created.user');
 					$date_modified = intval($t_object->get('ca_objects.lastModified.timestamp'));
@@ -398,99 +407,101 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 						echo "<div class='unit'><label>First online date, Posted date:</label>" . $date_created_formatted . " by " . $item_creator . "</div>";
 						echo "<div class='unit'><label>Last modified date:</label>" . $date_modified_formatted . " by " . $item_modifier . "</div>";
 					}
-				?>
-				<HR>
+					?>
+					<HR>
 
-				<?php
-				
-				if ($va_entity_rels = $t_object->get('ca_objects_x_entities.relation_id', array('returnAsArray' => true))) {
-					$va_entities_by_type = array();
-					foreach ($va_entity_rels as $va_key => $va_entity_rel) {
-						$t_rel = new ca_objects_x_entities($va_entity_rel);
-						$vn_type_id = $t_rel->get('ca_relationship_types.preferred_labels');
-						$va_entities_by_type[$vn_type_id][] = caNavLink($this->request, $t_rel->get('ca_entities.preferred_labels'), '', '', 'Detail', 'entities/'.$t_rel->get('ca_entities.entity_id'));
-					}}
+					<?php
 
-				 $contributors = '';
-
-				// Check if there are creators in the array
-				if (isset($va_entities_by_type['had as creator'])) {
-					$creators = array_unique($va_entities_by_type['had as creator']);
-					$contributors = implode(', ', $creators);
-				} else {
-					// If no creators, check for contributors and other entity types
-					$contributorString = '';
-
-					// Check if there are contributors in the array
-					if (isset($va_entities_by_type['had as contributor'])) {
-						$contributorString .= implode(', ', $va_entities_by_type['had as contributor']);
-					}
-
-					// Iterate through other entity types and add them to the contributorString
-					foreach ($va_entities_by_type as $type => $entities) {
-						if ($type !== 'had as contributor') {
-							if (!empty($contributorString)) {
-								$contributorString .= ', ';
-							}
-							$contributorString .= implode(', ', $entities) . " ($type)";
+					if ($va_entity_rels = $t_object->get('ca_objects_x_entities.relation_id', array('returnAsArray' => true))) {
+						$va_entities_by_type = array();
+						foreach ($va_entity_rels as $va_key => $va_entity_rel) {
+							$t_rel = new ca_objects_x_entities($va_entity_rel);
+							$vn_type_id = $t_rel->get('ca_relationship_types.preferred_labels');
+							$va_entities_by_type[$vn_type_id][] = caNavLink($this->request, $t_rel->get('ca_entities.preferred_labels'), '', '', 'Detail', 'entities/' . $t_rel->get('ca_entities.entity_id'));
 						}
 					}
 
-					if (!empty($contributorString)) {
-						$contributors = $contributorString;
+					$contributors = '';
+
+					// Check if there are creators in the array
+					if (isset($va_entities_by_type['had as creator'])) {
+						$creators = array_unique($va_entities_by_type['had as creator']);
+						$contributors = implode(', ', $creators);
 					} else {
-						$contributors = 'Unknown';
+						// If no creators, check for contributors and other entity types
+						$contributorString = '';
+
+						// Check if there are contributors in the array
+						if (isset($va_entities_by_type['had as contributor'])) {
+							$contributorString .= implode(', ', $va_entities_by_type['had as contributor']);
+						}
+
+						// Iterate through other entity types and add them to the contributorString
+						foreach ($va_entities_by_type as $type => $entities) {
+							if ($type !== 'had as contributor') {
+								if (!empty($contributorString)) {
+									$contributorString .= ', ';
+								}
+								$contributorString .= implode(', ', $entities) . " ($type)";
+							}
+						}
+
+						if (!empty($contributorString)) {
+							$contributors = $contributorString;
+						} else {
+							$contributors = 'Unknown';
+						}
 					}
-				}
 
-				 
-				 $yearofcreation = date("Y", $date_created);
-				 $title = $t_object->get('ca_objects.preferred_labels.name');
-				 $object_id = $t_object->get('ca_objects.idno');
-				 $collection = $t_object->get('ca_collections.preferred_labels.name');
 
-				 $domain = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+					$yearofcreation = date("Y", $date_created);
+					$title = $t_object->get('ca_objects.preferred_labels.name');
+					$object_id = $t_object->get('ca_objects.idno');
+					$collection = $t_object->get('ca_collections.preferred_labels.name');
 
-				 $citation = $contributors . " (" . $yearofcreation . ") \"" . $title . ".\" " . $object_id . ". " . $collection . ". " . "Imagining Futures. " . $domain . "/Detail/objects/" . $vn_id . ". Accessed " . date("F j, Y") . ".";
+					$domain = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
 
-				 echo "<div class='unit'><label>Use and reproduction:</label>Cite as: " . $citation . "</div>";
+					$citation = $contributors . " (" . $yearofcreation . ") \"" . $title . ".\" " . $object_id . ". " . $collection . ". " . "Imagining Futures. " . $domain . "/Detail/objects/" . $vn_id . ". Accessed " . date("F j, Y") . ".";
 
-				?>
+					echo "<div class='unit'><label>Use and reproduction:</label>Cite as: " . $citation . "</div>";
 
-				<div id="detailAnnotations"></div>
-				
-				<?php print caObjectRepresentationThumbnails($this->request, $this->getVar("representation_id"), $t_object, array("returnAs" => "bsCols", "linkTo" => "carousel", "bsColClasses" => "smallpadding col-sm-3 col-md-3 col-xs-4", "primaryOnly" => $this->getVar('representationViewerPrimaryOnly') ? 1 : 0)); ?>
-				
-<?php
-				# Comment and Share Tools
-				if ($vn_comments_enabled | $vn_share_enabled | $vn_pdf_enabled) {
-					
-					print '<div id="detailTools">';
-					if ($vn_comments_enabled) {
-?>				
-						<div class="detailTool">
-							<a href='#' onclick='jQuery("#detailComments").slideToggle(); return false;'><span class="glyphicon glyphicon-comment"></span>Comments and Tags (<?php print sizeof($va_comments) + sizeof($va_tags); ?>)</a>
-						</div><!-- end detailTool -->
-						<div id='detailComments'><?php print $this->getVar("itemComments");?></div><!-- end itemComments -->
-<?php				
+					?>
+
+					<div id="detailAnnotations"></div>
+
+					<?php print caObjectRepresentationThumbnails($this->request, $this->getVar("representation_id"), $t_object, array("returnAs" => "bsCols", "linkTo" => "carousel", "bsColClasses" => "smallpadding col-sm-3 col-md-3 col-xs-4", "primaryOnly" => $this->getVar('representationViewerPrimaryOnly') ? 1 : 0)); ?>
+
+					<?php
+					# Comment and Share Tools
+					if ($vn_comments_enabled | $vn_share_enabled | $vn_pdf_enabled) {
+
+						print '<div id="detailTools">';
+						if ($vn_comments_enabled) {
+					?>
+							<div class="detailTool">
+								<a href='#' onclick='jQuery("#detailComments").slideToggle(); return false;'><span class="glyphicon glyphicon-comment"></span>Comments and Tags (<?php print sizeof($va_comments) + sizeof($va_tags); ?>)</a>
+							</div><!-- end detailTool -->
+							<div id='detailComments'><?php print $this->getVar("itemComments"); ?></div><!-- end itemComments -->
+						<?php
+						}
+						if ($vn_share_enabled) {
+							print '<div class="detailTool"><span class="glyphicon glyphicon-share-alt"></span>' . $this->getVar("shareLink") . '</div><!-- end detailTool -->';
+						}
+						if ($vn_pdf_enabled) {
+							print "<div class='detailTool'><span class='glyphicon glyphicon-file'></span>" . caDetailLink($this->request, "Download as PDF", "faDownload", "ca_objects",  $vn_id, array('view' => 'pdf', 'export_format' => '_pdf_ca_objects_summary')) . "</div>";
+						}
+						?>
+						<div class='detailTool'><a href='#' onclick='caMediaPanel.showPanel("<?= caNavUrl($this->request, '', 'Lightbox', 'addItemForm', array('object_id' => $vn_id)); ?>"); return false;' title='Add to lightbox'><span class='fa fa-suitcase'></span><?= _t('Add to favorites'); ?></a></div>
+					<?php
+						print '</div><!-- end detailTools -->';
 					}
-					if ($vn_share_enabled) {
-						print '<div class="detailTool"><span class="glyphicon glyphicon-share-alt"></span>'.$this->getVar("shareLink").'</div><!-- end detailTool -->';
-					}
-					if ($vn_pdf_enabled) {
-						print "<div class='detailTool'><span class='glyphicon glyphicon-file'></span>".caDetailLink($this->request, "Download as PDF", "faDownload", "ca_objects",  $vn_id, array('view' => 'pdf', 'export_format' => '_pdf_ca_objects_summary'))."</div>";
-					}
-?>
-					<div class='detailTool'><a href='#' onclick='caMediaPanel.showPanel("<?= caNavUrl($this->request, '', 'Lightbox', 'addItemForm', array('object_id' => $vn_id)); ?>"); return false;' title='Add to lightbox'><span class='fa fa-suitcase'></span><?= _t('Add to favorites'); ?></a></div>
-<?php
-					print '</div><!-- end detailTools -->';
-				}				
 
-?>
+					?>
 
-			</div><!-- end col -->
+				</div><!-- end col -->
 
-		</div><!-- end row --></div><!-- end container -->
+			</div><!-- end row -->
+		</div><!-- end container -->
 	</div><!-- end col -->
 	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
 		<div class="detailNavBgRight">
@@ -502,22 +513,21 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 <script type='text/javascript'>
 	jQuery(document).ready(function() {
 		$('.trimText').readmore({
-		  speed: 75,
-		  maxHeight: 200
+			speed: 75,
+			maxHeight: 200
 		});
 	});
 
 	$(document).ready(function() {
-	// Initialize Bootstrap Tooltip
-    $('[data-toggle="tooltip"]').tooltip();
+		// Initialize Bootstrap Tooltip
+		$('[data-toggle="tooltip"]').tooltip();
 
-    // Hide the panel content initially
-    $('#panelContent').hide();
+		// Hide the panel content initially
+		$('#panelContent').hide();
 
-    // Toggle panel content when the button is clicked
-    $('#togglePanel').click(function() {
-        $('#panelContent').slideToggle();
-    });
-});
-
+		// Toggle panel content when the button is clicked
+		$('#togglePanel').click(function() {
+			$('#panelContent').slideToggle();
+		});
+	});
 </script>
