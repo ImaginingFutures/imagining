@@ -153,7 +153,7 @@ $mimetypes = [
 		</div><!-- end detailNavBgLeft -->
 	</div><!-- end col -->
 	<div class='col-xs-12 col-sm-10 col-md-10 col-lg-10'>
-		<div class="container">
+		
 			<div class="row">
 				<div class='col-md-12 col-lg-12'>
 					<H1>{{{^ca_collections.preferred_labels.name}}}</H1>
@@ -167,42 +167,9 @@ $mimetypes = [
 					?>
 				</div><!-- end col -->
 			</div><!-- end row -->
+
 			<div class="row">
-				<div class='col-sm-12'>
-
-					<?php
-					if ($vb_show_objects_link || $vb_show_collections_link) {
-					?>
-						<div class='collectionBrowseItems'>
-
-							<?php
-							if ($vb_show_objects_link) {
-								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-search' aria-label='Search'></i> Search inside the Collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-							}
-							if ($vb_show_collections_link) {
-								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-search' aria-label='Search'></i> Search in all collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-							}
-
-							?>
-
-						</div>
-					<?php
-					}
-					if ($vb_show_hierarchy_viewer) {
-					?>
-						<div id="collectionHierarchy"><?php print caBusyIndicatorIcon($this->request) . ' ' . addslashes(_t('Loading...')); ?></div>
-						<script>
-							$(document).ready(function() {
-								$('#collectionHierarchy').load("<?php print caNavUrl($this->request, '', 'Collections', 'collectionHierarchy', array('collection_id' => $t_item->get('collection_id'))); ?>");
-							})
-						</script>
-					<?php
-					}
-					?>
-				</div><!-- end col -->
-			</div><!-- end row -->
-			<div class="row">
-				<div class='col-md-6 col-lg-6'>
+				<div class='col-sm-8 col-md-8 col-lg-8'>
 					<label>People</label>
 				</div>
 			</div>
@@ -238,17 +205,15 @@ $mimetypes = [
 					$v_ents = 0;
 				}
 			}
-			if (($v_ents < 2) && ($v_ents != 0)) {
+			if ($v_ents > 0) {
 				print "</div><!-- end row -->\n";
 			}
 
-
-
 			?>
-		</div>
+		<div class="col-sm-8 col-md-8 col-lg-8">
 		<div class="row">
 
-			<div class='col-md-6 col-lg-6'>
+			<div class='col-sm-8 col-md-8 col-lg-8'>
 				{{{<ifdef code="ca_collections.description"><label>About</label>^ca_collections.description<br/></ifdef>}}}
 				{{{<ifcount code="ca_objects" min="1" max="1"><div class='unit'><unit relativeTo="ca_objects" delimiter=" "><l>^ca_object_representations.media.large</l><div class='caption'>Related Object: <l>^ca_objects.preferred_labels.name</l></div></unit></div></ifcount>}}}
 				<?php
@@ -270,7 +235,7 @@ $mimetypes = [
 				?>
 
 			</div><!-- end col -->
-			<div class='col-md-6 col-lg-6'>
+			<div class='col-sm-8 col-md-8 col-lg-8'>
 				{{{<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label></ifcount>}}}
 				{{{<ifcount code="ca_collections.related" min="2"><label>Related collections</label></ifcount>}}}
 				{{{<unit relativeTo="ca_collections" delimiter="<br/>"><l>^ca_collections.related.preferred_labels.name</l> ^relationship_typename</unit>}}}
@@ -333,8 +298,56 @@ $mimetypes = [
 		}
 		?>
 
-		<div class="row">
-			<div class='counter'>
+		
+
+	</div><!-- end container -->
+	<div class="col-sm-4 col-md-3 col-lg-3">
+	<div class="row">
+				<div class='col-sm-12'>
+
+					<?php
+					if ($vb_show_objects_link || $vb_show_collections_link) {
+					?>
+						<div class='collectionBrowseItems'>
+
+							<?php
+							if ($vb_show_objects_link) {
+								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-search' aria-label='Search'></i> Search inside the Collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+							}
+							if ($vb_show_collections_link) {
+								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-search' aria-label='Search'></i> Search in all collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+							}
+
+							?>
+
+						</div>
+					<?php
+					}
+					if ($vb_show_hierarchy_viewer) {
+					?>
+						<div id="collectionHierarchy"><?php print caBusyIndicatorIcon($this->request) . ' ' . addslashes(_t('Loading...')); ?></div>
+						<script>
+							$(document).ready(function() {
+								$('#collectionHierarchy').load("<?php print caNavUrl($this->request, '', 'Collections', 'collectionHierarchy', array('collection_id' => $t_item->get('collection_id'))); ?>");
+							})
+						</script>
+					<?php
+					}
+					?>
+				</div><!-- end col -->
+			</div><!-- end row -->
+
+	</div>
+</div><!-- end col -->
+
+<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
+	<div class="detailNavBgRight">
+		{{{nextLink}}}
+	</div><!-- end detailNavBgLeft -->
+</div><!-- end col -->
+</div><!-- end row -->
+<div class="row">
+			<div class='counter col-sm-12 col-md-12 col-lg-12'>
 				<?php
 				if (!$category) {
 					echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-folder-minus'></i><div class='value'>0</div><div class='mimeLabel'>No items yet,<br>but not for long! </div></div>";
@@ -383,12 +396,3 @@ $mimetypes = [
 				animate();
 			});
 		</script>
-
-	</div><!-- end container -->
-</div><!-- end col -->
-<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
-	<div class="detailNavBgRight">
-		{{{nextLink}}}
-	</div><!-- end detailNavBgLeft -->
-</div><!-- end col -->
-</div><!-- end row -->
