@@ -1363,6 +1363,8 @@ body.frontContainer #footer {
     justify-content: space-around;
     align-items: center;
     height: 100px;
+	margin-bottom:29px;
+ 	padding-top:26px;
 }
 
 .mimetypeCat {
@@ -1372,17 +1374,51 @@ body.frontContainer #footer {
     align-items: center; /* Center the content horizontally */
     position: relative;
     font-size: 120px;
-    color: rgba(95, 158, 160, 0.5);
+    color: rgba(23, 31, 92, 0.1);
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .value {
     font-size: 150px;
     display: block;
     font-weight: bold;
-    color: #922d2d;
+    /* color: #AA084E; */
     position: absolute;
-    top: -78px;
-    left: 10px;
+    top: -50px; /* Adjust the top position to prevent overlap */
+    left: 10px; /* Adjust the left position for proper alignment */
+    z-index: 1; /* Ensure that .value is in front of .mimetypeCat */
+    width: 100%; /* Make sure .value covers the entire width of .mimetypeCat */
+    text-align: center; /* Center-align the text within .value */
+	transition: font-size 0.5s;
+}
+
+.value.first {
+	color: #171f5c;
+}
+
+.value.second {
+	color: #AA084E;
+}
+
+.value.third {
+	color: #551b72;
+}
+
+.value.fourth {
+	color: #c8720b;
+}
+
+.mimeLabel {
+	margin-top: 26px;
+	color: #171f5c;
+	text-align: center;
+}
+
+@media (max-width: 900px) {
+	.value {
+		font-size: 120px;
+	}
 }
 
 /* Media query for smaller screens */
@@ -1400,4 +1436,8 @@ body.frontContainer #footer {
     .value {
         font-size: 80px; /* Adjust font size for smaller screens */
     }
+
+	.mimeLabel {
+		margin-top: 10px;
+	}
 }
