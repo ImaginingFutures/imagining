@@ -161,21 +161,12 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 
 
 					<!-- Geographical Coverage -->
-					{{{
-					<ifcount code="ca_places" restrictToItemTypes="country" min="1">    
-     <label>Country:</label>
-        <unit relativeTo="ca_places" restrictToItemTypes="country" delimiter="</br>"> <l>^ca_places.preferred_labels</l></unit><HR>
-</ifcount>
-}}}
 
-
-					{{{<ifcount code="ca_places" restrictToItemTypes="country" min="1"><div class="unit" relativeTo="ca_places" restrictToItemTypes="country"> <label>Related Country</label><ifcount code="ca_places" min="2"></ifcount> delimiter="<br/><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
-					{{{<ifcount code="ca_places" restrictToItemTypes="region" min="1"><div class="unit"><ifcount code="ca_places" min="1" max="1"><label>Related Region</label></ifcount><ifcount code="ca_places" min="2"><label>Related places</label></ifcount><unit relativeTo="ca_places" delimiter="<br/>"><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
-					{{{<ifcount code="ca_places" restrictToItemTypes="city" min="1"><div class="unit"><ifcount code="ca_places" min="1" max="1"><label>Related City</label></ifcount><ifcount code="ca_places" min="2"><label>Related places</label></ifcount><unit relativeTo="ca_places" delimiter="<br/>"><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
-					{{{<ifcount code="ca_places" restrictToItemTypes="address" min="1"><div class="unit"><ifcount code="ca_places" min="1" max="1"><label>Related Address</label></ifcount><ifcount code="ca_places" min="2"><label>Related places</label></ifcount><unit relativeTo="ca_places" delimiter="<br/>"><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
-					{{{<ifcount code="ca_places" restrictToItemTypes="imaginary" min="1"><div class="unit"><ifcount code="ca_places" min="1" max="1"><label>Related Imaginary Location</label></ifcount><ifcount code="ca_places" min="2"><label>Related places</label></ifcount><unit relativeTo="ca_places" delimiter="<br/>"><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
-
-					<br />{{{map}}}<!-- map -->
+					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
+					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
+					{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels.name</l> ^ca_places.type_id</unit>}}}
+					<br />{{{map}}}
+					<!-- map -->
 
 					<!-- end of Geographical Coverage labels -->
 
@@ -260,11 +251,11 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 					<!-- Licences display. TODO: simplify this -->
 
 
-					{{{<ifdef code="ca_objects.licence">
+					{{{<ifdef code="ca_objects.license">
 					<div class="unit">
-						<label>licence</label>
+						<label>License</label>
 						<?php
-						$licences = [
+						$licenses = [
 							"989" => [
 								"url" => "http://creativecommons.org/licenses/by/4.0/",
 								"img" => "https://i.creativecommons.org/l/by/4.0/88x31.png",
@@ -297,11 +288,11 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 							],
 						];
 
-						$licencex = $t_object->get("ca_objects.licence");
+						$licence = $t_object->get("ca_objects.license");
 
-						if (isset($licences[$licencex])) {
-							$licenceInfo = $licences[$licencex];
-							echo "<a rel='license' href='{$licenceInfo['url']}' target='_blank'><img alt='Creative Commons license' style='border-width:0' src='{$licenceInfo['img']}' /></a>&nbsp;&nbsp;<a rel='license' href='{$licenceInfo['url']}' target='_blank'>{$licenceInfo['name']}</a>";
+						if (isset($licenses[$licence])) {
+							$licenseInfo = $licenses[$licence];
+							echo "<a rel='license' href='{$licenseInfo['url']}' target='_blank'><img alt='Creative Commons License' style='border-width:0' src='{$licenseInfo['img']}' /></a>&nbsp;&nbsp;<a rel='license' href='{$licenseInfo['url']}' target='_blank'>{$licenseInfo['name']}</a>";
 						}
 						?>
 

@@ -17,7 +17,8 @@
 		<div class="container">
 			<div class="row">
 				<div class='col-md-12 col-lg-12'>
-					<H1>{{{<unit relativeTo="ca_places.hierarchy" delimiter=" &gt; ">^ca_places.preferred_labels.name</unit>}}}</H1>
+					<H1>{{{<unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "> <l>^ca_places.preferred_labels.name</l></unit>}}}</H1>
+
 					<H2>{{{^ca_places.type_id}}}</H2>
 				</div><!-- end col -->
 			</div><!-- end row -->
