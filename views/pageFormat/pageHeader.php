@@ -58,11 +58,19 @@
 <html lang="en" <?php print ((strtoLower($this->request->getController()) == "front")) ? "class='frontContainer'" : ""; ?>>
 	<head>
 	<meta charset="utf-8">
+	<?= AssetLoadManager::getLoadHTML($this->request); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 	
+	<title><?= (MetaTagManager::getWindowTitle()) ? MetaTagManager::getWindowTitle() : $this->request->config->get("app_display_name"); ?></title>
+
 	<meta property="og:url" content="<?php print $this->request->config->get("site_host").caNavUrl($this->request, "*", "*", "*"); ?>" />
 	<meta property="og:type" content="website" />
+
+	<!-- Dynamic meta tags -->
+	<?= MetaTagManager::getHTML(); ?>
 	<script src="https://kit.fontawesome.com/122ccc1a9c.js" crossorigin="anonymous"></script>
+
+
 <?php
 	if(!in_array(strToLower($this->request->getAction), array("objects"))){
 		# --- this is set on detail page
@@ -72,12 +80,6 @@
 <?php
 	}
 ?>	
-
-	
-	<?php print MetaTagManager::getHTML(); ?>
-	<?php print AssetLoadManager::getLoadHTML($this->request); ?>
-
-	<title><?php print (MetaTagManager::getWindowTitle()) ? MetaTagManager::getWindowTitle() : $this->request->config->get("app_display_name"); ?></title>
 	
 	<script type="text/javascript">
 		jQuery(document).ready(function() {

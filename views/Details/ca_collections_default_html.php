@@ -280,10 +280,6 @@ $mimetypes = [
 					$mimetype_counts[$mimetype] = isset($mimetype_counts[$mimetype]) ? $mimetype_counts[$mimetype] + 1 : 1;
 				}
 			}
-
-
-
-
 			// Initialize an array to store counts for each category
 			$category_counts = [];
 
@@ -305,25 +301,71 @@ $mimetypes = [
 				<div class='col-sm-12'>
 
 					<?php
+					if (count($object_id_array) > 0) {
+
+						# search for case studies or words into actions objects types.
+
+						$case_study_id = $o_db->query("SELECT item_id, name_singular FROM ca_list_item_labels WHERE name_singular = 'Case Study' OR name_singular = 'Words into Action'");
+
+						# get the label_id for cases or words
+						$works_ids = [];
+						while ($case_study_id->nextRow()) {
+							$works_ids[] = [$case_study_id->get("name_singular") => $case_study_id->get("item_id")];
+						}
+
+						# construct the panel (bootstrap 3)
+
+						if ($works_ids) {
+							$s_object = new ObjectSearch();
+							$works_for_search = [];
+
+							foreach ($works_ids as $work) {
+								foreach ($work as $item_id) {
+									$works_for_search[] = $item_id;
+								}
+							}
+
+							$works_cases = $o_db->query("SELECT object_id FROM ca_objects WHERE object_id IN (?) AND type_id IN (?)", array($object_id_array, $works_for_search));
+							while ($works_cases->nextRow()) {
+								$works_objects = $s_object->search("ca_objects.object_id:" . $works_cases->get('ca_objects.object_id'));
+								while ($works_objects->nextHit()) {
+									foreach ($works_ids as $work) {
+										foreach ($work as $key => $value) {
+											if ($value == $works_objects->get("ca_objects.type_id")) {
+												$label = $key;
+												break;
+											}
+										}
+									}
+									print "<div class='panel panel-primary'>";
+									print "<div class='panel-heading'>";
+									print "<h3 class='panel-title'>" . $label . "</h3></div>";
+									print "<div class='panel-body'>";
+									print caDetailLink($this->request, $works_objects->get("ca_objects.preferred_labels") . " <i class='fas fa-file-pdf'></i>", "", "ca_objects", $works_objects->get("ca_objects.object_id"));
+									print("</div></div>");
+								}
+							}
+						}
+					}
+
+					?>
+					<?php
 					if ($vb_show_objects_link || $vb_show_collections_link) {
 					?>
 						<div class='collectionBrowseItems'>
 
 							<?php
 							if ($vb_show_objects_link) {
-								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-search' aria-label='Search'></i> Search inside the Collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Look inside the Collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
 							}
 							if ($vb_show_collections_link) {
-								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-search' aria-label='Search'></i> Search in all collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-eye' aria-label='Search'></i> Look in all collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
 							}
 							?>
 
 						</div>
 					<?php
-					} else {
-						print "<p>This collection has no items :(</p>";
 					}
-
 
 					if ($vb_show_hierarchy_viewer) {
 					?>
@@ -336,6 +378,35 @@ $mimetypes = [
 					<?php
 					}
 					?>
+
+					
+						<div class='counter'>
+							<?php
+							if (!$category) {
+								echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-folder-minus'></i><div class='value'>0</div><div class='mimeLabel'>No items yet,<br>but not for long! </div></div>";
+							}
+							$colors = ['first', 'second', 'third', 'fourth'];
+
+							$counter = 0;
+							foreach ($category_counts as $category => $count) {
+								$catData = $mimetypes[$category];
+								$colorClass = 'value ' . $colors[$counter % count($colors)];
+								if ($count > 1) {
+									$cat_label = $catData['label'] . 's';
+								} else {
+									$cat_label = $catData['label'];
+								}
+								echo "<div class='mimetypeCat'><i class='fas fa-" . strtolower($category) . "'></i><div class='$colorClass' akhi='$count'>0</div><div class='mimeLabel'>" . strtoupper($cat_label) . "</div></div>";
+
+								if ($counter == 4) {
+									$counter = 0;
+								} else {
+									$counter++;
+								}
+							}
+							?>
+						</div>
+					
 				</div><!-- end col -->
 			</div><!-- end row -->
 
@@ -348,34 +419,7 @@ $mimetypes = [
 		</div><!-- end detailNavBgLeft -->
 	</div><!-- end col -->
 </div><!-- end row -->
-<div class="row">
-	<div class='counter col-sm-12 col-md-12 col-lg-12'>
-		<?php
-		if (!$category) {
-			echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-folder-minus'></i><div class='value'>0</div><div class='mimeLabel'>No items yet,<br>but not for long! </div></div>";
-		}
-		$colors = ['first', 'second', 'third', 'fourth'];
 
-		$counter = 0;
-		foreach ($category_counts as $category => $count) {
-			$catData = $mimetypes[$category];
-			$colorClass = 'value ' . $colors[$counter % count($colors)];
-			if ($count > 1) {
-				$cat_label = $catData['label'] . 's';
-			} else {
-				$cat_label = $catData['label'];
-			}
-			echo "<div class='mimetypeCat'><i class='fas fa-" . strtolower($category) . "'></i><div class='$colorClass' akhi='$count'>0</div><div class='mimeLabel'>" . strtoupper($cat_label) . "</div></div>";
-
-			if ($counter == 4) {
-				$counter = 0;
-			} else {
-				$counter++;
-			}
-		}
-		?>
-	</div>
-</div>
 
 <script>
 	const counters = document.querySelectorAll('.value');
