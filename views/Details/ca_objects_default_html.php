@@ -250,55 +250,56 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 
 					<!-- Licences display. TODO: simplify this -->
 
-
 					{{{<ifdef code="ca_objects.license">
 					<div class="unit">
 						<label>License</label>
 						<?php
-						$licenses = [
-							"989" => [
-								"url" => "http://creativecommons.org/licenses/by/4.0/",
-								"img" => "https://i.creativecommons.org/l/by/4.0/88x31.png",
-								"name" => "CC BY 4.0",
-							],
-							"993" => [
-								"url" => "http://creativecommons.org/licenses/by-nc-nd/4.0/",
-								"img" => "https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png",
-								"name" => "CC BY-NC-ND 4.0",
-							],
-							"992" => [
-								"url" => "http://creativecommons.org/licenses/by-nc-sa/4.0/",
-								"img" => "https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png",
-								"name" => "CC BY-NC-SA 4.0",
-							],
-							"991" => [
-								"url" => "http://creativecommons.org/licenses/by-nd/4.0/",
-								"img" => "https://i.creativecommons.org/l/by-nd/4.0/88x31.png",
-								"name" => "CC BY-ND 4.0",
-							],
-							"990" => [
-								"url" => "http://creativecommons.org/licenses/by-sa/4.0/",
-								"img" => "https://i.creativecommons.org/l/by-sa/4.0/88x31.png",
-								"name" => "CC BY-SA 4.0",
-							],
-							"994" => [
-								"url" => "https://creativecommons.org/publicdomain/zero/1.0/",
-								"img" => "https://i.creativecommons.org/p/zero/1.0/88x31.png",
-								"name" => "CC0",
-							],
-						];
+							$licenses = [
+								"989" => [
+									"url" => "http://creativecommons.org/licenses/by/4.0/",
+									"img" => "https://i.creativecommons.org/l/by/4.0/88x31.png",
+									"name" => "CC BY 4.0",
+								],
+								"993" => [
+									"url" => "http://creativecommons.org/licenses/by-nc-nd/4.0/",
+									"img" => "https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png",
+									"name" => "CC BY-NC-ND 4.0",
+								],
+								"992" => [
+									"url" => "http://creativecommons.org/licenses/by-nc-sa/4.0/",
+									"img" => "https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png",
+									"name" => "CC BY-NC-SA 4.0",
+								],
+								"991" => [
+									"url" => "http://creativecommons.org/licenses/by-nd/4.0/",
+									"img" => "https://i.creativecommons.org/l/by-nd/4.0/88x31.png",
+									"name" => "CC BY-ND 4.0",
+								],
+								"990" => [
+									"url" => "http://creativecommons.org/licenses/by-sa/4.0/",
+									"img" => "https://i.creativecommons.org/l/by-sa/4.0/88x31.png",
+									"name" => "CC BY-SA 4.0",
+								],
+								"994" => [
+									"url" => "https://creativecommons.org/publicdomain/zero/1.0/",
+									"img" => "https://i.creativecommons.org/p/zero/1.0/88x31.png",
+									"name" => "CC0",
+								],
+							];
 
-						$licence = $t_object->get("ca_objects.license");
+							$licence = $t_object->get("ca_objects.license");
 
-						if (isset($licenses[$licence])) {
-							$licenseInfo = $licenses[$licence];
-							echo "<a rel='license' href='{$licenseInfo['url']}' target='_blank'><img alt='Creative Commons License' style='border-width:0' src='{$licenseInfo['img']}' /></a>&nbsp;&nbsp;<a rel='license' href='{$licenseInfo['url']}' target='_blank'>{$licenseInfo['name']}</a>";
-						}
-						?>
+							if (isset($licenses[$licence])) {
+								$licenseInfo = $licenses[$licence];
+								echo "<a rel='license' href='{$licenseInfo['url']}' target='_blank'><img alt='Creative Commons License' style='border-width:0' src='{$licenseInfo['img']}' /></a>&nbsp;&nbsp;<a rel='license' href='{$licenseInfo['url']}' target='_blank'>{$licenseInfo['name']}</a>";
+							}
+							?>
 
 					</div>
 				</ifdef>}}}
-
+				{{{
+					<ifdef code="ca_objects.license"><div class="unit"><label>License basic:</label>^ca_objects.license</div></ifdef>
+				}}}
 					{{{
 					<ifdef code="ca_objects.rightsstate"><div class="unit"><label>Rights Statement:</label>^ca_objects.rightsstate</div></ifdef>
 				}}}
