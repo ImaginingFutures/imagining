@@ -60,85 +60,8 @@ if ($t_item->get("ca_collections.children.collection_id", array("checkAccess" =>
 
 # --------------------
 # Mimetypes
-
-$mimetypes = [
-	'image' => [
-		'types' => [
-			'image/jpeg',
-			'image/tiff',
-			'image/png',
-			'image/x-dcraw',
-			'image/x-psd',
-			'image/x-dpx',
-			'image/jp2',
-			'image/x-adobe-dng',
-			'image/bmp',
-			'image/x-bmp'
-		],
-		'label' => 'image'
-	],
-	'video' => [
-		'types' => [
-			'video/x-flv',
-			'video/mpeg',
-			'audio/x-realaudio',
-			'video/quicktime',
-			'video/x-ms-asf',
-			'video/x-ms-wmv',
-			'application/x-shockwave-flash',
-			'video/x-matroska',
-			'video/mp4',
-			'x-world/x-qtvr',
-			'application/postscript'
-		],
-		'label' => 'video'
-	],
-	'file-pdf' => [
-		'types' => ['application/pdf'],
-		'label' => 'pdf'
-	],
-	'file-alt' => [
-		'types' => [
-			'application/msword',
-			'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-			'application/vnd.ms-excel',
-			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-			'application/vnd.ms-powerpoint',
-			'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-		],
-		'label' => 'document'
-	],
-	'file-audio' => [
-		'types' => [
-			'audio/mpeg',
-			'audio/x-aiff',
-			'audio/x-wav',
-			'audio/wav',
-			'audio/mp4'
-		],
-		'label' => 'audio'
-	],
-	'align-left' => [
-		'types' => ['text/xml'],
-		'label' => 'text'
-	],
-	'cubes' => [
-		'types' => [
-			'application/stl',
-			'application/surf',
-			'application/ply'
-		],
-		'label' => '3D'
-	],
-	'vr-cardboard' => [
-		'types' => ['application/spincar'],
-		'label' => '360'
-	],
-	'file-archive' => [
-		'types' => ['application/octet-stream'],
-		'label' => 'file'
-	]
-];
+#$mimetypes = $this->render("Details/data/mimetypes.php");
+require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 # --------------------
 
@@ -155,6 +78,14 @@ $mimetypes = [
 	<div class='col-xs-12 col-sm-10 col-md-10 col-lg-10'>
 
 		<div class="row">
+
+
+			<?php
+			
+			$mimes = new MimeTypes();
+			$mimetypes = $mimes->mimetypes();
+			?>
+
 			<div class='col-md-12 col-lg-12'>
 				<H1>{{{^ca_collections.preferred_labels.name}}}</H1>
 				<H2>{{{^ca_collections.type_id}}}{{{<ifdef code="ca_collections.idno">, ^ca_collections.idno</ifdef>}}}</H2>
@@ -167,6 +98,60 @@ $mimetypes = [
 				?>
 			</div><!-- end col -->
 		</div><!-- end row -->
+
+		<?php
+			// Initialize the database connection and get the collection ID
+			$o_db = new Db();
+			$s_object = new ObjectSearch();
+			$s_place = new PlaceSearch();
+			$object_id_array = explode(";", $t_item->get("ca_objects.object_id"));
+			
+		?>
+
+		<?php
+			$labels_places = [];
+
+			$places = $o_db->query("SELECT object_id, place_id FROM ca_objects_x_places WHERE object_id IN (?)", array($object_id_array));
+			
+				while ($places->nextRow()) {
+					$place_id = $places->get("place_id");
+					
+			
+					$places_ids = $s_place->search("ca_places.place_id:$place_id");
+					while ($places_ids->nextHit()) {
+						$place_coords = $places_ids->get("ca_places.coordinates");
+					}
+					
+					if($place_coords){ 
+						$object_id = $places->get("object_id");
+
+						$items_labels = $s_object->search("ca_objects.object_id:$object_id");
+						while ($items_labels->nextHit()) {
+							$item_label = $items_labels->get("ca_objects.preferred_labels");
+						}
+			
+						$labels_places[$item_label] = $place_coords;
+					}
+				}
+			
+			if($labels_places){
+			// Initialize arrays for georeference and titles
+			$georeference = array();
+			$titles = array();
+
+			// Iterate through the original array to populate the new arrays
+			foreach ($labels_places as $label => $coordinate) {
+				$georeference[] = $coordinate;
+				$titles[] = $label;
+			}
+			
+				print "<div id='map' style='height: 400px;'></div>";
+			}
+			
+
+		?>
+
+		
 
 		<div class="row">
 			<div class='col-sm-8 col-md-8 col-lg-8'>
@@ -215,7 +200,8 @@ $mimetypes = [
 
 				<div class='col-sm-8 col-md-8 col-lg-8'>
 					{{{<ifdef code="ca_collections.description"><label>About</label>^ca_collections.description<br/></ifdef>}}}
-					{{{<ifcount code="ca_objects" min="1" max="1"><div class='unit'><unit relativeTo="ca_objects" delimiter=" "><l>^ca_object_representations.media.large</l><div class='caption'>Related Object: <l>^ca_objects.preferred_labels.name</l></div></unit></div></ifcount>}}}
+					
+				
 					<?php
 					# Comment and Share Tools
 					if ($vn_comments_enabled | $vn_share_enabled) {
@@ -251,16 +237,6 @@ $mimetypes = [
 				</div><!-- end col -->
 			</div><!-- end row -->
 			<?php
-			// Initialize the database connection and get the collection ID
-			$o_db = new Db();
-			$collection_id = $t_item->get("ca_collections.collection_id");
-
-			// Fetch object IDs associated with the collection
-			$object_id_array = [];
-			$object_ids = $o_db->query("SELECT object_id FROM ca_objects_x_collections WHERE collection_id = $collection_id");
-			while ($object_ids->nextRow()) {
-				$object_id_array[] = $object_ids->get("object_id");
-			}
 
 			// Fetch representation IDs for the objects
 			$representation_ids = [];
@@ -294,7 +270,6 @@ $mimetypes = [
 			}
 			?>
 
-
 		</div><!-- end container -->
 		<div class="col-sm-4 col-md-3 col-lg-3">
 			<div class="row">
@@ -316,7 +291,6 @@ $mimetypes = [
 						# construct the panel (bootstrap 3)
 
 						if ($works_ids) {
-							$s_object = new ObjectSearch();
 							$works_for_search = [];
 
 							foreach ($works_ids as $work) {
@@ -379,40 +353,40 @@ $mimetypes = [
 					}
 					?>
 
-					
-						<div class='counter'>
-							<?php
-							if (!$category) {
-								echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-folder-minus'></i><div class='value'>0</div><div class='mimeLabel'>No items yet,<br>but not for long! </div></div>";
-							}
-							$colors = ['first', 'second', 'third', 'fourth'];
 
-							$counter = 0;
-							foreach ($category_counts as $category => $count) {
-								$catData = $mimetypes[$category];
-								$colorClass = 'value ' . $colors[$counter % count($colors)];
-								if ($count > 1) {
-									$cat_label = $catData['label'] . 's';
-								} else {
-									$cat_label = $catData['label'];
-								}
-								echo "<div class='mimetypeCat'><i class='fas fa-" . strtolower($category) . "'></i><div class='$colorClass' akhi='$count'>0</div><div class='mimeLabel'>" . strtoupper($cat_label) . "</div></div>";
+					<div class='counter'>
+						<?php
+						if (!$category) {
+							echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-folder-minus'></i><div class='value'>0</div><div class='mimeLabel'>No items yet,<br>but not for long! </div></div>";
+						}
+						$colors = ['first', 'second', 'third', 'fourth'];
 
-								if ($counter == 4) {
-									$counter = 0;
-								} else {
-									$counter++;
-								}
+						$counter = 0;
+						foreach ($category_counts as $category => $count) {
+							$catData = $mimetypes[$category];
+							$colorClass = 'value ' . $colors[$counter % count($colors)];
+							if ($count > 1) {
+								$cat_label = $catData['label'] . 's';
+							} else {
+								$cat_label = $catData['label'];
 							}
-							?>
-						</div>
-					
+							echo "<div class='mimetypeCat'><i class='fas fa-" . strtolower($category) . "'></i><div class='$colorClass' akhi='$count'>0</div><div class='mimeLabel'>" . strtoupper($cat_label) . "</div></div>";
+
+							if ($counter == 4) {
+								$counter = 0;
+							} else {
+								$counter++;
+							}
+						}
+						?>
+					</div>
+
 				</div><!-- end col -->
 			</div><!-- end row -->
 
 		</div>
-	</div><!-- end col -->
 
+	</div><!-- end col -->
 	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
 		<div class="detailNavBgRight">
 			{{{nextLink}}}
@@ -441,4 +415,59 @@ $mimetypes = [
 
 		animate();
 	});
+</script>
+
+<script>
+    var georeference = <?php echo json_encode($georeference); ?>;
+    var titles = <?php echo json_encode($titles); ?>;
+ 
+    // Initialize variables for calculating the average coordinates
+    var totalLat = 0;
+    var totalLon = 0;
+
+    // Initialize the Leaflet map
+    var map = L.map('map').setView([0, 0], 6);
+    
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    georeference.forEach(function(coordinate, index) {
+        // Split the coordinate into latitude and longitude
+        var [lat, lon] = coordinate.replace('[', '').replace(']', '').split(',');
+ 
+        // Convert string values to numbers
+        lat = parseFloat(lat);
+        lon = parseFloat(lon);
+
+        // Add the converted values to the totals
+        totalLat += lat;
+        totalLon += lon;
+ 
+        // Get the title for the current object
+        var title = titles[index];
+ 
+        // Customize the popup content with the retrieved title
+        var popupContent = "Title: " + title;
+ 
+        // Create markers and popups, and add them to the map
+        var marker = L.marker([lat, lon]).addTo(map);
+        marker.bindPopup(popupContent);
+    });
+
+    // Calculate the average coordinates
+    var avgLat = totalLat / georeference.length;
+    var avgLon = totalLon / georeference.length;
+
+    // Set the center of the map based on the average coordinates
+    map.setView([avgLat, avgLon]);
+
+	// Fit the map to contain all the markers
+    var bounds = L.latLngBounds(georeference.map(function(coordinate) {
+        var [lat, lon] = coordinate.replace('[', '').replace(']', '').split(',');
+        return [parseFloat(lat), parseFloat(lon)];
+    }));
+
+	map.fitBounds(bounds);
 </script>
