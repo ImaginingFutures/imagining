@@ -81,7 +81,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 
 			<?php
-			
+
 			$mimes = new MimeTypes();
 			$mimetypes = $mimes->mimetypes();
 			?>
@@ -100,58 +100,35 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		</div><!-- end row -->
 
 		<?php
-			// Initialize the database connection and get the collection ID
-			$o_db = new Db();
-			$s_object = new ObjectSearch();
-			$s_place = new PlaceSearch();
-			$object_id_array = explode(";", $t_item->get("ca_objects.object_id"));
-			
-		?>
+		// Initialize the database connection and get the collection ID
+		$o_db = new Db();
+		$s_object = new ObjectSearch();
+		$s_place = new PlaceSearch();
+		$object_id_array = explode(";", $t_item->get("ca_objects.object_id"));
 
-		<?php
-			$labels_places = [];
+		# Retrieving objects data for map
 
-			$places = $o_db->query("SELECT object_id, place_id FROM ca_objects_x_places WHERE object_id IN (?)", array($object_id_array));
-			
-				while ($places->nextRow()) {
-					$place_id = $places->get("place_id");
-					
-			
-					$places_ids = $s_place->search("ca_places.place_id:$place_id");
-					while ($places_ids->nextHit()) {
-						$place_coords = $places_ids->get("ca_places.coordinates");
-					}
-					
-					if($place_coords){ 
-						$object_id = $places->get("object_id");
+		$labels_places = [];
+		foreach ($object_id_array as $object_id) {
+			$objects_search = $s_object->search("ca_objects.object_id:" . $object_id);
 
-						$items_labels = $s_object->search("ca_objects.object_id:$object_id");
-						while ($items_labels->nextHit()) {
-							$item_label = $items_labels->get("ca_objects.preferred_labels");
-						}
-			
-						$labels_places[$item_label] = $place_coords;
-					}
+			while ($objects_search->nextHit()) {
+				$o_coordinates = $objects_search->get("ca_objects.coordinates");
+				if (!is_null($o_coordinates) && is_array(json_decode($o_coordinates))) {
+					$labels_places[] = array(
+						"object_id" => $object_id,
+						"object_label" => $objects_search->get("ca_objects.preferred_labels.name"),
+						"coordinates" => $o_coordinates
+					);
 				}
-			
-			if($labels_places){
-			// Initialize arrays for georeference and titles
-			$georeference = array();
-			$titles = array();
-
-			// Iterate through the original array to populate the new arrays
-			foreach ($labels_places as $label => $coordinate) {
-				$georeference[] = $coordinate;
-				$titles[] = $label;
 			}
-			
-				print "<div id='map' style='height: 400px;'></div>";
-			}
-			
+		}
 
-		?>
-
+		if(count($labels_places)){
+			print "<div id='map' style='height: 400px;'></div>";
+		}
 		
+		?>
 
 		<div class="row">
 			<div class='col-sm-8 col-md-8 col-lg-8'>
@@ -200,8 +177,8 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 				<div class='col-sm-8 col-md-8 col-lg-8'>
 					{{{<ifdef code="ca_collections.description"><label>About</label>^ca_collections.description<br/></ifdef>}}}
-					
-				
+
+
 					<?php
 					# Comment and Share Tools
 					if ($vn_comments_enabled | $vn_share_enabled) {
@@ -415,28 +392,32 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 		animate();
 	});
-</script>
 
-<script>
-    var georeference = <?php echo json_encode($georeference); ?>;
-    var titles = <?php echo json_encode($titles); ?>;
- 
-    // Initialize variables for calculating the average coordinates
-    var totalLat = 0;
-    var totalLon = 0;
+	// CUSTOM LEAFLET SCRIPT
+
+	var labelsPlaces = <?php echo json_encode($labels_places); ?>;
 
     // Initialize the Leaflet map
     var map = L.map('map').setView([0, 0], 6);
-    
+
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    georeference.forEach(function(coordinate, index) {
-        // Split the coordinate into latitude and longitude
-        var [lat, lon] = coordinate.replace('[', '').replace(']', '').split(',');
- 
+    // Initialize variables for calculating the average coordinates
+    var totalLat = 0;
+    var totalLon = 0;
+
+    // Create an object to store labels for each coordinate
+    var labelsObject = {};
+
+    labelsPlaces.forEach(function(place) {
+        // Extract relevant information from the data array
+        var objectID = place.object_id;
+        var objectLabel = place.object_label;
+        var [lat, lon] = place.coordinates.replace('[', '').replace(']', '').split(',');
+
         // Convert string values to numbers
         lat = parseFloat(lat);
         lon = parseFloat(lon);
@@ -444,30 +425,44 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
         // Add the converted values to the totals
         totalLat += lat;
         totalLon += lon;
- 
-        // Get the title for the current object
-        var title = titles[index];
- 
-        // Customize the popup content with the retrieved title
-        var popupContent = "Title: " + title;
- 
+
+        // Create a unique key for the coordinates
+        var coordsKey = lat + ',' + lon;
+
+        // Add a label to the object for the current coordinates
+        if (!labelsObject[coordsKey]) {
+            labelsObject[coordsKey] = [];
+        }
+        
+		// Get the base URL using JavaScript
+		var baseUrl = window.location.href.split('/Detail')[0];
+
+		// Construct the URL using JavaScript
+		var detailLink = baseUrl + "/Detail/objects/" + objectID;
+
+		// Create links only for labels without repeating "Object ID: x"
+		labelsObject[coordsKey].push(`<a href="${detailLink}">${objectLabel}</a>`);
+
+		// Customize the popup content with the retrieved title
+		var popupContent = `Items: ${labelsObject[coordsKey].join('; ')}`;
+
         // Create markers and popups, and add them to the map
         var marker = L.marker([lat, lon]).addTo(map);
         marker.bindPopup(popupContent);
     });
 
     // Calculate the average coordinates
-    var avgLat = totalLat / georeference.length;
-    var avgLon = totalLon / georeference.length;
+    var avgLat = totalLat / labelsPlaces.length;
+    var avgLon = totalLon / labelsPlaces.length;
 
     // Set the center of the map based on the average coordinates
     map.setView([avgLat, avgLon]);
 
-	// Fit the map to contain all the markers
-    var bounds = L.latLngBounds(georeference.map(function(coordinate) {
-        var [lat, lon] = coordinate.replace('[', '').replace(']', '').split(',');
+    // Fit the map to contain all the markers
+    var bounds = L.latLngBounds(labelsPlaces.map(function(place) {
+        var [lat, lon] = place.coordinates.replace('[', '').replace(']', '').split(',');
         return [parseFloat(lat), parseFloat(lon)];
     }));
 
-	map.fitBounds(bounds);
+    map.fitBounds(bounds);
 </script>
