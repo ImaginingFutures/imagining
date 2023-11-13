@@ -66,8 +66,14 @@ $vn_top_level_collection_id = array_shift($t_item->get('ca_collections.hierarchy
 				</div><!-- end col -->
 			</div><!-- end row -->
 
+			<h1>Locations of Related Objects</h1>
+
+			<div id="map" style="height: 180px;"></div>
+
+
 
 			<div class="row">
+
 				<div class='col-sm-12'>
 					<?php
 					if ($vb_show_hierarchy_viewer) {
@@ -84,13 +90,10 @@ $vn_top_level_collection_id = array_shift($t_item->get('ca_collections.hierarchy
 				</div><!-- end col -->
 			</div><!-- end row -->
 
-			<h1>Locations of Related Objects</h1>
-			{{{map}}}
 
 			<div class="row">
 				<div class='col-md-6 col-lg-6'>
-					{{{<ifdef code="ca_collections.description"><label>About</label>^ca_collections.description<br/></ifdef>}}}
-					{{{<ifcount code="ca_objects" min="1" max="1"><div class='unit'><unit relativeTo="ca_objects" delimiter=" "><l>^ca_object_representations.media.large</l><div class='caption'>Related Object: <l>^ca_objects.preferred_labels.name</l></div></unit></div></ifcount>}}}
+
 					<?php
 					# Comment and Share Tools
 					if ($vn_comments_enabled | $vn_share_enabled) {
@@ -148,12 +151,48 @@ $vn_top_level_collection_id = array_shift($t_item->get('ca_collections.hierarchy
 							padding: 20,
 							nextSelector: 'a.jscroll-next'
 						});
-					});
-				
-					
+					});					
 				});
 			</script>
+			
+			
+
+
 </ifcount>}}}
+
+<script>
+    var map = L.map('map').setView([39.925533, 32.866287], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    var georeferences = <?php print json_encode($t_item->get('ca_objects.related.georeference')); ?>;
+    var titles = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.preferred_labels'))); ?>;
+    console.log(georeferences);
+    console.log(titles);
+
+    // Split the georeference string into an array of coordinates
+    var coordinatesArray = georeferences.split(';');
+
+	coordinatesArray.forEach(function(coordinate, index) {
+    // Split the coordinate into latitude and longitude
+    var [lat, lon] = coordinate.replace('[', '').replace(']', '').split(',');
+
+    // Convert string values to numbers
+    lat = parseFloat(lat);
+    lon = parseFloat(lon);
+
+    // Get the title for the current object
+    var title = titles[index];
+
+    // Customize the popup content with the retrieved title
+    var popupContent = "Title: " + title;
+
+    var marker = L.marker([lat, lon]).addTo(map);
+    marker.bindPopup(popupContent);
+});
+</script>
 
 
 

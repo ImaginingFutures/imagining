@@ -89,7 +89,6 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 				</div>
 			</div>
 
-
 			<!-- identification -->
 			<div class="row">
 
