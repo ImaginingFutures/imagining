@@ -132,8 +132,6 @@ $vn_top_level_collection_id = array_shift($t_item->get('ca_collections.hierarchy
 
 
 
-
-
 				</div><!-- end col -->
 			</div><!-- end row -->
 			{{{<ifcount code="ca_objects" min="2">
@@ -153,15 +151,29 @@ $vn_top_level_collection_id = array_shift($t_item->get('ca_collections.hierarchy
 						});
 					});					
 				});
-			</script>
-			
-			
-
-
+			</script>			
 </ifcount>}}}
 
+<!-- Maps multiple objects in the same map. Works fine, yey!
+But we need to think about objects which doesnt have coordinates.
+We might show this objects in a different view or we might use different colors on the cards for
+georeferenced or not georeferenced.
+ -->
+ <?php
+$t_item = $this->getVar("item");
+$georeferencesWithTitles = array();
+
+$georeferences = explode(';', $t_item->get('ca_objects.related.georeference'));
+$titles = explode(';', $t_item->get('ca_objects.related.preferred_labels'));
+
+foreach ($titles as $index => $title) {
+    $trimmedTitle = trim($title);
+    $georeferencesWithTitles[$trimmedTitle] = isset($georeferences[$index]) ? trim($georeferences[$index]) : null;
+}
+?>
+
 <script>
-    var map = L.map('map').setView([39.925533, 32.866287], 13);
+    var map = L.map('map').setView([39.925533, 32.866287], 10);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -169,32 +181,49 @@ $vn_top_level_collection_id = array_shift($t_item->get('ca_collections.hierarchy
 
     var georeferences = <?php print json_encode($t_item->get('ca_objects.related.georeference')); ?>;
     var titles = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.preferred_labels'))); ?>;
+    var objid = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.idno'))); ?>;
+    var caid = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.object_id'))); ?>;
+
     console.log(georeferences);
     console.log(titles);
+    console.log(objid);
+    console.log(caid);
 
     // Split the georeference string into an array of coordinates
     var coordinatesArray = georeferences.split(';');
 
-	coordinatesArray.forEach(function(coordinate, index) {
-    // Split the coordinate into latitude and longitude
-    var [lat, lon] = coordinate.replace('[', '').replace(']', '').split(',');
+    // Initialize min and max values for latitude and longitude
+    var minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
 
-    // Convert string values to numbers
-    lat = parseFloat(lat);
-    lon = parseFloat(lon);
+    coordinatesArray.forEach(function(coordinate, index) {
+        // Split the coordinate into latitude and longitude
+        var [lat, lon] = coordinate.replace('[', '').replace(']', '').split(',');
 
-    // Get the title for the current object
-    var title = titles[index];
+        // Convert string values to numbers
+        lat = parseFloat(lat);
+        lon = parseFloat(lon);
 
-    // Customize the popup content with the retrieved title
-    var popupContent = "Title: " + title;
+        // Update min and max values
+        minLat = Math.min(minLat, lat);
+        maxLat = Math.max(maxLat, lat);
+        minLon = Math.min(minLon, lon);
+        maxLon = Math.max(maxLon, lon);
 
-    var marker = L.marker([lat, lon]).addTo(map);
-    marker.bindPopup(popupContent);
-});
+        // Get the title for the current object
+        var title = titles[index];
+        var obj = objid[index];
+        var ca = caid[index];
+
+        // Customize the popup content with the retrieved title
+        var popupContent = "<a href='http://172.24.20.211/ifrepo/index.php/Detail/objects/" + ca + "'>ID: " + obj + " Title: " + title + "</a>";
+        var marker = L.marker([lat, lon]).addTo(map);
+        marker.bindPopup(popupContent);
+    });
+
+    // Calculate the center and zoom level based on the bounding box
+    var bounds = L.latLngBounds(L.latLng(minLat, minLon), L.latLng(maxLat, maxLon));
+    map.fitBounds(bounds);
 </script>
-
-
 
 
 		</div><!-- end container -->
