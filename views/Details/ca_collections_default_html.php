@@ -69,9 +69,6 @@ $vn_top_level_collection_id = array_shift($t_item->get('ca_collections.hierarchy
 			<h1>Locations of Related Objects</h1>
 
 			<div id="map" style="height: 180px;"></div>
-
-
-
 			<div class="row">
 
 				<div class='col-sm-12'>
@@ -93,11 +90,9 @@ $vn_top_level_collection_id = array_shift($t_item->get('ca_collections.hierarchy
 
 			<div class="row">
 				<div class='col-md-6 col-lg-6'>
-
 					<?php
 					# Comment and Share Tools
 					if ($vn_comments_enabled | $vn_share_enabled) {
-
 						print '<div id="detailTools">';
 						if ($vn_comments_enabled) {
 					?>
@@ -111,7 +106,6 @@ $vn_top_level_collection_id = array_shift($t_item->get('ca_collections.hierarchy
 						print '</div><!-- end detailTools -->';
 					}
 					?>
-
 				</div><!-- end col -->
 				<div class='col-md-6 col-lg-6'>
 					{{{<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label></ifcount>}}}
@@ -129,107 +123,107 @@ $vn_top_level_collection_id = array_shift($t_item->get('ca_collections.hierarchy
 					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
 					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
 					{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels.name</l> ^relationship_typename</unit>}}}
-
-
-
 				</div><!-- end col -->
 			</div><!-- end row -->
 			{{{<ifcount code="ca_objects" min="2">
-			<div class="row">
-				<div id="browseResultsContainer">
-					<?php print caBusyIndicatorIcon($this->request) . ' ' . addslashes(_t('Loading...')); ?>
-				</div><!-- end browseResultsContainer -->
-			</div><!-- end row -->
-			<script type="text/javascript">
-				jQuery(document).ready(function() {
-					jQuery("#browseResultsContainer").load("<?php print caNavUrl($this->request, '', 'Search', 'objects', array('search' => 'collection_id:^ca_collections.collection_id'), array('dontURLEncodeParameters' => true)); ?>", function() {
-						jQuery('#browseResultsContainer').jscroll({
-							autoTrigger: true,
-							loadingHtml: '<?php print caBusyIndicatorIcon($this->request) . ' ' . addslashes(_t('Loading...')); ?>',
-							padding: 20,
-							nextSelector: 'a.jscroll-next'
+                <div class="row">
+                    <div id="browseResultsContainer">
+                        <?php print caBusyIndicatorIcon($this->request) . ' ' . addslashes(_t('Loading...')); ?>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    jQuery(document).ready(function() {
+                        jQuery("#browseResultsContainer").load("<?php print caNavUrl($this->request, '', 'Search', 'objects', array('search' => 'collection_id:^ca_collections.collection_id'), array('dontURLEncodeParameters' => true)); ?>", function() {
+                            jQuery('#browseResultsContainer').jscroll({
+                                autoTrigger: true,
+                                loadingHtml: '<?php print caBusyIndicatorIcon($this->request) . ' ' . addslashes(_t('Loading...')); ?>',
+                                padding: 20,
+                                nextSelector: 'a.jscroll-next'
+                            });
+                            // Fetch and update georeference information
+                            updateGeoreferenceInfo();
+                        });
+                    });
+                </script>				
+            </ifcount>}}}
+
+			<script>
+				var map = L.map('map').setView([39.925533, 32.866287], 10);
+				L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+					maxZoom: 19,
+					attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+				}).addTo(map);
+
+				function updateGeoreferenceInfo() {
+
+					var markerCoordinates = [];
+
+					// Iterate over each result container
+					jQuery('#browseResultsContainer .bResultItemCol').each(function() {
+						var $resultContainer = jQuery(this);
+						var objectId = $resultContainer.find('.bResultItemText a:first').attr('href').match(/\/objects\/(\d+)/)[1];
+						var preferredLabel = $resultContainer.find('.bResultItemText a:last').text();
+						var idno = $resultContainer.find('.bResultItemText a:first').text();
+
+						// Make an AJAX request to fetch the object detail page
+						jQuery.ajax({
+							url: 'http://172.24.20.211/ifrepo/index.php/Detail/objects/' + objectId,
+							method: 'GET',
+							success: function(data) {
+
+								// Extract pointListmap information
+								var pointListmapRegex = /var pointListmap = (\{[^;]*\});/;
+								var pointListmapMatch = data.match(pointListmapRegex);
+
+								if (pointListmapMatch) {
+									// Parse the JSON data
+									var pointListmapData = JSON.parse(pointListmapMatch[1]);
+
+									// Log pointListmap information
+									console.log('PointListmap Data for Object ID:', objectId, pointListmapData);
+
+									var label = pointListmapData._default_[0].label;
+									console.log('Label for Object ID:', objectId, idno, preferredLabel, label);
+									if (!pointListmapData || !pointListmapData._default_ || pointListmapData._default_.length === 0) {
+										console.log('PointListmap data not found for Object ID:', objectId);
+										return;
+									}
+									// Extract coordinates from the label
+									var coordinates = label.split(',');
+
+									var lat = parseFloat(coordinates[0]);
+									var lon = parseFloat(coordinates[1]);
+									console.log(lat, lon);
+
+									var popupContent = "<a href='http://172.24.20.211/ifrepo/index.php/Detail/objects/" + objectId + "'> ID: " + idno + "<br>Title: " + preferredLabel + "</a>";
+                        var marker = L.marker([lat, lon]).addTo(map);
+                        marker.bindPopup(popupContent);
+
+                        // Add coordinates to the array
+                        markerCoordinates.push([lat, lon]);
+
+                    } else {
+                        console.error('PointListmap data not found for Object ID:', objectId);
+                    }
+
+                    // Update map view to center on the markers
+                    if (markerCoordinates.length > 0) {
+                        var bounds = L.latLngBounds(markerCoordinates);
+                        map.fitBounds(bounds);
+                    }
+                },
+							error: function() {
+								console.error('Error fetching data for Object ID:', objectId);
+							}
 						});
-					});					
-				});
-			</script>			
-</ifcount>}}}
+					});
+				}
+			</script>
 
-<!-- Maps multiple objects in the same map. Works fine, yey!
-But we need to think about objects which doesnt have coordinates.
-We might show this objects in a different view or we might use different colors on the cards for
-georeferenced or not georeferenced.
- -->
- <?php
-$t_item = $this->getVar("item");
-$georeferencesWithTitles = array();
-
-$georeferences = explode(';', $t_item->get('ca_objects.related.georeference'));
-$titles = explode(';', $t_item->get('ca_objects.related.preferred_labels'));
-
-foreach ($titles as $index => $title) {
-    $trimmedTitle = trim($title);
-    $georeferencesWithTitles[$trimmedTitle] = isset($georeferences[$index]) ? trim($georeferences[$index]) : null;
-}
-?>
-
-<script>
-    var map = L.map('map').setView([39.925533, 32.866287], 10);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-
-    var georeferences = <?php print json_encode($t_item->get('ca_objects.related.georeference')); ?>;
-    var titles = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.preferred_labels'))); ?>;
-    var objid = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.idno'))); ?>;
-    var caid = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.object_id'))); ?>;
-
-    console.log(georeferences);
-    console.log(titles);
-    console.log(objid);
-    console.log(caid);
-
-    // Split the georeference string into an array of coordinates
-    var coordinatesArray = georeferences.split(';');
-
-    // Initialize min and max values for latitude and longitude
-    var minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
-
-    coordinatesArray.forEach(function(coordinate, index) {
-        // Split the coordinate into latitude and longitude
-        var [lat, lon] = coordinate.replace('[', '').replace(']', '').split(',');
-
-        // Convert string values to numbers
-        lat = parseFloat(lat);
-        lon = parseFloat(lon);
-
-        // Update min and max values
-        minLat = Math.min(minLat, lat);
-        maxLat = Math.max(maxLat, lat);
-        minLon = Math.min(minLon, lon);
-        maxLon = Math.max(maxLon, lon);
-
-        // Get the title for the current object
-        var title = titles[index];
-        var obj = objid[index];
-        var ca = caid[index];
-
-        // Customize the popup content with the retrieved title
-        var popupContent = "<a href='http://172.24.20.211/ifrepo/index.php/Detail/objects/" + ca + "'>ID: " + obj + " Title: " + title + "</a>";
-        var marker = L.marker([lat, lon]).addTo(map);
-        marker.bindPopup(popupContent);
-    });
-
-    // Calculate the center and zoom level based on the bounding box
-    var bounds = L.latLngBounds(L.latLng(minLat, minLon), L.latLng(maxLat, maxLon));
-    map.fitBounds(bounds);
-</script>
-
-
-		</div><!-- end container -->
-	</div><!-- end col -->
-	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
-		<div class="detailNavBgRight">
+		   </div><!-- end container -->
+	      </div><!-- end col -->
+	      <div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
+		  <div class="detailNavBgRight">
 			{{{nextLink}}}
 		</div><!-- end detailNavBgLeft -->
 	</div><!-- end col -->

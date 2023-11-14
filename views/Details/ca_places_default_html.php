@@ -1,4 +1,31 @@
 <?php
+/* ----------------------------------------------------------------------
+ * themes/default/views/bundles/ca_placess_default_html.php : 
+ * ----------------------------------------------------------------------
+ * CollectiveAccess
+ * Open-source collections management software
+ * ----------------------------------------------------------------------
+ *
+ * Software by Whirl-i-Gig (http://www.whirl-i-gig.com)
+ * Copyright 2013-2022 Whirl-i-Gig
+ *
+ * For more information visit http://www.CollectiveAccess.org
+ *
+ * This program is free software; you may redistribute it and/or modify it under
+ * the terms of the provided license as published by Whirl-i-Gig
+ *
+ * CollectiveAccess is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTIES whatsoever, including any implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+ *
+ * This source code is free and modifiable under the terms of 
+ * GNU General Public License. (http://www.gnu.org/copyleft/gpl.html). See
+ * the "license.txt" file for details, or visit the CollectiveAccess web site at
+ * http://www.CollectiveAccess.org
+ *
+ * ----------------------------------------------------------------------
+ */
+
 $t_item = $this->getVar("item");
 $va_comments = $this->getVar("comments");
 $vn_comments_enabled = 	$this->getVar("commentsEnabled");
@@ -20,6 +47,8 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					<H1>{{{<unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "> <l>^ca_places.preferred_labels.name</l></unit>}}}</H1>
 
 					<H2>{{{^ca_places.type_id}}}</H2>
+					{{{<ifdef code="ca_places.description"><label>About</label>^ca_places.description<br/></ifdef>}}}
+
 				</div><!-- end col -->
 			</div><!-- end row -->
 			<div class="row">
@@ -46,24 +75,35 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					?>
 
 				</div><!-- end col -->
+
 				<div class='col-md-6 col-lg-6'>
 					{{{<ifcount code="ca_collections" min="1" max="1"><label>Related collection</label></ifcount>}}}
 					{{{<ifcount code="ca_collections" min="2"><label>Related collections</label></ifcount>}}}
-					{{{<unit relativeTo="ca_collections" delimiter="<br/>"><l>^ca_collections.preferred_labels.name</l></unit>}}}
+					{{{<unit relativeTo="ca_collections" delimiter="<br/>"><l>^ca_collections.preferred_labels.name</l> (^relationship_typename)</unit>}}}
+
+					{{{<ifcount code="ca_entities" min="1" max="1"><label>Related person</label></ifcount>}}}
+					{{{<ifcount code="ca_entities" min="2"><label>Related people</label></ifcount>}}}
+					{{{<unit relativeTo="ca_entities" delimiter="<br/>"><l>^ca_entities.preferred_labels.displayname</l> (^relationship_typename)</unit>}}}
+
+					{{{<ifcount code="ca_occurrences" min="1" max="1"><label>Related occurrence</label></ifcount>}}}
+					{{{<ifcount code="ca_occurrences" min="2"><label>Related occurrences</label></ifcount>}}}
+					{{{<unit relativeTo="ca_occurrences" delimiter="<br/>"><l>^ca_occurrences.preferred_labels.name</l> (^relationship_typename)</unit>}}}
+
 				</div><!-- end col -->
 			</div><!-- end row -->
+
 			{{{<ifcount code="ca_objects" min="1">
-			<div class="row">
-				<div class="col-sm-12">
+						<div class="row">
+						<div class="col-sm-12">
 					<br/><label>Related Archival Item<ifcount code="ca_objects" min="2">s</ifcount></label>
-				</div>
-			</div>
-			<div class="row">
-				<div id="browseResultsContainer">
+				   </div>
+				   </div>
+							<div id="browseResultsContainer">
+								
 					<?php print caBusyIndicatorIcon($this->request) . ' ' . addslashes(_t('Loading...')); ?>
-				</div><!-- end browseResultsContainer -->
-			</div><!-- end row -->
-			<script type="text/javascript">
+							</div><!-- end browseResultsContainer -->
+						</div><!-- end row -->
+				<script type="text/javascript">
 				jQuery(document).ready(function() {
 					jQuery("#browseResultsContainer").load("<?php print caNavUrl($this->request, '', 'Search', 'objects', array('search' => 'place_id:^ca_places.place_id'), array('dontURLEncodeParameters' => true)); ?>", function() {
 						jQuery('#browseResultsContainer').jscroll({
@@ -77,10 +117,87 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					
 				});
 			</script>
-</ifcount>}}}
+            </ifcount>}}}
+
+			<!-- SetView should change related to objects location or place type. E.g. larger area for country smaller area for city.
+                Currently it changes view depending on place type id.
+                I add the alternatif script in which setView changes depending on the locations in the end of the original script-->
+			<script>
+				var map = L.map('map').setView([39.925533, 32.866287], 10);
+				L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+					maxZoom: 19,
+					attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+				}).addTo(map);
+
+				var georeferences = <?php print json_encode($t_item->get('ca_objects.related.georeference')); ?>;
+				var titles = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.preferred_labels'))); ?>;
+				var objid = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.idno'))); ?>;
+				var caid = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.object_id'))); ?>;
+				var placeTypes = <?php print json_encode(explode(";", $t_item->get('ca_places.type_id'))); ?>;
+
+				console.log(georeferences);
+				console.log(titles);
+				console.log(objid);
+				console.log(caid);
+				console.log(placeTypes);
+
+				// Split the georeference string into an array of coordinates
+				var coordinatesArray = georeferences.split(';');
+
+				// Initialize min and max values for latitude and longitude
+				var minLat = 90,
+					maxLat = -90,
+					minLon = 180,
+					maxLon = -180;
+
+				coordinatesArray.forEach(function(coordinate, index) {
+					// Split the coordinate into latitude and longitude
+					var [lat, lon] = coordinate.replace('[', '').replace(']', '').split(',');
+
+					// Convert string values to numbers
+					lat = parseFloat(lat);
+					lon = parseFloat(lon);
+
+					// Update min and max values
+					minLat = Math.min(minLat, lat);
+					maxLat = Math.max(maxLat, lat);
+					minLon = Math.min(minLon, lon);
+					maxLon = Math.max(maxLon, lon);
+
+					// Get the title, place type, and other information for the current object
+					var title = titles[index];
+					var obj = objid[index];
+					var ca = caid[index];
+					var placeType = placeTypes[index];
+
+					// Customize the popup content with the retrieved title and place type
+					var popupContent = "<a href='http://172.24.20.211/ifrepo/index.php/Detail/objects/" + ca + "'>ID: " + obj + "<br>Title: " + title + "</a>";
+					var marker = L.marker([lat, lon]).addTo(map);
+					marker.bindPopup(popupContent);
+				});
+
+				// Calculate the center and zoom level based on the bounding box
+				var bounds = L.latLngBounds(L.latLng(minLat, minLon), L.latLng(maxLat, maxLon));
+
+				// Adjust the map view based on place type
+				var zoomLevel = 10; // Default zoom level
+
+				// You can define different zoom levels or starting coordinates based on place types
+				if (placeTypes.includes('103')) {
+					zoomLevel = 5; // Adjust this to the desired zoom level for Country Place Type '103'
+				} else if (placeTypes.includes('106')) {
+					zoomLevel = 7; // Adjust this to the desired zoom level for Region Place Type '102'
+				} else if (placeTypes.includes('102')) {
+					zoomLevel = 12; // Adjust this to the desired zoom level for City Place Type '103'
+				} else if (placeTypes.includes('107')) {
+					zoomLevel = 16; // Adjust this to the desired zoom level for Address Place Type '107'
+				}
+
+				map.setView(bounds.getCenter(), zoomLevel);
+			</script>
 
 		</div><!-- end container -->
-	</div><!-- end col -->
+	</div><!-- end row -->
 	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
 		<div class="detailNavBgRight">
 			{{{nextLink}}}
