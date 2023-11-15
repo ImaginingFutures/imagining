@@ -143,10 +143,6 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 </ifcount>
 }}}
 
-
-
-
-
 					{{{
 					<ifcount code="ca_objects.keyword" min="1"><div class="unit"><label>Keywords:</label><unit relativeTo="ca_objects.keyword" delimiter="<br/>">^ca_objects.keyword</unit></div></ifcount>
 					}}}
@@ -164,13 +160,49 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
 					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
 					{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels.name</l> ^ca_places.type_id</unit>}}}
-					<br />{{{map}}}
-					<!-- map -->
+
+					<div id="map" style="height: 180px;"></div>
+
+					{{{
+    <script>
+        // Assuming ^ca_objects.georeference contains a string like "[39.920124257515,32.855112550338]"
+        var georeferenceString = '^ca_objects.georeference';
+			var titles = '^ca_objects.preferred_labels';
+			var objid = '^ca_objects.idno';
+			var caid = '^ca_objects.object_id';
+				
+
+		console.log(georeferenceString);
+
+        // Remove unwanted characters and ensure proper JSON format
+        georeferenceString = georeferenceString.replace(/[\[\]\s]/g, ''); // Remove brackets and whitespaces
+
+        try {
+            // Parse the georeference string into a JavaScript array
+            var georeferenceArray = JSON.parse("[" + georeferenceString + "]");
+
+            // Extract latitude and longitude
+            var lat = georeferenceArray[0];
+            var lon = georeferenceArray[1];
+          
+            // Create the Leaflet map
+            var map = L.map('map').setView([39.925533, 32.866287], 10);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+
+            var popupContent = '<a href="http://172.24.20.211/ifrepo/index.php/Detail/objects/' + caid + '">ID: ' + objid + '<br>Title: ' + titles + '</a>';
+            var marker = L.marker([lat, lon]).addTo(map);
+            marker.bindPopup(popupContent);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    </script>
+}}}
 
 					<!-- end of Geographical Coverage labels -->
-
-
-
 					<!-- Socio-cultural Context -->
 
 					{{{
@@ -250,55 +282,55 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 					<!-- Licences display. TODO: simplify this -->
 
 					{{{<ifdef code="ca_objects.license">
-					<div class="unit">
-						<label>License</label>
-						<?php
-							$licenses = [
-								"989" => [
-									"url" => "http://creativecommons.org/licenses/by/4.0/",
-									"img" => "https://i.creativecommons.org/l/by/4.0/88x31.png",
-									"name" => "CC BY 4.0",
-								],
-								"993" => [
-									"url" => "http://creativecommons.org/licenses/by-nc-nd/4.0/",
-									"img" => "https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png",
-									"name" => "CC BY-NC-ND 4.0",
-								],
-								"992" => [
-									"url" => "http://creativecommons.org/licenses/by-nc-sa/4.0/",
-									"img" => "https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png",
-									"name" => "CC BY-NC-SA 4.0",
-								],
-								"991" => [
-									"url" => "http://creativecommons.org/licenses/by-nd/4.0/",
-									"img" => "https://i.creativecommons.org/l/by-nd/4.0/88x31.png",
-									"name" => "CC BY-ND 4.0",
-								],
-								"990" => [
-									"url" => "http://creativecommons.org/licenses/by-sa/4.0/",
-									"img" => "https://i.creativecommons.org/l/by-sa/4.0/88x31.png",
-									"name" => "CC BY-SA 4.0",
-								],
-								"994" => [
-									"url" => "https://creativecommons.org/publicdomain/zero/1.0/",
-									"img" => "https://i.creativecommons.org/p/zero/1.0/88x31.png",
-									"name" => "CC0",
-								],
-							];
+	<div class="unit">
+		<label>License</label>
+		<?php
+		$licenses = [
+			"CC BY 4.0" => [
+				"url" => "http://creativecommons.org/licenses/by/4.0/",
+				"img" => "https://i.creativecommons.org/l/by/4.0/88x31.png",
+				"name" => "CC BY 4.0",
+			],
+			"CC BY-NC-ND 4.0" => [
+				"url" => "http://creativecommons.org/licenses/by-nc-nd/4.0/",
+				"img" => "https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png",
+				"name" => "CC BY-NC-ND 4.0",
+			],
+			"CC BY-NC-SA 4.0" => [
+				"url" => "http://creativecommons.org/licenses/by-nc-sa/4.0/",
+				"img" => "https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png",
+				"name" => "CC BY-NC-SA 4.0",
+			],
+			"CC BY-ND 4.0" => [
+				"url" => "http://creativecommons.org/licenses/by-nd/4.0/",
+				"img" => "https://i.creativecommons.org/l/by-nd/4.0/88x31.png",
+				"name" => "CC BY-ND 4.0",
+			],
+			"CC BY-SA 4.0" => [
+				"url" => "http://creativecommons.org/licenses/by-sa/4.0/",
+				"img" => "https://i.creativecommons.org/l/by-sa/4.0/88x31.png",
+				"name" => "CC BY-SA 4.0",
+			],
+			"CC0" => [
+				"url" => "https://creativecommons.org/publicdomain/zero/1.0/",
+				"img" => "https://i.creativecommons.org/p/zero/1.0/88x31.png",
+				"name" => "CC0",
+			],
+		];
 
-							$licence = $t_object->get("ca_objects.license");
+		$licenseLabel = $t_object->get("ca_objects.license.preferred_labels.0"); // Adjust the path according to your data structure
 
-							if (isset($licenses[$licence])) {
-								$licenseInfo = $licenses[$licence];
-								echo "<a rel='license' href='{$licenseInfo['url']}' target='_blank'><img alt='Creative Commons License' style='border-width:0' src='{$licenseInfo['img']}' /></a>&nbsp;&nbsp;<a rel='license' href='{$licenseInfo['url']}' target='_blank'>{$licenseInfo['name']}</a>";
-							}
-							?>
+		if (isset($licenses[$licenseLabel])) {
+			$licenseInfo = $licenses[$licenseLabel];
+			echo "<a rel='license' href='{$licenseInfo['url']}' target='_blank'><img alt='Creative Commons License' style='border-width:0' src='{$licenseInfo['img']}' /></a>";
+		} else {
+			echo "Unknown License";
+		}
+		?>
+						</div>
+					</ifdef>
+					}}}
 
-					</div>
-				</ifdef>}}}
-				{{{
-					<ifdef code="ca_objects.license"><div class="unit"><label>License basic:</label>^ca_objects.license</div></ifdef>
-				}}}
 					{{{
 					<ifdef code="ca_objects.rightsstate"><div class="unit"><label>Rights Statement:</label>^ca_objects.rightsstate</div></ifdef>
 				}}}
@@ -500,6 +532,8 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 		</div><!-- end detailNavBgLeft -->
 	</div><!-- end col -->
 </div><!-- end row -->
+
+
 
 <script type='text/javascript'>
 	jQuery(document).ready(function() {
