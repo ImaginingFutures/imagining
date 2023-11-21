@@ -28,6 +28,7 @@
 
 $t_item = $this->getVar("item");
 $va_comments = $this->getVar("comments");
+$vs_browse_key 		= $this->getVar('key');					// cache key for current browse
 $vn_comments_enabled = 	$this->getVar("commentsEnabled");
 $vn_share_enabled = 	$this->getVar("shareEnabled");
 $vn_pdf_enabled = 		$this->getVar("pdfEnabled");
@@ -104,27 +105,36 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		$o_db = new Db();
 		$s_object = new ObjectSearch();
 		$s_place = new PlaceSearch();
-		$object_id_array = explode(";", $t_item->get("ca_objects.object_id"));
+		$object_id_array = $t_item->get("ca_objects.object_id", array('returnAsArray' => true));
+
 
 		# Retrieving objects data for map
+		$vs_cache_key = md5($vs_browse_key);
+		
+		if (($o_collections_config->get("cache_timeout") > 0) && ExternalCache::contains($vs_cache_key,'ca_collections_default')) {
+			// Data found in cache, use it
+			$cachedData = ExternalCache::fetch($vs_cache_key, 'ca_collections_default');
+			$labels_places = json_decode($cachedData, true);
+		} else {
+			$labels_places = [];
+			foreach ($object_id_array as $object_id) {
+				$objects_search = $s_object->search("ca_objects.object_id:" . $object_id);
 
-		$labels_places = [];
-		foreach ($object_id_array as $object_id) {
-			$objects_search = $s_object->search("ca_objects.object_id:" . $object_id);
-
-			while ($objects_search->nextHit()) {
-				$o_coordinates = $objects_search->get("ca_objects.coordinates");
-				if (!is_null($o_coordinates) && is_array(json_decode($o_coordinates))) {
-					$labels_places[] = array(
-						"object_id" => $object_id,
-						"object_label" => $objects_search->get("ca_objects.preferred_labels.name"),
-						"coordinates" => $o_coordinates
-					);
+				while ($objects_search->nextHit()) {
+					$o_coordinates = $objects_search->get("ca_objects.coordinates");
+					if (!is_null($o_coordinates) && is_array(json_decode($o_coordinates))) {
+						$labels_places[] = array(
+							"object_id" => $object_id,
+							"object_label" => $objects_search->get("ca_objects.preferred_labels.name"),
+							"coordinates" => $o_coordinates
+						);
+					}
 				}
 			}
 		}
 
 		if(count($labels_places)){
+			ExternalCache::save($vs_cache_key, json_encode($labels_places), 'ca_collections_default', $o_collections_config->get("cache_timeout"));
 			print "<div id='map' style='height: 400px;'></div>";
 		}
 		
@@ -139,8 +149,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		<?php
 		$v_ents = 0;
 
-		$qr_entities = $t_item->get('ca_entities_x_collections.entity_id', array('returnAsArray' => true));
-		#var_dump($qr_entities);
+		$qr_entities = $t_item->get("ca_entities.entity_id", array('returnAsArray' => true));
 		$o_entities = new EntitySearch();
 		foreach ($qr_entities as $qr_entity) {
 			if ($v_ents == 0) {
@@ -215,6 +224,11 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 			</div><!-- end row -->
 			<?php
 
+			if (($o_collections_config->get("cache_timeout") > 0) && ExternalCache::contains($vs_cache_key, 'ca_collections_mimetypes')) {
+				// Data found in cache, use it
+				$cachedDataScript = ExternalCache::fetch($vs_cache_key, 'ca_collections_mimetypes');
+				$category_counts = json_decode($cachedDataScript, true);
+			} else {
 			// Fetch representation IDs for the objects
 			$representation_ids = [];
 			foreach ($object_id_array as $object_id) {
@@ -245,6 +259,8 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					}
 				}
 			}
+			ExternalCache::save($vs_cache_key, json_encode($category_counts), 'ca_collections_mimetypes', $o_collections_config->get("cache_timeout"));
+		}
 			?>
 
 		</div><!-- end container -->
@@ -333,7 +349,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 					<div class='counter'>
 						<?php
-						if (!$category) {
+						if (!$category_counts) {
 							echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-folder-minus'></i><div class='value'>0</div><div class='mimeLabel'>No items yet,<br>but not for long! </div></div>";
 						}
 						$colors = ['first', 'second', 'third', 'fourth'];
@@ -357,6 +373,11 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						}
 						?>
 					</div>
+					<?php
+					
+					$var_test = caNavLink($this->request, "<i class='far fa-plus-square' aria-label='Search'></i> Browse all elements", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+					print $var_test;
+					?>
 
 				</div><!-- end col -->
 			</div><!-- end row -->
@@ -392,6 +413,10 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 		animate();
 	});
+
+</script>
+
+<script>
 
 	// CUSTOM LEAFLET SCRIPT
 
@@ -444,7 +469,16 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		labelsObject[coordsKey].push(`<a href="${detailLink}">${objectLabel}</a>`);
 
 		// Customize the popup content with the retrieved title
-		var popupContent = `Items: ${labelsObject[coordsKey].join('; ')}`;
+		var popupContent = `Items: ${labelsObject[coordsKey].slice(0, 10).join('<br>')}`;
+
+		// If there are more than 10 items, add a link to browse all elements
+		if (labelsObject[coordsKey].length > 10) {
+			<?php
+			$browseLink = caNavLink($this->request, "<i class='far fa-plus-square' aria-label='Search'></i> Browse all elements", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+			$escapedBrowseLink = str_replace("'", "\'", $browseLink);
+			echo "popupContent += '<br>{$escapedBrowseLink}';";
+			?>
+		}
 
         // Create markers and popups, and add them to the map
         var marker = L.marker([lat, lon]).addTo(map);
