@@ -34,6 +34,8 @@
 	$vn_pdf_enabled = 		$this->getVar("pdfEnabled");
 	$vn_id =				$t_object->get('ca_objects.object_id');
 	
+
+	require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.php");
 	
 	?>
 <div class="row">
@@ -276,55 +278,20 @@
 								print "<div class='inquireButton'>".caNavLink($this->request, "<i class='fas fa-envelope'></i> Inquire", "btn btn-default btn-small", "", "Contact", "Form", array("table" => "ca_objects", "id" => $t_object->get("object_id")))."</div>";
 				?>	
 			
+
 			<!-- Licences display. TODO: simplify this -->
 
-				{{{<ifdef code="ca_objects.license">
-					<div class="unit">
-						<label>License</label>
-						<?php
-							$licenses = [
-								"989" => [
-									"url" => "http://creativecommons.org/licenses/by/4.0/",
-									"img" => "https://i.creativecommons.org/l/by/4.0/88x31.png",
-									"name" => "CC BY 4.0",
-								],
-								"993" => [
-									"url" => "http://creativecommons.org/licenses/by-nc-nd/4.0/",
-									"img" => "https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png",
-									"name" => "CC BY-NC-ND 4.0",
-								],
-								"992" => [
-									"url" => "http://creativecommons.org/licenses/by-nc-sa/4.0/",
-									"img" => "https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png",
-									"name" => "CC BY-NC-SA 4.0",
-								],
-								"991" => [
-									"url" => "http://creativecommons.org/licenses/by-nd/4.0/",
-									"img" => "https://i.creativecommons.org/l/by-nd/4.0/88x31.png",
-									"name" => "CC BY-ND 4.0",
-								],
-								"990" => [
-									"url" => "http://creativecommons.org/licenses/by-sa/4.0/",
-									"img" => "https://i.creativecommons.org/l/by-sa/4.0/88x31.png",
-									"name" => "CC BY-SA 4.0",
-								],
-								"994" => [
-									"url" => "https://creativecommons.org/publicdomain/zero/1.0/",
-									"img" => "https://i.creativecommons.org/p/zero/1.0/88x31.png",
-									"name" => "CC0",
-								],
-							];
+			<?php 
+					$right_id = $t_object->get("ca_objects.rightsstate");
+					
+					if($right_id){
+						$rights_group = $t_object->get("ca_objects.rightsstate.related.preferred_labels");
+						$rights_label = $t_object->get("ca_objects.rightsstate.preferred_labels");
 
-							$licence = $t_object->get("ca_objects.license");
-
-							if (isset($licenses[$licence])) {
-								$licenseInfo = $licenses[$licence];
-								echo "<a rel='license' href='{$licenseInfo['url']}' target='_blank'><img alt='Creative Commons License' style='border-width:0' src='{$licenseInfo['img']}' /></a>&nbsp;&nbsp;<a rel='license' href='{$licenseInfo['url']}' target='_blank'>{$licenseInfo['name']}</a>";
-							}
-							?>
-
-					</div>
-				</ifdef>}}}
+						$rights = new Rights();
+						$rights->rightsstatement($rights_group, $rights_label);
+					}
+			?>
 				
 				{{{
 					<ifdef code="ca_objects.rightownership"><div class="unit"><label>Right Ownership:</label>

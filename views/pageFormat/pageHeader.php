@@ -184,6 +184,7 @@
 					<li <?php print (strToLower($this->request->getController()) == "Front") ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Home"), "", "", "", ""); ?></li>				
 					<li <?= ($this->request->getController() == "Collections") ? 'class="active"' : ''; ?>><?= caNavLink($this->request, _t("Projects"), "", "", "Collections", "index"); ?></li>				
 					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "objects")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Archival Items"), "", "", "Browse", "objects"); ?></li>				
+					<li <?= ($this->request->getController() == "CollectedWorks") ? 'class="active"' : ''; ?>><?= caNavLink($this->request, _t("Collected Works"), "", "", "CollectedWorks", "index"); ?></li>
 					<li><a href="https://imaginingfutures.world/imagining-futures-overview/" target="_blank">About</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
