@@ -52,9 +52,11 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 				</div><!-- end col -->
 			</div><!-- end row -->
 			<div class="row">
-				<div class='col-md-6 col-lg-6'>
-
-					<div id="map" style="height: 180px;"></div>
+					<div id="map" style="height: 400px">
+					<div id="expandButton" style="position: relative; top: 100px; left: 10px; z-index: 1000;">
+  					<i class="fas fa-expand" style="font-size: 20px; cursor: pointer;"></i>
+					</div>
+					</div>
 
 					<?php
 					# Comment and Share Tools
@@ -74,7 +76,7 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					}
 					?>
 
-				</div><!-- end col -->
+				
 
 				<div class='col-md-6 col-lg-6'>
 					{{{<ifcount code="ca_collections" min="1" max="1"><label>Related collection</label></ifcount>}}}
@@ -123,23 +125,20 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
                 Currently it changes view depending on place type id.
                 I add the alternatif script in which setView changes depending on the locations in the end of the original script-->
 			<script>
-				var map = L.map('map').setView([39.925533, 32.866287], 10);
+				// CUSTOM LEAFLET SCRIPT
+
+				var map = L.map('map').setView([0, 0], 10);
 				L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					maxZoom: 19,
 					attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 				}).addTo(map);
+
 
 				var georeferences = <?php print json_encode($t_item->get('ca_objects.related.georeference')); ?>;
 				var titles = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.preferred_labels'))); ?>;
 				var objid = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.idno'))); ?>;
 				var caid = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.object_id'))); ?>;
 				var placeTypes = <?php print json_encode(explode(";", $t_item->get('ca_places.type_id'))); ?>;
-
-				console.log(georeferences);
-				console.log(titles);
-				console.log(objid);
-				console.log(caid);
-				console.log(placeTypes);
 
 				// Split the georeference string into an array of coordinates
 				var coordinatesArray = georeferences.split(';');
@@ -176,22 +175,15 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					marker.bindPopup(popupContent);
 				});
 
+				document.getElementById('expandButton').addEventListener('click', function () {
+					// Reset the map to the original fitBounds zoom level
+					map.fitBounds(bounds);
+				});
+
 				// Calculate the center and zoom level based on the bounding box
 				var bounds = L.latLngBounds(L.latLng(minLat, minLon), L.latLng(maxLat, maxLon));
 
-				// Adjust the map view based on place type
-				var zoomLevel = 10; // Default zoom level
-
-				// You can define different zoom levels or starting coordinates based on place types
-				if (placeTypes.includes('103')) {
-					zoomLevel = 5; // Adjust this to the desired zoom level for Country Place Type '103'
-				} else if (placeTypes.includes('106')) {
-					zoomLevel = 7; // Adjust this to the desired zoom level for Region Place Type '102'
-				} else if (placeTypes.includes('102')) {
-					zoomLevel = 12; // Adjust this to the desired zoom level for City Place Type '103'
-				} else if (placeTypes.includes('107')) {
-					zoomLevel = 16; // Adjust this to the desired zoom level for Address Place Type '107'
-				}
+				map.fitBounds(bounds, { padding: [50, 50] });
 
 				map.setView(bounds.getCenter(), zoomLevel);
 			</script>

@@ -201,7 +201,9 @@
 				<!-- end of Custom labels -->
 				<!-- Geographical coverage -->
 
-				{{{<ifcount code="ca_places" min="1"><div class="unit"><ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount><ifcount code="ca_places" min="2"><label>Related places</label></ifcount><unit relativeTo="ca_places" delimiter="<br/>"><unit relativeTo="ca_places.hierarchy" delimiter=" &gt; "><l>^ca_places.preferred_labels</l></unit></unit></div></ifcount>}}}
+				{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
+				{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
+				{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels.name</l> ^ca_places.type_id</unit>}}}
 				
 				<br/>{{{map}}}<!-- map -->
 
@@ -210,23 +212,26 @@
 				<!-- Socio-cultural Context -->
 
 				{{{
-					<ifcount code="ca_objects.culturalgroup" min="1"><div class="unit">
-						<label>Cultural Group</label>
-						<unit relativeTo="ca_objects.culturalgroup" delimiter="<br/>">
-							^ca_objects.culturalgroup
+					<ifcount code="ca_objects.cultgroup" min="1"><div class="unit">
+						<label>Cultural Group:</label>
+						<unit relativeTo="ca_objects.cultgroup" delimiter="<br/>">
+							^ca_objects.cultgroup
 						</unit>
 					</div></ifcount>
 					}}}
-				
+
 					{{{
-						<ifdef code="ca_objects.culturalcontext"><div class="unit"><label>Cultural Context</label>^ca_objects.culturalcontext</div></ifdef>
-						}}}
-					
+					<ifcount code="ca_list_items" restrictToRelationshipTypes="culturalcontext" min="1">    
+						<label>Cultural Context:</label>
+							<unit relativeTo="ca_list_items" restrictToRelationshipTypes="culturalcontext" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+					</ifcount>
+					}}}
+
 					{{{
-						<ifdef code="ca_objects.socialgroupsetting"><div class="unit"><label>Social Group</label>^ca_objects.socialgroupsetting</div></ifdef>
+						<ifdef code="ca_objects.socialgroup"><div class="unit"><label>Social Group:</label>^ca_objects.socialgroup</div></ifdef>
 						}}}
 
-				<!-- end of Socio-cultural Context -->
+					<!-- end of Socio-cultural Context -->
 
 				<!-- Dates -->
 
@@ -294,7 +299,7 @@
 			?>
 				
 				{{{
-					<ifdef code="ca_objects.rightownership"><div class="unit"><label>Right Ownership:</label>
+					<ifdef code="ca_objects.rightownership"><div class="unit"><label>Rights Holder:</label>
 					^ca_objects.rightowership</div></ifdef>
 				}}}
 

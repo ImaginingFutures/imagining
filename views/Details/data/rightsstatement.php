@@ -85,7 +85,7 @@ class Rights
         $label = "https://rightsstatements.org/files/icons/" . $label_identifier . ".Icon-Only.dark.svg";
         print "<label>Right Statement</label>";
     
-        print '<p><a href="https://rightsstatements.org/page/' . $identifier_part . '/' . $version . '/" target="_blank" style="display:inline-block;"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="' . $label . '"> ' . $statement_components[0] . '</a></p>';
+        print '<p><a href="https://rightsstatements.org/vocab/' . $identifier_part . '/' . $version . '/" target="_blank" style="display:inline-block;"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="' . $label . '"> ' . $statement_components[0] . '</a></p>';
     }
     
 

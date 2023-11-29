@@ -121,7 +121,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 				$objects_search = $s_object->search("ca_objects.object_id:" . $object_id);
 
 				while ($objects_search->nextHit()) {
-					$o_coordinates = $objects_search->get("ca_objects.coordinates");
+					$o_coordinates = $objects_search->get("ca_objects.georeference");
 					if (!is_null($o_coordinates) && is_array(json_decode($o_coordinates))) {
 						$labels_places[] = array(
 							"object_id" => $object_id,
@@ -414,9 +414,6 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		animate();
 	});
 
-</script>
-
-<script>
 
 	// CUSTOM LEAFLET SCRIPT
 
