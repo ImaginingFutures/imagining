@@ -148,9 +148,6 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 			</script>
             </ifcount>}}}
 
-			<!-- SetView should change related to objects location or place type. E.g. larger area for country smaller area for city.
-                Currently it changes view depending on place type id.
-                I add the alternatif script in which setView changes depending on the locations in the end of the original script-->
 			<script>
 				// CUSTOM LEAFLET SCRIPT
 
@@ -196,8 +193,14 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					var ca = caid[index];
 					var placeType = placeTypes[index];
 
+					// Get the base URL using JavaScript
+					var baseUrl = window.location.href.split('/Detail')[0];
+
+					// Construct the URL using JavaScript
+					var detailLink = baseUrl + "/Detail/objects/" + ca;
+
 					// Customize the popup content with the retrieved title and place type
-					var popupContent = "<a href='http://172.24.20.211/ifrepo/index.php/Detail/objects/" + ca + "'>ID: " + obj + "<br>Title: " + title + "</a>";
+					var popupContent = "<a href='" + detailLink + "'>ID: " + obj + "<br>Title: " + title + "</a>";
 					var marker = L.marker([lat, lon]).addTo(map);
 					marker.bindPopup(popupContent);
 				});
