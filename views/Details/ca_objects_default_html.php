@@ -118,6 +118,12 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					}}}
 
 
+					<!-- Dates -->
+
+					{{{<ifcount code="ca_objects.dates.dates_value" min="1"><div class="unit"><label>Dates:</label><unit relativeTo="ca_objects.dates" delimiter="<br/>">^ca_objects.dates.dates_type: ^ca_objects.dates.dates_value</unit></div></ifcount>}}}
+
+					<!-- end of Dates labels -->
+
 					<!-- end of identification labels -->
 
 
@@ -130,23 +136,25 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					<ifdef code="ca_objects.ai"><button class="btn btn-warning btn-xs pull-left warning-translation-button" id="togglePanel" data-toggle="tooltip" data-placement="top" title="^ca_objects.ai">
                     <i class="fas fa-hand-point-right"></i>
 					</button></ifdef>
-					<label>Translated description:</label>^ca_objects.translationofdescription
-					
+					<label>Translated description:</label>^ca_objects.descriptionalt					
 				</div><HR></ifdef>}}}
 
-					{{{<ifcount code="ca_objects.langmaterial.language" min="1"><div class="unit"><label>Language:</label><unit relativeTo="ca_objects.langmaterial" delimiter="<br/>">^ca_objects.langmaterial.material: ^ca_objects.langmaterial.language</unit></div></ifcount>}}}
+				{{{<ifcount code="ca_objects.langmaterial.lang" min="1"><div class="unit"><label>Language:</label><unit relativeTo="ca_objects.langmaterial" delimiter="<br/>">^ca_objects.langmaterial.langlabel: ^ca_objects.langmaterial.language</unit></div></ifcount>}}}
 
+					<!-- Creating relation from ca_list_items (BOTH WORKS) -->
 					{{{
-					<ifcount code="ca_objects.theme" min="1"><div class="unit"><label>Theme:</label><unit relativeTo="ca_objects.theme" delimiter="<br/>">^ca_objects.theme</unit></div></ifcount>
+					<ifcount code="ca_list_items" restrictToRelationshipTypes="theme" min="1">    
+						<label>Themes:</label>
+							<unit relativeTo="ca_list_items" restrictToRelationshipTypes="theme" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+					</ifcount>
 					}}}
 
 					{{{
-						<ifcount code="ca_objects.keywords" min="1"><div class="unit"><label>Keywords:</label><unit relativeTo="ca_objects.keywords" delimiter="<br/>">^ca_objects.keywords</unit></div></ifcount>
-						}}}
-
+					<ifcount code="ca_objects.keyword" min="1"><div class="unit"><label>Keywords:</label><unit relativeTo="ca_objects.keyword" delimiter="<br/>">^ca_objects.keyword</unit></div></ifcount>
+					}}}
 
 					{{{
-					<ifdef code="ca_objects.note"><div class="unit"><label>Notes:</label>^ca_objects.note</div><HR></ifdef>
+					<ifdef code="ca_objects.notes"><div class="unit"><label>Notes:</label>^ca_objects.notes</div><HR></ifdef>
 					}}}
 
 					<!-- end of Content and Scope labels -->
@@ -268,13 +276,15 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					<!-- Technology -->
 
 					{{{
-					<ifdef code="ca_objects.productiontechnique"><div class="unit"><label>Production Technique</label>^ca_objects.productiontechnique</div></ifcode>
+					<ifdef code="ca_objects.prodtech"><div class="unit"><label>Production Technique</label>^ca_objects.prodtech</div></ifcode>
 
 				}}}
 
 					{{{
-					<ifcount code="ca_objects.equipment" min="1"><div class="unit"><label>Equipment</label><unit relativeTo="ca_objects.equipment" delimiter="<br/>">^ca_objects.equipment</unit></div></ifcount>
+					<ifcount code="ca_objects.equipused" min="1"><div class="unit"><label>Equipment</label><unit relativeTo="ca_objects.equipused" delimiter="<br/>">^ca_objects.equipused</unit></div></ifcount>
 				}}}
+
+					<!-- End Of Technology -->
 
 
 
@@ -319,7 +329,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					<ifdef code="ca_objects.reasonsforrestriction"><div class="unit"><label>Reasons for Restriction:</label>^ca_objects.reasonsforrestriction</div></ifdef>
 				}}}
 					<HR>
-					<H3>History</H3>
+					<label>History</label>
 					<?php
 					$date_created = intval($t_object->get('ca_objects.created.timestamp'));
 					$item_creator = $t_object->get('ca_objects.created.user');
