@@ -26,6 +26,8 @@
  * ----------------------------------------------------------------------
  */
 
+use function PHPUnit\Framework\isType;
+
 $t_item = $this->getVar("item");
 $va_comments = $this->getVar("comments");
 $vn_comments_enabled = 	$this->getVar("commentsEnabled");
@@ -49,6 +51,31 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					<H2>{{{^ca_places.type_id}}}</H2>
 					{{{<ifdef code="ca_places.description"><label>About</label>^ca_places.description<br/></ifdef>}}}
 
+					<?php 
+					
+					$type_id = $t_item->get("ca_places.type_id");
+					$o_search = new Db();
+					$q_lists = $o_search->query("select idno from ca_list_items where item_id = ?", $type_id);
+					while ($q_lists->nextRow()){
+						$idno = $q_lists->get("ca_list_items.idno");
+					}
+					
+					# TODO: create a most precise way to define zoom accordingly with the type of place
+
+					if ($idno == "country"){
+						$zoomlevel = 5;
+					}
+					elseif ($idno == "region"){
+						$zoomlevel = 7;
+					}
+					elseif ($idno == "city"){
+						$zoomlevel = 12;
+					}
+					else{
+						$zoomlevel = 16;
+					}
+
+					?>
 				</div><!-- end col -->
 			</div><!-- end row -->
 			<div class="row">
@@ -183,9 +210,11 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 				// Calculate the center and zoom level based on the bounding box
 				var bounds = L.latLngBounds(L.latLng(minLat, minLon), L.latLng(maxLat, maxLon));
 
-				map.fitBounds(bounds, { padding: [50, 50] });
+				// map.fitBounds(bounds, { padding: [50, 50] });
 
-				map.setView(bounds.getCenter(), zoomLevel);
+				var zoomlevel = <?php print $zoomlevel; ?>
+
+				map.setView(bounds.getCenter(), zoomlevel);
 			</script>
 
 		</div><!-- end container -->
