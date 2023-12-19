@@ -34,7 +34,6 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 $vn_pdf_enabled = 		$this->getVar("pdfEnabled");
 $vn_id =				$t_object->get('ca_objects.object_id');
 
-
 require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.php");
 
 ?>
@@ -59,24 +58,20 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					{{{
 					<ifdef code="ca_objects.idno"><div class="unit">Object ID: ^ca_objects.idno
 		<button class="btn btn-default btn-xs pull-left button-circled" id="togglePanel" data-toggle="tooltip" data-placement="top" title="Media info">
-		<i class="fas fa-info-circle"></i>
+                    <span class="glyphicon glyphicon-info-sign"></span>
 					</button></div></ifdef>
 				}}}
 				</div>
-			
 				<div class="panel-body" id="panelContent">
-
 					<!-- Content to be shown/hidden goes here -->
 					<!-- Content and Scope -->
 					<h3>Media information</h3>
 					{{{
 					<ifdef code="ca_object_representations.media_class"><div class="unit"><unit relativeTo="ca_object_representations.media_class" delimiter="<br/>"><b>Format:</b> ^ca_object_representations.media_class</unit></div></ifdef>
 					}}}
-
 					{{{
 					<ifdef code="ca_object_representations.media_filesize"><div class="unit"><unit relativeTo="ca_object_representations.media_filesize" delimiter="<br/>"><b>Extent:</b> ^ca_object_representations.media_filesize</unit></div></ifdef>
 					}}}
-
 					<?php
 					$media_format = $t_object->get('ca_object_representations.media_format');
 					if ($media_format != "PDF") {
@@ -85,79 +80,81 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 						echo "{{{<ifcode code=\"ca_object_representations.page_count\"><div class=\"unit\"><unit relativeTo=\"ca_object_representations.page_count\" delimiter=\"<br/>\"><b>Pages:</b> ^ca_object_representations.page_count</unit></div></ifcode>}}}";
 					}
 					?>
-
-
 					{{{
 					<ifcode code="ca_object_representations.media_format"><div class="unit"><unit relativeTo="ca_object_representations.media_format" delimiter="<br/>"><b>Media format:</b> ^ca_object_representations.media_format</unit></div></ifcode>
 				}}}
 				</div>
 			</div>
-			<div class="row">
 
+			<!-- identifiers -->
+			<HR>
+			<div class="row">
 				<H1>{{{ca_objects.preferred_labels.name}}}</H1>
 
 				<div class='col-sm-6 col-md-6'>
-
 					{{{
 					<ifdef code="ca_objects.alternativetitle"><div class="unit">
 					<ifdef code="ca_objects.ai"><button class="btn btn-warning btn-xs pull-left warning-translation-button" id="togglePanel" data-toggle="tooltip" data-placement="top" title="^ca_objects.ai">
-                    <i class="fas fa-hand-point-right"></i>
+                    <span class="glyphicon glyphicon-warning-sign"></span>
 					</button></ifdef>
 					<label>Translated title:</label>^ca_objects.alternativetitle
 					</div><HR></ifdef>
 					}}}
 
-
-					{{{<unit relativeTo="ca_collections" delimiter="<br/>"><label>Is part of:</label><l>^ca_collections.preferred_labels.name</l></unit><ifcount min="1" code="ca_collections"><HR></ifcount>}}}
-
-
-					<!-- identification -->
-
+					{{{<unit relativeTo="ca_collections" delimiter="<br/>"><label>Member of:</label><l>^ca_collections.preferred_labels.name</l></unit><ifcount min="1" code="ca_collections"><HR></ifcount>}}}
 					{{{
-					<ifdef code="ca_objects.external_link.url_source"><div class="unit"><label>External Link:</label><a href="^ca_objects.external_link.url_entry" target="_blank" class="url"><i class="fa fa-external-link" aria-hidden="true"></i>^ca_objects.external_link.url_source</a></div><HR></ifdef>
+					<ifcount code="ca_objects.exlink.exlink_name" min="1"><div class="unit">
+						<label>External Link:</label>
+						<unit relativeTo="ca_objects.exlink.exlink_url" delimiter="<br/>">
+							<a href="^ca_objects.exlink.exlink_url" delimiter="<br/>" target="_blank" class="url">
+								<i class="fa fa-external-link" aria-hidden="true"></i>
+								^ca_objects.exlink.exlink_name</a>
+						</unit>
+					</div></ifcount>
 					}}}
-
-
-					<!-- Dates -->
-
-					{{{<ifcount code="ca_objects.dates.dates_value" min="1"><div class="unit"><label>Dates:</label><unit relativeTo="ca_objects.dates" delimiter="<br/>">^ca_objects.dates.dates_type: ^ca_objects.dates.dates_value</unit></div></ifcount>}}}
-
-					<!-- end of Dates labels -->
+					{{{
+					<ifdef code="ca_objects.originalid"><div class="unit"><label>Local ID:</label>^ca_objects.originalid</div></ifdef>
+					}}}
 
 					<!-- end of identification labels -->
 
-
+					<!-- Scope and Content -->
 
 					{{{
 					<ifdef code="ca_objects.description"><div class="unit"><label>Description:</label>^ca_objects.description</div></ifdef>
 					}}}
 
-					{{{<ifdef code="ca_objects.translationofdescription"><div class="unit">
+					{{{<ifdef code="ca_objects.descriptionalt"><div class="unit">
 					<ifdef code="ca_objects.ai"><button class="btn btn-warning btn-xs pull-left warning-translation-button" id="togglePanel" data-toggle="tooltip" data-placement="top" title="^ca_objects.ai">
-                    <i class="fas fa-hand-point-right"></i>
+                    <span class="glyphicon glyphicon-warning-sign"></span>
 					</button></ifdef>
 					<label>Translated description:</label>^ca_objects.descriptionalt					
 				</div><HR></ifdef>}}}
 
-				{{{<ifcount code="ca_objects.langmaterial.lang" min="1"><div class="unit"><label>Language:</label><unit relativeTo="ca_objects.langmaterial" delimiter="<br/>">^ca_objects.langmaterial.langlabel: ^ca_objects.langmaterial.language</unit></div></ifcount>}}}
+					{{{<ifcount code="ca_objects.langmaterial.lang" min="1"><div class="unit"><label>Language:</label><unit relativeTo="ca_objects.langmaterial" delimiter="<br/>">^ca_objects.langmaterial.langlabel: ^ca_objects.langmaterial.lang</unit></div></ifcount>}}}
 
-					<!-- Creating relation from ca_list_items (BOTH WORKS) -->
 					{{{
-					<ifcount code="ca_list_items" restrictToRelationshipTypes="theme" min="1">    
-						<label>Themes:</label>
-							<unit relativeTo="ca_list_items" restrictToRelationshipTypes="theme" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
-					</ifcount>
-					}}}
+<ifcount code="ca_list_items" restrictToRelationshipTypes="theme" min="1">    
+     <label>Themes:</label>
+        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="theme" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+</ifcount>
+}}}
 
 					{{{
 					<ifcount code="ca_objects.keyword" min="1"><div class="unit"><label>Keywords:</label><unit relativeTo="ca_objects.keyword" delimiter="<br/>">^ca_objects.keyword</unit></div></ifcount>
 					}}}
 
 					{{{
-					<ifdef code="ca_objects.notes"><div class="unit"><label>Notes:</label>^ca_objects.notes</div><HR></ifdef>
+					<ifdef code="ca_objects.notes"><div class="unit"><label>Notes:</label>^ca_objects.notes</div></ifdef>
 					}}}
 
 					<!-- end of Content and Scope labels -->
+
+
+
+
+
+
 
 					<!-- Custom labels -->
 
@@ -207,48 +204,73 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					<HR>
 				</ifdef>}}}
 
-
-
 					<!-- end of Custom labels -->
-					<!-- Geographical coverage -->
 
-					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
-					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
-					{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels.name</l> ^ca_places.type_id</unit>}}}
 
-					<br />{{{map}}}<!-- map -->
+				</div><!-- end col -->
 
-					<!-- end of Geographical coverage labels -->
+				<div class='col-sm-1 col-md-2 col-lg-2'></div>
+
+				<!-- end col -->
+
+
+				<div class='col-sm-5 col-md-4 col-lg-4'>
+					<!-- Dates -->
+
+					{{{<ifcount code="ca_objects.dates.dates_value" min="1"><div class="unit"><label>Dates:</label><unit relativeTo="ca_objects.dates" delimiter="<br/>">^ca_objects.dates.dates_type: ^ca_objects.dates.dates_value</unit></div></ifcount>}}}
+
+					<!-- end of Dates labels -->
 
 					<!-- Socio-cultural Context -->
 
 					{{{
-					<ifcount code="ca_objects.cultgroup" min="1"><div class="unit">
-						<label>Cultural Group:</label>
-						<unit relativeTo="ca_objects.cultgroup" delimiter="<br/>">
-							^ca_objects.cultgroup
-						</unit>
-					</div></ifcount>
-					}}}
+<ifcount code="ca_objects.cultgroup" min="1"><div class="unit">
+	<label>Cultural Group:</label>
+	<unit relativeTo="ca_objects.cultgroup" delimiter="<br/>">
+		^ca_objects.cultgroup
+	</unit>
+</div></ifcount>
+}}}
 
 					{{{
-					<ifcount code="ca_list_items" restrictToRelationshipTypes="culturalcontext" min="1">    
-						<label>Cultural Context:</label>
-							<unit relativeTo="ca_list_items" restrictToRelationshipTypes="culturalcontext" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
-					</ifcount>
-					}}}
+<ifcount code="ca_list_items" restrictToRelationshipTypes="culturalcontext" min="1">    
+<label>Cultural Context:</label>
+<unit relativeTo="ca_list_items" restrictToRelationshipTypes="culturalcontext" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+</ifcount>
+}}}
 
 					{{{
-						<ifdef code="ca_objects.socialgroup"><div class="unit"><label>Social Group:</label>^ca_objects.socialgroup</div></ifdef>
-						}}}
+<ifcount code="ca_objects.socialgroup" min="1"><div class="unit">
+	<label>Social Group:</label>
+	<unit relativeTo="ca_objects.socialgroup" delimiter="<br/>">
+		^ca_objects.socialgroup
+	</unit>
+</div></ifcount>
+}}}
+
 
 					<!-- end of Socio-cultural Context -->
 
-					<!-- Dates -->
+					<!-- Technology -->
 
-					{{{<ifcount code="ca_objects.unitdate.date_value" min="1"><div class="unit"><label>Dates:</label><unit relativeTo="ca_objects.unitdate" delimiter="<br/>">^ca_objects.unitdate.dates_types: ^ca_objects.unitdate.date_value</unit></div></ifcount>}}}
+					{{{
+<ifcount code="ca_objects.prodtech" min="1"><div class="unit">
+	<label>Production Technique:</label>
+	<unit relativeTo="ca_objects.prodtech" delimiter="<br/>">
+		^ca_objects.prodtech
+	</unit>
+</div></ifcount>
+}}}
+					{{{
+<ifcount code="ca_objects.equipused" min="1"><div class="unit">
+	<label>Equipment:</label>
+	<unit relativeTo="ca_objects.equipused" delimiter="<br/>">
+		^ca_objects.equipused
+	</unit>
+</div></ifcount>
+}}}
 
-					<!-- end of Dates labels -->
+					<!-- End Of Technology -->
 
 					<!-- Intellectual Property	-->
 
@@ -273,38 +295,25 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 
 					<!-- end of Intellectual Property labels -->
 
-					<!-- Technology -->
-
+					<!-- Access and Sensitivity -->
 					{{{
-					<ifdef code="ca_objects.prodtech"><div class="unit"><label>Production Technique</label>^ca_objects.prodtech</div></ifcode>
-
-				}}}
-
+<ifdef code="ca_objects.cultsens"><div class="unit"><label>Cultural Sensitivity:</label>^ca_objects.cultsens</div></ifdef>
+}}}
 					{{{
-					<ifcount code="ca_objects.equipused" min="1"><div class="unit"><label>Equipment</label><unit relativeTo="ca_objects.equipused" delimiter="<br/>">^ca_objects.equipused</unit></div></ifcount>
-				}}}
+<ifdef code="ca_objects.reasonforrest"><div class="unit"><label>Reasons for Restriction:</label>^ca_objects.reasonforrest</div></ifdef>
+}}}
 
-					<!-- End Of Technology -->
+					<!-- End of Access and Sensitivity -->
 
-
-
-				</div><!-- end col -->
-
-				<div class='col-sm-1 col-md-2 col-lg-2'></div><!-- end col -->
-				<div class='col-sm-5 col-md-4 col-lg-4'>
-					<?php
-					print "<div class='inquireButton'>" . caNavLink($this->request, "<i class='fas fa-envelope'></i> Inquire", "btn btn-default btn-small", "", "Contact", "Form", array("table" => "ca_objects", "id" => $t_object->get("object_id"))) . "</div>";
-					?>
-
-
-					<!-- Licences display. TODO: simplify this -->
+					<!-- Licences amd Notices -->
+					<!-- Licences display. TODO: I couldn't work this -->
 
 					<?php
-					$right_id = $t_object->get("ca_objects.rightsstate");
+					$right_id = $t_object->get("ca_objects.rights");
 
 					if ($right_id) {
-						$rights_group = $t_object->get("ca_objects.rightsstate.related.preferred_labels");
-						$rights_label = $t_object->get("ca_objects.rightsstate.preferred_labels");
+						$rights_group = $t_object->get("ca_objects.rights.related.preferred_labels");
+						$rights_label = $t_object->get("ca_objects.rights.preferred_labels");
 
 						$rights = new Rights();
 						$rights->rightsstatement($rights_group, $rights_label);
@@ -312,24 +321,101 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					?>
 
 					{{{
-					<ifdef code="ca_objects.rightownership"><div class="unit"><label>Rights Holder:</label>
-					^ca_objects.rightowership</div></ifdef>
-				}}}
+<ifdef code="ca_objects.rights"><div class="unit"><label>Rights:</label>^ca_objects.rights</div></ifdef>
+}}}
+
+					<!-- End of Licences amd Notices -->
+
+				</div><!-- end col -->
+
+			</div><!-- end row -->
+
+			<div class='row'>
+				<hr>
+				<div class='col-sm-6 col-md-6'>
+					<!-- Geographical Coverage -->
+
+					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
+					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
+					{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels.name</l> ^ca_places.type_id</unit>}}}
+
+
+
+				</div>
+				<div class='col-sm-6 col-md-6'>
+
+					<div id="map" style="height: 180px;"></div>
 
 					{{{
-					<ifdef code="ca_objects.culturalsensitivity"><div class="unit"><label>Cultural Sensitivity:</label>^ca_objects.culturalsensitivity</div></ifdef>
+<script>
+// Assuming ^ca_objects.georeference contains a string like "[39.920124257515,32.855112550338]"
+var georeferenceString = '^ca_objects.georeference';
+var titles = '^ca_objects.preferred_labels';
+var objid = '^ca_objects.idno';
+var caid = '^ca_objects.object_id';
+var currentURL = window.location.href;	
 
-				}}}
+// Get the current page URL
+var currentURL = window.location.href;
 
-					{{{
-					<ifdef code="ca_objects.accessrestriction"><div class="unit"><label>Acccess Restriction:</label>^ca_objects.accessrestriction</div></ifdef>
-				}}}
+// Find the index of "Detail" in the URL
+var detailIndex = currentURL.indexOf("Detail");
 
-					{{{
-					<ifdef code="ca_objects.reasonsforrestriction"><div class="unit"><label>Reasons for Restriction:</label>^ca_objects.reasonsforrestriction</div></ifdef>
-				}}}
-					<HR>
-					<label>History</label>
+// Extract the substring after "Detail"
+var baseURL = currentURL.substring(0, detailIndex);
+
+console.log(baseURL);
+console.log(georeferenceString);
+
+// Remove unwanted characters and ensure proper JSON format
+georeferenceString = georeferenceString.replace(/[\[\]\s]/g, ''); // Remove brackets and whitespaces
+
+try {
+// Parse the georeference string into a JavaScript array
+var georeferenceArray = JSON.parse("[" + georeferenceString + "]");
+
+// Extract latitude and longitude
+var lat = georeferenceArray[0];
+var lon = georeferenceArray[1];
+
+// Create the Leaflet map
+var map = L.map('map').setView([lat, lon], 10);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+maxZoom: 19,
+attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+var placeidString = '^ca_places.place_id';
+
+var match = placeidString.match(/\d+/g);
+
+if (match && match.length > 0) {
+  var lastPlaceId = match[match.length - 1];
+  var detailPageURL = baseURL + 'Detail/places/' + lastPlaceId;
+  console.log(detailPageURL);
+} else {
+  console.error('No numbers found in the string');
+}
+
+var popupContent = `<a href="${detailPageURL}">ID: ${objid}<br>Title: ${titles}</a>`;
+var marker = L.marker([lat, lon]).addTo(map);
+marker.bindPopup(popupContent);
+} catch (error) {
+console.error("Error:", error);
+}
+</script>
+}}}
+
+					<!-- end of Geographical Coverage labels -->
+				</div>
+			</div>
+
+
+			<div class='row'>
+				<hr>
+				<div class='col-sm-6 col-md-6'>
+
+					<H3>History</H3>
 					<?php
 					$date_created = intval($t_object->get('ca_objects.created.timestamp'));
 					$item_creator = $t_object->get('ca_objects.created.user');
@@ -348,10 +434,10 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 						echo "<div class='unit'><label>Last modified date:</label>" . $date_modified_formatted . " by " . $item_modifier . "</div>";
 					}
 					?>
-					<HR>
+				</div>
 
+				<div class='col-sm-6 col-md-6'>
 					<?php
-
 					if ($va_entity_rels = $t_object->get('ca_objects_x_entities.relation_id', array('returnAsArray' => true))) {
 						$va_entities_by_type = array();
 						foreach ($va_entity_rels as $va_key => $va_entity_rel) {
@@ -364,21 +450,21 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					$contributors = '';
 
 					// Check if there are creators in the array
-					if (isset($va_entities_by_type['creator'])) {
-						$creators = array_unique($va_entities_by_type['creator']);
+					if (isset($va_entities_by_type['had as creator'])) {
+						$creators = array_unique($va_entities_by_type['had as creator']);
 						$contributors = implode(', ', $creators);
 					} else {
 						// If no creators, check for contributors and other entity types
 						$contributorString = '';
 
 						// Check if there are contributors in the array
-						if (isset($va_entities_by_type['contributor'])) {
-							$contributorString .= implode(', ', $va_entities_by_type['contributor']);
+						if (isset($va_entities_by_type['had as contributor'])) {
+							$contributorString .= implode(', ', $va_entities_by_type['had as contributor']);
 						}
 
 						// Iterate through other entity types and add them to the contributorString
 						foreach ($va_entities_by_type as $type => $entities) {
-							if ($type !== 'contributor') {
+							if ($type !== 'had as contributor') {
 								if (!empty($contributorString)) {
 									$contributorString .= ', ';
 								}
@@ -392,7 +478,6 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 							$contributors = 'Unknown';
 						}
 					}
-
 
 					$yearofcreation = date("Y", $date_created);
 					$title = $t_object->get('ca_objects.preferred_labels.name');
@@ -419,28 +504,31 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 						if ($vn_comments_enabled) {
 					?>
 							<div class="detailTool">
-								<a href='#' onclick='jQuery("#detailComments").slideToggle(); return false;'><i class="fas fa-comments"></i>Comments and Tags (<?php print sizeof($va_comments) + sizeof($va_tags); ?>)</a>
+								<a href='#' onclick='jQuery("#detailComments").slideToggle(); return false;'><span class="glyphicon glyphicon-comment"></span>Comments and Tags (<?php print sizeof($va_comments) + sizeof($va_tags); ?>)</a>
 							</div><!-- end detailTool -->
 							<div id='detailComments'><?php print $this->getVar("itemComments"); ?></div><!-- end itemComments -->
 						<?php
 						}
 						if ($vn_share_enabled) {
-							print '<div class="detailTool"><i class="fas fa-share"></i>' . $this->getVar("shareLink") . '</div><!-- end detailTool -->';
+							print '<div class="detailTool"><span class="glyphicon glyphicon-share-alt"></span>' . $this->getVar("shareLink") . '</div><!-- end detailTool -->';
 						}
 						if ($vn_pdf_enabled) {
-							print "<div class='detailTool'><i class='fas fa-file-pdf'></i>" . caDetailLink($this->request, "Download as PDF", "faDownload", "ca_objects",  $vn_id, array('view' => 'pdf', 'export_format' => '_pdf_ca_objects_summary')) . "</div>";
+							print "<div class='detailTool'><span class='glyphicon glyphicon-file'></span>" . caDetailLink($this->request, "Download as PDF", "faDownload", "ca_objects",  $vn_id, array('view' => 'pdf', 'export_format' => '_pdf_ca_objects_summary')) . "</div>";
 						}
 						?>
-						<div class='detailTool'><a href='#' onclick='caMediaPanel.showPanel("<?= caNavUrl($this->request, '', 'Lightbox', 'addItemForm', array('object_id' => $vn_id)); ?>"); return false;' title='Add to lightbox'><span class='fas fa-suitcase'></span><?= _t('Add to favorites'); ?></a></div>
+						<div class='detailTool'><a href='#' onclick='caMediaPanel.showPanel("<?= caNavUrl($this->request, '', 'Lightbox', 'addItemForm', array('object_id' => $vn_id)); ?>"); return false;' title='Add to lightbox'><span class='fa fa-suitcase'></span><?= _t('Add to favorites'); ?></a></div>
 					<?php
 						print '</div><!-- end detailTools -->';
 					}
 
 					?>
+					<?php
+					print "<div class='inquireButton'>" . caNavLink($this->request, "<span class='glyphicon glyphicon-envelope'></span> Inquire", "btn btn-default btn-small", "", "Contact", "Form", array("table" => "ca_objects", "id" => $t_object->get("object_id"))) . "</div>";
+					?>
+				</div>
 
-				</div><!-- end col -->
 
-			</div><!-- end row -->
+			</div>
 		</div><!-- end container -->
 	</div><!-- end col -->
 	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
@@ -449,6 +537,8 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 		</div><!-- end detailNavBgLeft -->
 	</div><!-- end col -->
 </div><!-- end row -->
+
+
 
 <script type='text/javascript'>
 	jQuery(document).ready(function() {
