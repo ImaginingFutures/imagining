@@ -86,8 +86,8 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 				</div>
 			</div>
 
-<!-- identifiers -->
-
+			<!-- identifiers -->
+			<HR>
 			<div class="row">
 				<H1>{{{ca_objects.preferred_labels.name}}}</H1>
 
@@ -101,7 +101,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					</div><HR></ifdef>
 					}}}
 
-					{{{<unit relativeTo="ca_collections" delimiter="<br/>"><label>Is part of:</label><l>^ca_collections.preferred_labels.name</l></unit><ifcount min="1" code="ca_collections"><HR></ifcount>}}}
+					{{{<unit relativeTo="ca_collections" delimiter="<br/>"><label>Member of:</label><l>^ca_collections.preferred_labels.name</l></unit><ifcount min="1" code="ca_collections"><HR></ifcount>}}}
 					{{{
 					<ifcount code="ca_objects.exlink.exlink_name" min="1"><div class="unit">
 						<label>External Link:</label>
@@ -116,9 +116,9 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					<ifdef code="ca_objects.originalid"><div class="unit"><label>Local ID:</label>^ca_objects.originalid</div></ifdef>
 					}}}
 
-<!-- end of identification labels -->
+					<!-- end of identification labels -->
 
-<!-- Scope and Content -->
+					<!-- Scope and Content -->
 
 					{{{
 					<ifdef code="ca_objects.description"><div class="unit"><label>Description:</label>^ca_objects.description</div></ifdef>
@@ -145,202 +145,18 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					}}}
 
 					{{{
-					<ifdef code="ca_objects.notes"><div class="unit"><label>Notes:</label>^ca_objects.notes</div><HR></ifdef>
+					<ifdef code="ca_objects.notes"><div class="unit"><label>Notes:</label>^ca_objects.notes</div></ifdef>
 					}}}
 
-<!-- end of Content and Scope labels -->
+					<!-- end of Content and Scope labels -->
 
 
 
-<!-- Geographical Coverage -->
-
-					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
-					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
-					{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels.name</l> ^ca_places.type_id</unit>}}}
-
-					<div id="map" style="height: 180px;"></div>
-
-					{{{
-    <script>
-        // Assuming ^ca_objects.georeference contains a string like "[39.920124257515,32.855112550338]"
-        var georeferenceString = '^ca_objects.georeference';
-			var titles = '^ca_objects.preferred_labels';
-			var objid = '^ca_objects.idno';
-			var caid = '^ca_objects.object_id';
-			var currentURL = window.location.href;	
-
-  // Get the current page URL
-  var currentURL = window.location.href;
-
-// Find the index of "Detail" in the URL
-var detailIndex = currentURL.indexOf("Detail");
-
-// Extract the substring after "Detail"
-var baseURL = currentURL.substring(0, detailIndex);
-
-console.log(baseURL);
-		console.log(georeferenceString);
-
-        // Remove unwanted characters and ensure proper JSON format
-        georeferenceString = georeferenceString.replace(/[\[\]\s]/g, ''); // Remove brackets and whitespaces
-
-        try {
-            // Parse the georeference string into a JavaScript array
-            var georeferenceArray = JSON.parse("[" + georeferenceString + "]");
-
-            // Extract latitude and longitude
-            var lat = georeferenceArray[0];
-            var lon = georeferenceArray[1];
-          
-            // Create the Leaflet map
-            var map = L.map('map').setView([lat, lon], 10);
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map);
-
-			var detailPageURL = baseURL + 'Detail/objects/' + caid;
-var popupContent = `<a href="${detailPageURL}">ID: ${objid}<br>Title: ${titles}</a>`;
-var marker = L.marker([lat, lon]).addTo(map);
-            marker.bindPopup(popupContent);
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    </script>
-}}}
-
-<!-- end of Geographical Coverage labels -->
-
-<!-- Dates -->
-
-{{{<ifcount code="ca_objects.dates.dates_value" min="1"><div class="unit"><label>Dates:</label><unit relativeTo="ca_objects.dates" delimiter="<br/>">^ca_objects.dates.dates_type: ^ca_objects.dates.dates_value</unit></div></ifcount>}}}
-
-<!-- end of Dates labels -->
-
-<!-- Socio-cultural Context -->
-
-					{{{
-					<ifcount code="ca_objects.cultgroup" min="1"><div class="unit">
-						<label>Cultural Group:</label>
-						<unit relativeTo="ca_objects.cultgroup" delimiter="<br/>">
-							^ca_objects.cultgroup
-						</unit>
-					</div></ifcount>
-					}}}
-
-					{{{
-<ifcount code="ca_list_items" restrictToRelationshipTypes="culturalcontext" min="1">    
-    <label>Cultural Context:</label>
-        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="culturalcontext" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
-</ifcount>
-}}}
-
-					{{{
-					<ifcount code="ca_objects.socialgroup" min="1"><div class="unit">
-						<label>Social Group:</label>
-						<unit relativeTo="ca_objects.socialgroup" delimiter="<br/>">
-							^ca_objects.socialgroup
-						</unit>
-					</div></ifcount>
-					}}}
 
 
-<!-- end of Socio-cultural Context -->
 
-<!-- Technology -->
 
-					{{{
-					<ifcount code="ca_objects.prodtech" min="1"><div class="unit">
-						<label>Production Technique:</label>
-						<unit relativeTo="ca_objects.prodtech" delimiter="<br/>">
-							^ca_objects.prodtech
-						</unit>
-					</div></ifcount>
-					}}}
-					{{{
-					<ifcount code="ca_objects.equipused" min="1"><div class="unit">
-						<label>Equipment:</label>
-						<unit relativeTo="ca_objects.equipused" delimiter="<br/>">
-							^ca_objects.equipused
-						</unit>
-					</div></ifcount>
-					}}}
-
-<!-- End Of Technology -->
-
-<!-- Intellectual Property	-->
-
-					<?php
-					if ($va_entity_rels = $t_object->get('ca_objects_x_entities.relation_id', array('returnAsArray' => true))) {
-						$va_entities_by_type = array();
-						foreach ($va_entity_rels as $va_key => $va_entity_rel) {
-							$t_rel = new ca_objects_x_entities($va_entity_rel);
-							$vn_type_id = $t_rel->get('ca_relationship_types.preferred_labels');
-							$va_entities_by_type[$vn_type_id][] = caNavLink($this->request, $t_rel->get('ca_entities.preferred_labels'), '', '', 'Detail', 'entities/' . $t_rel->get('ca_entities.entity_id'));
-						}
-						print "<div class='unit'><label>Intellectual Property:</label>";
-						foreach ($va_entities_by_type as $va_type => $va_entity_id) {
-							foreach ($va_entity_id as $va_key => $va_entity_link) {
-								$output = $va_type . ": " . $va_entity_link . "<br/>";
-								print $output;
-							}
-						}
-						print "</div>";
-					}
-					?>
-
-<!-- end of Intellectual Property labels -->
-
-<!-- Access and Sensitivity -->
-{{{
-					<ifdef code="ca_objects.cultsens"><div class="unit"><label>Cultural Sensitivity:</label>^ca_objects.cultsens</div></ifdef>
-				}}}
-{{{
-					<ifdef code="ca_objects.reasonforrest"><div class="unit"><label>Reasons for Restriction:</label>^ca_objects.reasonforrest</div></ifdef>
-				}}}
-				
-<!-- End of Access and Sensitivity -->
-
-<!-- Licences amd Notices -->
-<!-- Licences display. TODO: I couldn't work this -->
-
-					<?php
-					$right_id = $t_object->get("ca_objects.rights");
-
-					if ($right_id) {
-						$rights_group = $t_object->get("ca_objects.rights.related.preferred_labels");
-						$rights_label = $t_object->get("ca_objects.rights.preferred_labels");
-
-						$rights = new Rights();
-						$rights->rightsstatement($rights_group, $rights_label);
-					}
-					?>
-
-					{{{
-					<ifdef code="ca_objects.rights"><div class="unit"><label>Rights:</label>^ca_objects.rights</div></ifdef>
-				}}}
-
-					{{{
-					<ifcount code="ca_objects.tklabel" min="1"><div class="unit">
-						<label>Traditional Knowledge Label:</label>
-						<unit relativeTo="ca_objects.tklabel" delimiter="<br/>">
-							^ca_objects.tklabel
-						</unit>
-					</div></ifcount>
-					}}}
-
-					{{{
-					<ifcount code="ca_objects.bclabel" min="1"><div class="unit">
-						<label>Biocultural Label:</label>
-						<unit relativeTo="ca_objects.bclabel" delimiter="<br/>">
-							^ca_objects.bclabel
-						</unit>
-					</div></ifcount>
-					}}}
-
-<!-- End of Licences amd Notices -->
-
-<!-- Custom labels -->
+					<!-- Custom labels -->
 
 					{{{<ifdef code="ca_objects.time_period">
 					<div class="unit">
@@ -388,19 +204,204 @@ var marker = L.marker([lat, lon]).addTo(map);
 					<HR>
 				</ifdef>}}}
 
-<!-- end of Custom labels -->
+					<!-- end of Custom labels -->
 
 
 				</div><!-- end col -->
 
-				<div class='col-sm-1 col-md-2 col-lg-2'></div><!-- end col -->
+				<div class='col-sm-1 col-md-2 col-lg-2'></div>
+
+				<!-- end col -->
+
+
 				<div class='col-sm-5 col-md-4 col-lg-4'>
+					<!-- Dates -->
+
+					{{{<ifcount code="ca_objects.dates.dates_value" min="1"><div class="unit"><label>Dates:</label><unit relativeTo="ca_objects.dates" delimiter="<br/>">^ca_objects.dates.dates_type: ^ca_objects.dates.dates_value</unit></div></ifcount>}}}
+
+					<!-- end of Dates labels -->
+
+					<!-- Socio-cultural Context -->
+
+					{{{
+<ifcount code="ca_objects.cultgroup" min="1"><div class="unit">
+	<label>Cultural Group:</label>
+	<unit relativeTo="ca_objects.cultgroup" delimiter="<br/>">
+		^ca_objects.cultgroup
+	</unit>
+</div></ifcount>
+}}}
+
+					{{{
+<ifcount code="ca_list_items" restrictToRelationshipTypes="culturalcontext" min="1">    
+<label>Cultural Context:</label>
+<unit relativeTo="ca_list_items" restrictToRelationshipTypes="culturalcontext" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+</ifcount>
+}}}
+
+					{{{
+<ifcount code="ca_objects.socialgroup" min="1"><div class="unit">
+	<label>Social Group:</label>
+	<unit relativeTo="ca_objects.socialgroup" delimiter="<br/>">
+		^ca_objects.socialgroup
+	</unit>
+</div></ifcount>
+}}}
+
+
+					<!-- end of Socio-cultural Context -->
+
+					<!-- Technology -->
+
+					{{{
+<ifcount code="ca_objects.prodtech" min="1"><div class="unit">
+	<label>Production Technique:</label>
+	<unit relativeTo="ca_objects.prodtech" delimiter="<br/>">
+		^ca_objects.prodtech
+	</unit>
+</div></ifcount>
+}}}
+					{{{
+<ifcount code="ca_objects.equipused" min="1"><div class="unit">
+	<label>Equipment:</label>
+	<unit relativeTo="ca_objects.equipused" delimiter="<br/>">
+		^ca_objects.equipused
+	</unit>
+</div></ifcount>
+}}}
+
+					<!-- End Of Technology -->
+
+					<!-- Intellectual Property	-->
+
 					<?php
-					print "<div class='inquireButton'>" . caNavLink($this->request, "<span class='glyphicon glyphicon-envelope'></span> Inquire", "btn btn-default btn-small", "", "Contact", "Form", array("table" => "ca_objects", "id" => $t_object->get("object_id"))) . "</div>";
+					if ($va_entity_rels = $t_object->get('ca_objects_x_entities.relation_id', array('returnAsArray' => true))) {
+						$va_entities_by_type = array();
+						foreach ($va_entity_rels as $va_key => $va_entity_rel) {
+							$t_rel = new ca_objects_x_entities($va_entity_rel);
+							$vn_type_id = $t_rel->get('ca_relationship_types.preferred_labels');
+							$va_entities_by_type[$vn_type_id][] = caNavLink($this->request, $t_rel->get('ca_entities.preferred_labels'), '', '', 'Detail', 'entities/' . $t_rel->get('ca_entities.entity_id'));
+						}
+						print "<div class='unit'><label>Intellectual Property:</label>";
+						foreach ($va_entities_by_type as $va_type => $va_entity_id) {
+							foreach ($va_entity_id as $va_key => $va_entity_link) {
+								$output = $va_type . ": " . $va_entity_link . "<br/>";
+								print $output;
+							}
+						}
+						print "</div>";
+					}
 					?>
 
+					<!-- end of Intellectual Property labels -->
 
-					<HR>
+					<!-- Access and Sensitivity -->
+					{{{
+<ifdef code="ca_objects.cultsens"><div class="unit"><label>Cultural Sensitivity:</label>^ca_objects.cultsens</div></ifdef>
+}}}
+					{{{
+<ifdef code="ca_objects.reasonforrest"><div class="unit"><label>Reasons for Restriction:</label>^ca_objects.reasonforrest</div></ifdef>
+}}}
+
+					<!-- End of Access and Sensitivity -->
+
+					<!-- Licences amd Notices -->
+					<!-- Licences display. TODO: I couldn't work this -->
+
+					<?php
+					$right_id = $t_object->get("ca_objects.rights");
+
+					if ($right_id) {
+						$rights_group = $t_object->get("ca_objects.rights.related.preferred_labels");
+						$rights_label = $t_object->get("ca_objects.rights.preferred_labels");
+
+						$rights = new Rights();
+						$rights->rightsstatement($rights_group, $rights_label);
+					}
+					?>
+
+					{{{
+<ifdef code="ca_objects.rights"><div class="unit"><label>Rights:</label>^ca_objects.rights</div></ifdef>
+}}}
+
+					<!-- End of Licences amd Notices -->
+
+				</div><!-- end col -->
+
+			</div><!-- end row -->
+
+			<div class='row'>
+				<hr>
+				<div class='col-sm-6 col-md-6'>
+					<!-- Geographical Coverage -->
+
+					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
+					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
+					{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels.name</l> ^ca_places.type_id</unit>}}}
+
+				</div>
+				<div class='col-sm-6 col-md-6'>
+
+					<div id="map" style="height: 180px;"></div>
+
+					{{{
+<script>
+// Assuming ^ca_objects.georeference contains a string like "[39.920124257515,32.855112550338]"
+var georeferenceString = '^ca_objects.georeference';
+var titles = '^ca_objects.preferred_labels';
+var objid = '^ca_objects.idno';
+var caid = '^ca_objects.object_id';
+var currentURL = window.location.href;	
+
+// Get the current page URL
+var currentURL = window.location.href;
+
+// Find the index of "Detail" in the URL
+var detailIndex = currentURL.indexOf("Detail");
+
+// Extract the substring after "Detail"
+var baseURL = currentURL.substring(0, detailIndex);
+
+console.log(baseURL);
+console.log(georeferenceString);
+
+// Remove unwanted characters and ensure proper JSON format
+georeferenceString = georeferenceString.replace(/[\[\]\s]/g, ''); // Remove brackets and whitespaces
+
+try {
+// Parse the georeference string into a JavaScript array
+var georeferenceArray = JSON.parse("[" + georeferenceString + "]");
+
+// Extract latitude and longitude
+var lat = georeferenceArray[0];
+var lon = georeferenceArray[1];
+
+// Create the Leaflet map
+var map = L.map('map').setView([lat, lon], 10);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+maxZoom: 19,
+attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+var detailPageURL = baseURL + 'Detail/objects/' + caid;
+var popupContent = `<a href="${detailPageURL}">ID: ${objid}<br>Title: ${titles}</a>`;
+var marker = L.marker([lat, lon]).addTo(map);
+marker.bindPopup(popupContent);
+} catch (error) {
+console.error("Error:", error);
+}
+</script>
+}}}
+
+					<!-- end of Geographical Coverage labels -->
+				</div>
+			</div>
+
+
+			<div class='row'>
+				<hr>
+				<div class='col-sm-6 col-md-6'>
+
 					<H3>History</H3>
 					<?php
 					$date_created = intval($t_object->get('ca_objects.created.timestamp'));
@@ -420,10 +421,10 @@ var marker = L.marker([lat, lon]).addTo(map);
 						echo "<div class='unit'><label>Last modified date:</label>" . $date_modified_formatted . " by " . $item_modifier . "</div>";
 					}
 					?>
-					<HR>
+				</div>
 
+				<div class='col-sm-6 col-md-6'>
 					<?php
-
 					if ($va_entity_rels = $t_object->get('ca_objects_x_entities.relation_id', array('returnAsArray' => true))) {
 						$va_entities_by_type = array();
 						foreach ($va_entity_rels as $va_key => $va_entity_rel) {
@@ -464,7 +465,6 @@ var marker = L.marker([lat, lon]).addTo(map);
 							$contributors = 'Unknown';
 						}
 					}
-
 
 					$yearofcreation = date("Y", $date_created);
 					$title = $t_object->get('ca_objects.preferred_labels.name');
@@ -509,10 +509,13 @@ var marker = L.marker([lat, lon]).addTo(map);
 					}
 
 					?>
+					<?php
+					print "<div class='inquireButton'>" . caNavLink($this->request, "<span class='glyphicon glyphicon-envelope'></span> Inquire", "btn btn-default btn-small", "", "Contact", "Form", array("table" => "ca_objects", "id" => $t_object->get("object_id"))) . "</div>";
+					?>
+				</div>
 
-				</div><!-- end col -->
 
-			</div><!-- end row -->
+			</div>
 		</div><!-- end container -->
 	</div><!-- end col -->
 	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
