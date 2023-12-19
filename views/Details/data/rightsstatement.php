@@ -21,31 +21,38 @@ class Rights
 
         $group_identifier = $this->extractGroup($rights_idno);
 
+        if (!$version) {
+            $version = "1.0";
+        }
+
         $rights_identifier = $this->extractIdentifier($rights_statement);
 
-        if ($group_identifier == "CC") {
-            if (!$version) {
-                $version = "4.0";
-            }
-            $this->ccLicenseLabel($version, explode("-", $rights_identifier));
-        }
-        elseif ($group_identifier == "CC0" or $group_identifier == "PDM"){
-            if (!$version){
-                $version = "1.0";
-            }
-            $this->pdMarkLabel($version, $rights_identifier, $group_identifier);
-        }elseif ($group_identifier == "INC" or $group_identifier == "NOC") {
-            if(!$version){
-                $version = "1.0";
-            }
-            $group_identifier_format = $this->formatGroup($group_identifier);
-            $this->rightsStatementLabel($version, $rights_statement, $group_identifier_format);
-        }
-        elseif($group_identifier == "CNE" or $group_identifier == "UND" or $group_identifier == "NKC"){
-            if(!$version){
-                $version = "1.0";
-            }
-            $this->rightsStatementLabel($version, $rights_statement, "Other");
+        switch ($group_identifier) {
+            case "CC":
+                $version = $version ?: "4.0";
+                $this->ccLicenseLabel($version, explode("-", $rights_identifier));
+                break;
+    
+            case "CC0":
+            case "PDM":
+                $this->pdMarkLabel($version, $rights_identifier, $group_identifier);
+                break;
+    
+            case "INC":
+            case "NOC":
+                $group_identifier_format = $this->formatGroup($group_identifier);
+                $this->rightsStatementLabel($version, $rights_statement, $group_identifier_format);
+                break;
+    
+            case "CNE":
+            case "UND":
+            case "NKC":
+                $this->rightsStatementLabel($version, $rights_statement, "Other");
+                break;
+            
+            default:
+                echo "No right statement match with the cases allowed by IF Repository.";
+                break;
         }
     }
     /**
