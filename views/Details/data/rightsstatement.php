@@ -16,10 +16,11 @@ class Rights
      *
      * @return string The generated HTML tag containing the label and URL of the specified rights statement within the given rights group.
      */
-    public function rightsstatement($rights_group, $rights_statement, $version = false)
+    public function rightsstatement($rights_idno, $rights_statement, $version = false)
     {
 
-        $group_identifier = $this->extractIdentifier($rights_group);
+        $group_identifier = $this->extractGroup($rights_idno);
+
         $rights_identifier = $this->extractIdentifier($rights_statement);
 
         if ($group_identifier == "CC") {
@@ -28,16 +29,23 @@ class Rights
             }
             $this->ccLicenseLabel($version, explode("-", $rights_identifier));
         }
-        elseif ($group_identifier == "PD"){
+        elseif ($group_identifier == "CC0" or $group_identifier == "PDM"){
             if (!$version){
                 $version = "1.0";
             }
-            $this->pdMarkLabel($version, $rights_identifier);
-        }elseif (explode("-", $group_identifier)[0] == "RS") {
+            $this->pdMarkLabel($version, $rights_identifier, $group_identifier);
+        }elseif ($group_identifier == "INC" or $group_identifier == "NOC") {
             if(!$version){
                 $version = "1.0";
             }
-            $this->rightsStatementLabel($version, $rights_statement, $group_identifier);
+            $group_identifier_format = $this->formatGroup($group_identifier);
+            $this->rightsStatementLabel($version, $rights_statement, $group_identifier_format);
+        }
+        elseif($group_identifier == "CNE" or $group_identifier == "UND" or $group_identifier == "NKC"){
+            if(!$version){
+                $version = "1.0";
+            }
+            $this->rightsStatementLabel($version, $rights_statement, "Other");
         }
     }
     /**
@@ -62,13 +70,13 @@ class Rights
      * @param string $identifier Text that helps to identify the class of Public Domain attribution.
      * 
      */
-    public function pdMarkLabel($version, $identifier){
+    public function pdMarkLabel($version, $identifier, $group_identifier){
         
-        print "<label>License</label>";
+        print "<label>Public Domain Mark</label>";
         print '<p xmlns:cc="http://creativecommons.org/ns#" >This work is marked with <a href="http://creativecommons.org/publicdomain/';
-        print ($identifier == "pd") ? "mark" : $identifier;
+        print ($group_identifier == "CC0") ? "mark" : $identifier;
         print '/'.$version.'?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">';
-        print ($identifier == "pd") ? "PDM " : "CC0 ";
+        print ($group_identifier == "PDM") ? "PDM " : "CC0 ";
         print $version.'<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/'.$identifier.'.svg?ref=chooser-v1"></a></p>';
     }
 
@@ -77,17 +85,35 @@ class Rights
      * 
      */
     public function rightsStatementLabel($version, $statement, $identifier) {
-        $label_identifier = explode("-", $identifier)[1];
     
         $statement_components = explode("(", $statement);
         $identifier_part = trim(str_replace(['(', ')'], '', $statement_components[1]));
     
-        $label = "https://rightsstatements.org/files/icons/" . $label_identifier . ".Icon-Only.dark.svg";
+        $label = "https://rightsstatements.org/files/icons/" . $identifier . ".Icon-Only.dark.svg";
         print "<label>Right Statement</label>";
     
         print '<p><a href="https://rightsstatements.org/vocab/' . $identifier_part . '/' . $version . '/" target="_blank" style="display:inline-block;"><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="' . $label . '"> ' . $statement_components[0] . '</a></p>';
     }
     
+
+    /**
+     * Extracts the group from the identifier
+     */
+
+    public function extractGroup($inputString){
+        return strtoupper(explode("_", $inputString)[0]);
+    }
+
+    /**
+     * Formatter
+     */
+    public function formatGroup($inputString){
+        $firstChar = substr($inputString, 0, 1);
+        $secondChar = strtolower(substr($inputString, 1, 1));
+        $restOfString = substr($inputString, 2);
+
+        return $firstChar . $secondChar . $restOfString;
+    }
 
     /**
      * Extracts and trims the identifier from a string containing parentheses.

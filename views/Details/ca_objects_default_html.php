@@ -312,17 +312,14 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					$right_id = $t_object->get("ca_objects.rights");
 
 					if ($right_id) {
-						$rights_group = $t_object->get("ca_objects.rights.related.preferred_labels");
+						echo "<label>Rights:</label>";
+						$rights_idno = $t_object->get("ca_objects.rights.idno");
 						$rights_label = $t_object->get("ca_objects.rights.preferred_labels");
 
 						$rights = new Rights();
-						$rights->rightsstatement($rights_group, $rights_label);
+						$rights->rightsstatement($rights_idno, $rights_label);
 					}
 					?>
-
-					{{{
-<ifdef code="ca_objects.rights"><div class="unit"><label>Rights:</label>^ca_objects.rights</div></ifdef>
-}}}
 
 					<!-- End of Licences amd Notices -->
 
