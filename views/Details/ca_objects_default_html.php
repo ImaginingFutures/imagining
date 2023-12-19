@@ -339,6 +339,8 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
 					{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels.name</l> ^ca_places.type_id</unit>}}}
 
+
+
 				</div>
 				<div class='col-sm-6 col-md-6'>
 
@@ -383,7 +385,18 @@ maxZoom: 19,
 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-var detailPageURL = baseURL + 'Detail/objects/' + caid;
+var placeidString = '^ca_places.place_id';
+
+var match = placeidString.match(/\d+/g);
+
+if (match && match.length > 0) {
+  var lastPlaceId = match[match.length - 1];
+  var detailPageURL = baseURL + 'Detail/places/' + lastPlaceId;
+  console.log(detailPageURL);
+} else {
+  console.error('No numbers found in the string');
+}
+
 var popupContent = `<a href="${detailPageURL}">ID: ${objid}<br>Title: ${titles}</a>`;
 var marker = L.marker([lat, lon]).addTo(map);
 marker.bindPopup(popupContent);
