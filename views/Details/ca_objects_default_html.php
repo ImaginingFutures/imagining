@@ -394,7 +394,13 @@ if (match && match.length > 0) {
   console.error('No numbers found in the string');
 }
 
-var popupContent = `<a href="${detailPageURL}">ID: ${objid}<br>Title: ${titles}</a>`;
+var placesLabels = '^ca_places.preferred_labels';
+
+const placesLabelsArray = placesLabels.split(";");
+
+var lastPlaceLabel = placesLabelsArray[placesLabelsArray.length - 1];
+
+var popupContent = `<a href="${detailPageURL}">${lastPlaceLabel}</a>`;
 var marker = L.marker([lat, lon]).addTo(map);
 marker.bindPopup(popupContent);
 } catch (error) {
