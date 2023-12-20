@@ -100,49 +100,20 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 			</div><!-- end col -->
 		</div><!-- end row -->
 
-		<?php
-		// Initialize the database connection and get the collection ID
-		$o_db = new Db();
-		$s_object = new ObjectSearch();
-		$s_place = new PlaceSearch();
-		$object_id_array = $t_item->get("ca_objects.object_id", array('returnAsArray' => true));
+				<!-- Header image -->
+				{{{<ifdef code="ca_object_representations.media">
+					<div class="collectionsHeader">
+					^ca_object_representations.media.original
+					</div>
+					</ifdef>
+				}}}
 
-
-		# Retrieving objects data for map
-		$vs_cache_key = md5($vs_browse_key);
 		
-		if (($o_collections_config->get("cache_timeout") > 0) && ExternalCache::contains($vs_cache_key,'ca_collections_default')) {
-			// Data found in cache, use it
-			$cachedData = ExternalCache::fetch($vs_cache_key, 'ca_collections_default');
-			$labels_places = json_decode($cachedData, true);
-		} else {
-			$labels_places = [];
-			foreach ($object_id_array as $object_id) {
-				$objects_search = $s_object->search("ca_objects.object_id:" . $object_id);
-
-				while ($objects_search->nextHit()) {
-					$o_coordinates = $objects_search->get("ca_objects.georeference");
-					if (!is_null($o_coordinates) && is_array(json_decode($o_coordinates))) {
-						$labels_places[] = array(
-							"object_id" => $object_id,
-							"object_label" => $objects_search->get("ca_objects.preferred_labels.name"),
-							"coordinates" => $o_coordinates
-						);
-					}
-				}
-			}
-		}
-
-		if(count($labels_places)){
-			ExternalCache::save($vs_cache_key, json_encode($labels_places), 'ca_collections_default', $o_collections_config->get("cache_timeout"));
-			print "<div id='map' style='height: 400px;'></div>";
-		}
-		
-		?>
+		<div class="col-sm-8 col-md-8 col-lg-8">
 
 		<div class="row">
 			<div class='col-sm-8 col-md-8 col-lg-8'>
-				<label>People</label>
+				<label>People:</label>
 			</div>
 		</div>
 
@@ -181,11 +152,20 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		}
 
 		?>
-		<div class="col-sm-8 col-md-8 col-lg-8">
+
 			<div class="row">
+				
 
 				<div class='col-sm-8 col-md-8 col-lg-8'>
-					{{{<ifdef code="ca_collections.description"><label>About</label>^ca_collections.description<br/></ifdef>}}}
+					{{{
+						<ifdef code="ca_collections.exwebpage"><label>Project Website:</label><a href="^ca_collections.exwebpage" target="_blank">^ca_collections.exwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
+					
+						<ifdef code="ca_collections.prjtype"><label>Project type:</label>^ca_collections.prjtype</ifdef>
+
+						<ifdef code="ca_collections.prjregion"><label>Region:</label>^ca_collections.prjregion</ifdef>
+
+						<ifdef code="ca_collections.description"><label>About</label>^ca_collections.description<br/></ifdef>
+					}}}
 
 
 					<?php
@@ -207,21 +187,51 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					?>
 
 				</div><!-- end col -->
-				<div class='col-sm-8 col-md-8 col-lg-8'>
-					{{{<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label></ifcount>}}}
-					{{{<ifcount code="ca_collections.related" min="2"><label>Related collections</label></ifcount>}}}
-					{{{<unit relativeTo="ca_collections" delimiter="<br/>"><l>^ca_collections.related.preferred_labels.name</l> ^relationship_typename</unit>}}}
-
-
-					{{{<ifcount code="ca_occurrences" min="1" max="1"><label>Related occurrence</label></ifcount>}}}
-					{{{<ifcount code="ca_occurrences" min="2"><label>Related occurrences</label></ifcount>}}}
-					{{{<unit relativeTo="ca_occurrences" delimiter="<br/>"><l>^ca_occurrences.preferred_labels.name</l> ^relationship_typename</unit>}}}
-
-					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
-					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
-					{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels.name</l> ^relationship_typename</unit>}}}
-				</div><!-- end col -->
+				
 			</div><!-- end row -->
+
+			<?php
+		// Initialize the database connection and get the collection ID
+		$o_db = new Db();
+		$s_object = new ObjectSearch();
+		$s_place = new PlaceSearch();
+		$object_id_array = $t_item->get("ca_objects.object_id", array('returnAsArray' => true));
+
+
+		# Retrieving objects data for map
+		$vs_cache_key = md5($vs_browse_key);
+		
+		if (($o_collections_config->get("cache_timeout") > 0) && ExternalCache::contains($vs_cache_key,'ca_collections_default')) {
+			// Data found in cache, use it
+			$cachedData = ExternalCache::fetch($vs_cache_key, 'ca_collections_default');
+			$labels_places = json_decode($cachedData, true);
+		} else {
+			$labels_places = [];
+			foreach ($object_id_array as $object_id) {
+				$objects_search = $s_object->search("ca_objects.object_id:" . $object_id);
+
+				while ($objects_search->nextHit()) {
+					$o_coordinates = $objects_search->get("ca_objects.georeference");
+					if (!is_null($o_coordinates) && is_array(json_decode($o_coordinates))) {
+						$labels_places[] = array(
+							"object_id" => $object_id,
+							"object_label" => $objects_search->get("ca_objects.preferred_labels.name"),
+							"coordinates" => $o_coordinates
+						);
+					}
+				}
+			}
+		}
+
+		if(count($labels_places)){
+			ExternalCache::save($vs_cache_key, json_encode($labels_places), 'ca_collections_default', $o_collections_config->get("cache_timeout"));
+			print "<div><h4>Location of resources:</h4>";
+			print "<div id='map' style='height: 400px;'></div>";
+			print "</div>";
+		}
+		
+		?>
+
 			<?php
 
 			if (($o_collections_config->get("cache_timeout") > 0) && ExternalCache::contains($vs_cache_key, 'ca_collections_mimetypes')) {
@@ -350,7 +360,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					<div class='counter'>
 						<?php
 						if (!$category_counts) {
-							echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-folder-minus'></i><div class='value'>0</div><div class='mimeLabel'>No items yet,<br>but not for long! </div></div>";
+							echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-folder-minus'></i><div class='value'>0</div><div class='mimeLabel'>No items yet</div></div>";
 						}
 						$colors = ['first', 'second', 'third', 'fourth'];
 
@@ -373,11 +383,21 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						}
 						?>
 					</div>
-					<?php
 					
-					$var_test = caNavLink($this->request, "<i class='far fa-plus-square' aria-label='Search'></i> Browse all elements", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-					print $var_test;
-					?>
+					<div class='col-sm-8 col-md-8 col-lg-8'>
+					{{{<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label> This project </ifcount>}}}
+					{{{<ifcount code="ca_collections.related" min="2"><label>Related collections</label> This project </ifcount>}}}
+					{{{<unit relativeTo="ca_collections" delimiter="<br/>">^relationship_typename <l>^ca_collections.related.preferred_labels.name</l></unit>}}}
+
+
+					{{{<ifcount code="ca_occurrences" min="1" max="1"><label>Related occurrence</label></ifcount>}}}
+					{{{<ifcount code="ca_occurrences" min="2"><label>Related occurrences</label></ifcount>}}}
+					{{{<unit relativeTo="ca_occurrences" delimiter="<br/>"><l>^ca_occurrences.preferred_labels.name</l> ^relationship_typename</unit>}}}
+
+					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
+					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
+					{{{<unit relativeTo="ca_places" delimiter="<br/>">This project ^relationship_typename <l>^ca_places.preferred_labels</l></unit>}}}
+				</div><!-- end col -->
 
 				</div><!-- end col -->
 			</div><!-- end row -->

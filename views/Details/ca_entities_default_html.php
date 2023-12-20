@@ -48,13 +48,12 @@
 					<H2>{{{^ca_entities.type_id}}}{{{<ifdef code="ca_entities.idno">, ^ca_entities.idno</ifdef>}}}</H2>
 					<?php 
 						print "<div class='entitiesTile'>";
-						$ca_entity_media = $t_item->get('ca_object_representations.media.preview170');
+						$ca_entity_media = $t_item->get('ca_object_representations.media.medium');
 		
 						if (!$ca_entity_media) {
 							$ca_entity_media = caGetThemeGraphic($this->request, "people.png");
 						}
-						print "<div class='entitiesThumbnail'>" . $ca_entity_media . "</div>";
-						print caDetailLink($this->request, "<div class='entityName'>" . $t_item->get('ca_entities.preferred_labels') . "</div>", "", "ca_entities", $t_item->get('ca_entities.entity_id'));
+						print "<div class='entitiesThumbnailDetail'>" . $ca_entity_media . "</div>";
 						print "</div>";
 					?>
 				</div><!-- end col -->

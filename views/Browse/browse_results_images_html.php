@@ -120,6 +120,10 @@
 					} else {
 						$vs_label_detail_link = caDetailLink($this->request, $qr_res->get("{$vs_table}.alternativetitle"), '', $vs_table, $vn_id);
 					}
+
+					if($vs_table == 'ca_entities'){
+						$vs_label_detail_link = caDetailLink($this->request, $qr_res->get("{$vs_table}.preferred_labels.displayname"), '', $vs_table, $vn_id);
+					}
 					
 					$vs_collection_detail_link = "";
 					if($vs_table == 'ca_objects'){
