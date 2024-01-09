@@ -158,7 +158,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 
 					<!-- Custom labels -->
 
-					{{{<ifdef code="ca_objects.time_period">
+					{{{<ifdef code="ca_objects.timeperiod">
 					<div class="unit">
 						<label>Time Period</label>
 						<unit relativeTo="ca_objects.time_period" delimiter="<br/>">
@@ -185,18 +185,45 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					</div>
 				</ifdef>}}}
 
-					{{{<ifdef code="ca_objects.emotion">
+				{{{<ifdef code="ca_objects.slogan">
+					<div class="unit">
+						<label>Slogans</label>
+						<unit relativeTo="ca_objects.slogan" delimiter="<br/>">
+							^ca_objects.slogan
+						</unit>
+					</div>
+				</ifdef>}}}
+
+					{{{<ifdef code="ca_objects.pandemicevent">
+					<div class="unit">
+						<label>Pandemic Event</label>
+						<unit relativeTo="ca_objects.pandemicevent" delimiter="<br/>">
+							^ca_objects.pandemicevent
+						</unit>
+					</div>
+				</ifdef>}}}
+
+				{{{<ifdef code="ca_objects.setting">
+					<div class="unit">
+						<label>Setting</label>
+						<unit relativeTo="ca_objects.setting" delimiter="<br/>">
+							^ca_objects.setting
+						</unit>
+					</div>
+				</ifdef>}}}
+
+				{{{<ifdef code="ca_objects.emotion">
 					<div class="unit">
 						<label>Emotions</label>
 						<unit relativeTo="ca_objects.emotion" delimiter="<br/>">
-							^ca_objects.emotion
+							^ca_objects.pandemicevent
 						</unit>
 					</div>
 				</ifdef>}}}
 
 					{{{<ifdef code="ca_objects.wayofliving">
 					<div class="unit">
-						<label>Emotions</label>
+						<label>Way of Living</label>
 						<unit relativeTo="ca_objects.wayofliving" delimiter="<br/>">
 							^ca_objects.wayofliving
 						</unit>
@@ -344,13 +371,13 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					<div id="map" style="height: 180px;"></div>
 
 					{{{
-<script>
+						<script>
 // Assuming ^ca_objects.georeference contains a string like "[39.920124257515,32.855112550338]"
 var georeferenceString = '^ca_objects.georeference';
 var titles = '^ca_objects.preferred_labels';
 var objid = '^ca_objects.idno';
 var caid = '^ca_objects.object_id';
-var currentURL = window.location.href;	
+var currentURL = window.location.href;
 
 // Get the current page URL
 var currentURL = window.location.href;
@@ -368,47 +395,50 @@ console.log(georeferenceString);
 georeferenceString = georeferenceString.replace(/[\[\]\s]/g, ''); // Remove brackets and whitespaces
 
 try {
-// Parse the georeference string into a JavaScript array
-var georeferenceArray = JSON.parse("[" + georeferenceString + "]");
+  if (georeferenceString) {
+    var placesLabels = '^ca_places.preferred_labels';
+    const placesLabelsArray = placesLabels.split(";");
+    var lastPlaceLabel = placesLabelsArray[placesLabelsArray.length - 1];
 
-// Extract latitude and longitude
-var lat = georeferenceArray[0];
-var lon = georeferenceArray[1];
+    var placesIDs = '^ca_places.place_id';
+    const placesIDsArray = placesIDs.split(";");
+    var lastPlaceID = placesIDsArray[placesIDsArray.length - 1];
+    console.log(placesIDs);
 
-// Create the Leaflet map
-var map = L.map('map').setView([lat, lon], 10);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-maxZoom: 19,
-attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+    var placeType = '^ca_places.type_id';
+    const placeTypesArray = placeType.split(";");
+    var lastPlaceType = placeTypesArray[placeTypesArray.length - 1];
+    console.log(placeType);
 
-var placeidString = '^ca_places.place_id';
+	var detailPageURL = baseURL + 'Detail/places/' + lastPlaceID; // Use the city name as the identifier
 
-var match = placeidString.match(/\d+/g);
+    // Parse the georeference string into a JavaScript array
+    var georeferenceArray = JSON.parse("[" + georeferenceString + "]");
 
-if (match && match.length > 0) {
-  var lastPlaceId = match[match.length - 1];
-  var detailPageURL = baseURL + 'Detail/places/' + lastPlaceId;
-  console.log(detailPageURL);
-} else {
-  console.error('No numbers found in the string');
-}
+    // Extract latitude and longitude
+    var lat = georeferenceArray[0];
+    var lon = georeferenceArray[1];
 
+    // Create the Leaflet map
+    var map = L.map('map').setView([lat, lon], 10);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
 
-var placesLabels = '^ca_places.preferred_labels';
+    if (lastPlaceType.toLowerCase() === 'address') {
+      var popupContent = `<a href="${detailPageURL}">${lastPlaceLabel}</a>`;
 
-const placesLabelsArray = placesLabels.split(";");
-
-var lastPlaceLabel = placesLabelsArray[placesLabelsArray.length - 1];
-
-var popupContent = `<a href="${detailPageURL}">${lastPlaceLabel}</a>`;
-
-var marker = L.marker([lat, lon]).addTo(map);
-marker.bindPopup(popupContent);
+      var marker = L.marker([lat, lon]).addTo(map);
+      marker.bindPopup(popupContent);
+    }
+  }
 } catch (error) {
-console.error("Error:", error);
+  console.error("Error:", error);
 }
 </script>
+
+
 }}}
 
 					<!-- end of Geographical Coverage labels -->
