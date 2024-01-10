@@ -29,6 +29,7 @@
 $t_item = $this->getVar("item");
 $va_comments = $this->getVar("comments");
 $vs_browse_key 		= $this->getVar('key');					// cache key for current browse
+$va_access_values 	= $this->getVar('access_values');		// list of access values for this user
 $vn_comments_enabled = 	$this->getVar("commentsEnabled");
 $vn_share_enabled = 	$this->getVar("shareEnabled");
 $vn_pdf_enabled = 		$this->getVar("pdfEnabled");
@@ -43,8 +44,6 @@ if ($o_collections_config->get("do_not_display_collection_browser")) {
 $vn_top_level_collection_id = array_shift($t_item->get('ca_collections.hierarchy.collection_id', array("returnWithStructure" => true)));
 
 # Prepare values for search inside collection
-
-$va_access_values = caGetUserAccessValues($this->request);
 
 $o_browse = caGetBrowseInstance("ca_objects");
 $o_browse->addCriteria("collection_facet", $t_item->get("ca_collections.collection_id"));
@@ -188,56 +187,74 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 				</div><!-- end col -->
 				
+					
+
 			</div><!-- end row -->
 
 			<?php
-		// Initialize the database connection and get the collection ID
-		$o_db = new Db();
-		$s_object = new ObjectSearch();
-		$s_place = new PlaceSearch();
-		$object_id_array = $t_item->get("ca_objects.object_id", array('returnAsArray' => true));
 
+			// COLLECTIONS MAP
 
-		# Retrieving objects data for map
-		$vs_cache_key = md5($vs_browse_key);
-		
-		if (($o_collections_config->get("cache_timeout") > 0) && ExternalCache::contains($vs_cache_key,'ca_collections_default')) {
-			// Data found in cache, use it
-			$cachedData = ExternalCache::fetch($vs_cache_key, 'ca_collections_default');
-			$labels_places = json_decode($cachedData, true);
-		} else {
-			$labels_places = [];
-			foreach ($object_id_array as $object_id) {
-				$objects_search = $s_object->search("ca_objects.object_id:" . $object_id);
+			# Retrieving objects data for map
+			$vs_cache_key = md5($vs_browse_key);
+			
+			$qr_res = $o_browse->getResults();
 
-				while ($objects_search->nextHit()) {
-					$o_coordinates = $objects_search->get("ca_objects.georeference");
-					if (!is_null($o_coordinates) && is_array(json_decode($o_coordinates))) {
-						$labels_places[] = array(
-							"object_id" => $object_id,
-							"object_label" => $objects_search->get("ca_objects.preferred_labels.name"),
-							"coordinates" => $o_coordinates
-						);
+			if (($o_collections_config->get("cache_timeout") > 0) && ExternalCache::contains($vs_cache_key,'ca_collections_default')) {
+				// Data found in cache, use it
+				$cachedData = ExternalCache::fetch($vs_cache_key, 'ca_collections_default');
+				$labels_places = json_decode($cachedData, true);
+				$objectsidsData = ExternalCache::fetch($vs_cache_key, 'ca_collections_objectids');
+				$object_id_array = json_decode($objectsidsData, true);
+			} else {
+
+				$object_id_array = array();
+				$labels_places = array();
+
+				while ($qr_res->nextHit()) {
+					$object_id = $qr_res->get('object_id'); 
+					$object_id_array[] = $object_id;
+				
+					$o_coordinates = $qr_res->get('georeference');
+				
+					if (!is_null($o_coordinates)) {
+						$decoded_coordinates = json_decode($o_coordinates, true);
+						if (json_last_error() === JSON_ERROR_NONE && is_array($decoded_coordinates)) {
+							$labels_places[] = array(
+								"object_id" => $object_id,
+								"object_label" => $qr_res->get("preferred_labels"),
+								"coordinates" => $decoded_coordinates // Using decoded coordinates
+							);
+						} else {
+							print json_last_error_msg(); // More informative error message
+						}
 					}
 				}
 			}
-		}
+			if(count($labels_places)){
 
-		if(count($labels_places)){
-			ExternalCache::save($vs_cache_key, json_encode($labels_places), 'ca_collections_default', $o_collections_config->get("cache_timeout"));
-			print "<div><h4>Location of resources:</h4>";
-			print "<div id='map' style='height: 400px;'></div>";
-			print "</div>";
-		}
-		
+				ExternalCache::save($vs_cache_key, json_encode($labels_places), 'ca_collections_default', $o_collections_config->get("cache_timeout"));
+				ExternalCache::save($vs_cache_key, json_encode($object_id_array), 'ca_collections_objectids', $o_collections_config->get("cache_timeout"));
+				print "<div><h4>Location of resources:</h4>";
+				print "<div id='map' style='height: 400px;'></div>";
+				print "</div>";
+			} 
 		?>
 
 			<?php
+
+			// MIMETYPES SCRIPT
+
+			// Initialize the database connection and get the collection ID
+			$o_db = new Db();
+			$s_object = new ObjectSearch();
 
 			if (($o_collections_config->get("cache_timeout") > 0) && ExternalCache::contains($vs_cache_key, 'ca_collections_mimetypes')) {
 				// Data found in cache, use it
 				$cachedDataScript = ExternalCache::fetch($vs_cache_key, 'ca_collections_mimetypes');
 				$category_counts = json_decode($cachedDataScript, true);
+				$objectsidsData = ExternalCache::fetch($vs_cache_key, 'ca_collections_objectids');
+				$object_id_array = json_decode($objectsidsData, true);
 			} else {
 			// Fetch representation IDs for the objects
 			$representation_ids = [];
@@ -458,7 +475,8 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
         // Extract relevant information from the data array
         var objectID = place.object_id;
         var objectLabel = place.object_label;
-        var [lat, lon] = place.coordinates.replace('[', '').replace(']', '').split(',');
+		var lat = place.coordinates[0];
+		var lon = place.coordinates[1];
 
         // Convert string values to numbers
         lat = parseFloat(lat);
@@ -486,7 +504,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		labelsObject[coordsKey].push(`<a href="${detailLink}">${objectLabel}</a>`);
 
 		// Customize the popup content with the retrieved title
-		var popupContent = `Items: ${labelsObject[coordsKey].slice(0, 10).join('<br>')}`;
+		var popupContent = `${labelsObject[coordsKey].slice(0, 10).join('<br>')}`;
 
 		// If there are more than 10 items, add a link to browse all elements
 		if (labelsObject[coordsKey].length > 10) {
@@ -510,8 +528,11 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
     map.setView([avgLat, avgLon]);
 
     // Fit the map to contain all the markers
+	
     var bounds = L.latLngBounds(labelsPlaces.map(function(place) {
-        var [lat, lon] = place.coordinates.replace('[', '').replace(']', '').split(',');
+		var lat = place.coordinates[0];
+		var lon = place.coordinates[1];
+        // var [lat, lon] = place.coordinates.replace('[', '').replace(']', '').split(',');
         return [parseFloat(lat), parseFloat(lon)];
     }));
 

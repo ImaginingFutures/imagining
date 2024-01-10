@@ -206,7 +206,7 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					var detailLink = baseUrl + "/Detail/objects/" + ca;
 
 					// Customize the popup content with the retrieved title and place type
-					var popupContent = "<a href='" + detailLink + "'>ID: " + obj + "<br>Title: " + title + "</a>";
+					var popupContent = "<a href='" + detailLink + "'>" + title + "</a>";
 					var marker = L.marker([lat, lon]).addTo(map);
 					marker.bindPopup(popupContent);
 				});
