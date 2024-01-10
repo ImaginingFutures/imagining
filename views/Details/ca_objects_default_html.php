@@ -433,6 +433,7 @@ try {
       marker.bindPopup(popupContent);
     }
   }
+
 } catch (error) {
   console.error("Error:", error);
 }
