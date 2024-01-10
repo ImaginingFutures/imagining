@@ -58,11 +58,16 @@
 
 	$va_add_to_set_link_info = caGetAddToSetInfo($this->request);
 
-	$o_icons_conf = caGetIconsConfig();
-	$va_object_type_specific_icons = $o_icons_conf->getAssoc("placeholders");
-	if(!($vs_default_placeholder = $o_icons_conf->get("placeholder_media_icon"))){
-		$vs_default_placeholder = "<i class='fa fa-picture-o fa-2x' aria-label='placeholder image'></i>";
+
+	if ($vs_table == "ca_objects") {
+		$vs_default_placeholder = caGetThemeGraphic($this->request, "IF_logo.png");
+	} elseif ($vs_table == "ca_entities") {
+		$vs_default_placeholder = caGetThemeGraphic($this->request, "people.png");
+	} else {
+		$vs_default_placeholder = caGetThemeGraphic($this->request, "IF_logo.png");
 	}
+
+	
 	$vs_default_placeholder_tag = "<div class='bResultItemImgPlaceholder'>".$vs_default_placeholder."</div>";
 		
 
@@ -120,6 +125,10 @@
 					} else {
 						$vs_label_detail_link = caDetailLink($this->request, $qr_res->get("{$vs_table}.alternativetitle"), '', $vs_table, $vn_id);
 					}
+
+					if($vs_table == 'ca_entities'){
+						$vs_label_detail_link = caDetailLink($this->request, $qr_res->get("{$vs_table}.preferred_labels.displayname"), '', $vs_table, $vn_id);
+					}
 					
 					$vs_collection_detail_link = "";
 					if($vs_table == 'ca_objects'){
@@ -134,6 +143,7 @@
 							$t_list_item->load($qr_res->get("type_id"));
 							$vs_typecode = $t_list_item->get("idno");
 							if($vs_type_placeholder = caGetPlaceholder($vs_typecode, "placeholder_media_icon")){
+								var_dump($vs_type_placeholder);
 								$vs_thumbnail = "<div class='bResultItemImgPlaceholder'>".$vs_type_placeholder."</div>";
 							}else{
 								$vs_thumbnail = $vs_default_placeholder_tag;

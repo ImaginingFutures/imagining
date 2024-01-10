@@ -78,13 +78,19 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					?>
 				</div><!-- end col -->
 			</div><!-- end row -->
-			<div class="row">
+			<?php $resources = $t_item->get('ca_objects.related.georeference');
+
+			if($resources){
+
+			print '<div class="row">
 					<div id="map" style="height: 400px">
 					<div id="expandButton" style="position: relative; top: 100px; left: 10px; z-index: 1000;">
   					<i class="fas fa-expand" style="font-size: 20px; cursor: pointer;"></i>
 					</div>
-					</div>
+					</div>';
+			}
 
+			?>
 					<?php
 					# Comment and Share Tools
 					if ($vn_comments_enabled | $vn_share_enabled) {
@@ -158,7 +164,7 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 				}).addTo(map);
 
 
-				var georeferences = <?php print json_encode($t_item->get('ca_objects.related.georeference')); ?>;
+				var georeferences = <?php print json_encode($resources); ?>;
 				var titles = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.preferred_labels'))); ?>;
 				var objid = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.idno'))); ?>;
 				var caid = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.object_id'))); ?>;
@@ -200,7 +206,7 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					var detailLink = baseUrl + "/Detail/objects/" + ca;
 
 					// Customize the popup content with the retrieved title and place type
-					var popupContent = "<a href='" + detailLink + "'>ID: " + obj + "<br>Title: " + title + "</a>";
+					var popupContent = "<a href='" + detailLink + "'>" + title + "</a>";
 					var marker = L.marker([lat, lon]).addTo(map);
 					marker.bindPopup(popupContent);
 				});
