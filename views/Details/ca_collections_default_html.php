@@ -200,6 +200,8 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 			
 			$qr_res = $o_browse->getResults();
 
+			
+
 			if (($o_collections_config->get("cache_timeout") > 0) && ExternalCache::contains($vs_cache_key,'ca_collections_default')) {
 				// Data found in cache, use it
 				$cachedData = ExternalCache::fetch($vs_cache_key, 'ca_collections_default');
@@ -242,7 +244,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		?>
 
 			<?php
-
+			 
 			// MIMETYPES SCRIPT
 
 			// Initialize the database connection and get the collection ID
@@ -264,7 +266,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					$representation_ids[] = $representations->get("representation_id");
 				}
 			}
-
+		
 			// Fetch mimetypes and count them
 			$mimetype_counts = [];
 			foreach ($representation_ids as $representation_id) {
@@ -276,7 +278,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 			}
 			// Initialize an array to store counts for each category
 			$category_counts = [];
-
+		
 			// Iterate through the mimetype counts and categorize them
 			foreach ($mimetype_counts as $mimetype => $count) {
 				foreach ($mimetypes as $category => $mimetype_data) {
@@ -296,8 +298,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 				<div class='col-sm-12'>
 
 					<?php
-					if (count($object_id_array) > 0) {
-
+					if ($object_id_array and count($object_id_array) > 0) {
 						# search for case studies or words into actions objects types.
 
 						$case_study_id = $o_db->query("SELECT item_id, name_singular FROM ca_list_item_labels WHERE name_singular = 'Case Study' OR name_singular = 'Words into Action'");
