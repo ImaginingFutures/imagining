@@ -29,6 +29,7 @@
 use function PHPUnit\Framework\isType;
 
 $t_item = $this->getVar("item");
+$va_access_values 	= $this->getVar('access_values');
 $va_comments = $this->getVar("comments");
 $vn_comments_enabled = 	$this->getVar("commentsEnabled");
 $vn_share_enabled = 	$this->getVar("shareEnabled");
@@ -78,7 +79,13 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					?>
 				</div><!-- end col -->
 			</div><!-- end row -->
-			<?php $resources = $t_item->get('ca_objects.related.georeference');
+			<?php 
+			
+			$resources = $t_item->get('ca_objects.related.georeference', array("checkAccess" => $va_access_values, "returnAsArray" => true));
+
+			$preferred_labels = $t_item->get('ca_objects.related.preferred_labels', array("checkAccess" => $va_access_values, "returnAsArray" => true));
+
+			$ids = $t_item->get('ca_objects.related.object_id', array("checkAccess" => $va_access_values, "returnAsArray" => true));
 
 			if($resources){
 
@@ -165,13 +172,8 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 
 
 				var georeferences = <?php print json_encode($resources); ?>;
-				var titles = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.preferred_labels'))); ?>;
-				var objid = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.idno'))); ?>;
-				var caid = <?php print json_encode(explode(";", $t_item->get('ca_objects.related.object_id'))); ?>;
-				var placeTypes = <?php print json_encode(explode(";", $t_item->get('ca_places.type_id'))); ?>;
-
-				// Split the georeference string into an array of coordinates
-				var coordinatesArray = georeferences.split(';');
+				var titles = <?php print json_encode($preferred_labels); ?>;
+				var caid = <?php print json_encode($ids); ?>;
 
 				// Initialize min and max values for latitude and longitude
 				var minLat = 90,
@@ -179,7 +181,8 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					minLon = 180,
 					maxLon = -180;
 
-				coordinatesArray.forEach(function(coordinate, index) {
+				georeferences.forEach(function(coordinate, index) {
+
 					// Split the coordinate into latitude and longitude
 					var [lat, lon] = coordinate.replace('[', '').replace(']', '').split(',');
 
@@ -193,11 +196,9 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					minLon = Math.min(minLon, lon);
 					maxLon = Math.max(maxLon, lon);
 
-					// Get the title, place type, and other information for the current object
+					// Get the title, and other information for the current object
 					var title = titles[index];
-					var obj = objid[index];
 					var ca = caid[index];
-					var placeType = placeTypes[index];
 
 					// Get the base URL using JavaScript
 					var baseUrl = window.location.href.split('/Detail')[0];
@@ -218,8 +219,6 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 
 				// Calculate the center and zoom level based on the bounding box
 				var bounds = L.latLngBounds(L.latLng(minLat, minLon), L.latLng(maxLat, maxLon));
-
-				// map.fitBounds(bounds, { padding: [50, 50] });
 
 				var zoomlevel = <?php print $zoomlevel; ?>
 
