@@ -1087,10 +1087,20 @@ a.readmore-js-toggle:hover {
 }
 
 /* browse list results */
+
+.bResultItem {
+	box-shadow: none;
+}
+
 .bResultItemText,
 .bResultItemText a {
 	font-size: 15px;
 	text-decoration: none;
+	color: #378bc7 !important;
+}
+
+.bResultItemText p {
+	color: #242121;
 }
 
 .bResultListItem .bResultListItemText,
@@ -1133,6 +1143,7 @@ a.readmore-js-toggle:hover {
 
 .bResultItemContent {
 	height: 270px;
+	border-radius: 10px;
 }
 
 .bResultListItemCol {
@@ -1147,10 +1158,72 @@ a.readmore-js-toggle:hover {
 	height: 14x2px;
 }
 
-.bResultListItem .bResultListItemImg {
-	max-height: 92px;
+.bResultItemImg {
+	border-radius: 10px;
 }
 
+.bResultItemContent .title {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-image: url("../graphics/IF_default.jpg");
+	color: white;
+	opacity: 0;
+	transition: opacity 0.3s;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center; /* Vertically center the content */
+	justify-content: center; /* Horizontally center the content */
+	text-align: center;
+	padding: 1em;
+	border-radius: 10px;
+  }
+  
+.bResultItemContent:hover .title {
+	opacity: 0.5;
+  }
+  
+.bResultItemContent .title i {
+	font-size: xxx-large;
+}
+
+.bResultItemContent .title a {
+	font-family: "Calluna Sans", verdana, sans-serif;
+	font-weight: 700;
+	font-size: 18px;
+	color: white;
+	text-decoration: none;
+  }
+
+  .bResultItem .bResultItemImg {
+	position: absolute;
+	max-width: 100%;
+	max-height: 100%;
+	min-height: 0%;
+	object-fit: cover;
+	object-position: center;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	min-width: 150px;
+}
+
+@media(max-width:768px) {
+	.bResultItem .bResultItemImg {
+		min-width: 0%;
+	}
+}
+
+.bResultItemImgPlaceholder {
+	background-color: transparent;
+	border: none;
+}
+
+.bResultItem .bResultItemText {
+	position: absolute;
+	bottom: 0px;
+}
 
 @media(max-width:768px) {
 	.results .bSearchWithinContainer {
