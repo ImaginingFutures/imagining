@@ -29,7 +29,8 @@ class Rights
 
         switch ($group_identifier) {
             case "CC":
-                $version = $version ?: "4.0";
+                if ($version === "1.0") {
+                $version = "4.0";}
                 $this->ccLicenseLabel($version, explode("-", $rights_identifier));
                 break;
     
