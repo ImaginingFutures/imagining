@@ -58,17 +58,7 @@
 
 	$va_add_to_set_link_info = caGetAddToSetInfo($this->request);
 
-
-	if ($vs_table == "ca_objects") {
-		$vs_default_placeholder = caGetThemeGraphic($this->request, "IF_logo.png");
-	} elseif ($vs_table == "ca_entities") {
-		$vs_default_placeholder = caGetThemeGraphic($this->request, "people.png");
-	} else {
-		$vs_default_placeholder = caGetThemeGraphic($this->request, "IF_logo.png");
-	}
-
-	
-	$vs_default_placeholder_tag = "<div class='bResultItemImgPlaceholder'>".$vs_default_placeholder."</div>";
+	$vs_default_placeholder_tag = "<div class='bResultItemImgPlaceholder'>".caGetThemeGraphic($this->request, 'IF_logo.png') ."</div>";
 		
 
 		$vn_col_span = 3;
@@ -117,24 +107,9 @@
 				if(($o_config->get("cache_timeout") > 0) && ExternalCache::contains($vs_cache_key,'browse_result')){
 					print ExternalCache::fetch($vs_cache_key, 'browse_result');
 				}else{			
-					$vs_idno_detail_link 	= caDetailLink($this->request, $qr_res->get("{$vs_table}.idno"), '', $vs_table, $vn_id);
-					/* if {$vs_table}.alternativetitle is not empty, use it, otherwise use {$vs_table}.preferred_labels */
-					$vs_label_detail_link = "";
-					if ($vs_table == 'ca_objects') {
-						$vs_label_detail_link = caDetailLink($this->request, $qr_res->get("{$vs_table}.preferred_labels"), '', $vs_table, $vn_id);
-					} else {
-						$vs_label_detail_link = caDetailLink($this->request, $qr_res->get("{$vs_table}.alternativetitle"), '', $vs_table, $vn_id);
-					}
-
-					if($vs_table == 'ca_entities'){
-						$vs_label_detail_link = caDetailLink($this->request, $qr_res->get("{$vs_table}.preferred_labels.displayname"), '', $vs_table, $vn_id);
-					}
-					
-					$vs_collection_detail_link = "";
-					if($vs_table == 'ca_objects'){
-						$vs_collection_detail_link = caDetailLink($this->request, $qr_res->get("ca_collections.preferred_labels"), '', 'ca_collections', $qr_res->get("ca_collections.collection_id"));
-					}
-
+					$vs_idno_detail = $qr_res->get("{$vs_table}.idno");
+					$vs_label_detail_link 	= caDetailLink($this->request, $qr_res->get("{$vs_table}.preferred_labels"), '', $vs_table, $vn_id);
+					$vs_detail_link = caDetailLink($this->request, "<i class='fas fa-hand-pointer'></i>", "", $vs_table,  $vn_id);
 					$vs_thumbnail = "";
 					$vs_type_placeholder = "";
 					$vs_typecode = "";
@@ -142,14 +117,10 @@
 						if(!($vs_thumbnail = $qr_res->get('ca_object_representations.media.medium', array("checkAccess" => $va_access_values)))){
 							$t_list_item->load($qr_res->get("type_id"));
 							$vs_typecode = $t_list_item->get("idno");
-							if($vs_type_placeholder = caGetPlaceholder($vs_typecode, "placeholder_media_icon")){
-								var_dump($vs_type_placeholder);
-								$vs_thumbnail = "<div class='bResultItemImgPlaceholder'>".$vs_type_placeholder."</div>";
-							}else{
-								$vs_thumbnail = $vs_default_placeholder_tag;
-							}
+							$vs_thumbnail = $vs_default_placeholder_tag;
 						}
 						$vs_info = null;
+						
 						$vs_rep_detail_link 	= caDetailLink($this->request, $vs_thumbnail, '', $vs_table, $vn_id);				
 					} else {
 						if($va_images[$vn_id]){
@@ -167,14 +138,13 @@
 
 					$vs_result_output = "
 		<div class='bResultItemCol col-xs-{$vn_col_span_xs} col-sm-{$vn_col_span_sm} col-md-{$vn_col_span}'>
-			<div class='bResultItem' id='row{$vn_id}' onmouseover='jQuery(\"#bResultItemExpandedInfo{$vn_id}\").show();'  onmouseout='jQuery(\"#bResultItemExpandedInfo{$vn_id}\").hide();'>
+			<div class='bResultItem' id='row{$vn_id}'>
 				<div class='bSetsSelectMultiple'><input type='checkbox' name='object_ids' value='{$vn_id}'></div>
-				<div class='bResultItemContent'><div class='text-center bResultItemImg'>{$vs_rep_detail_link}</div>
+				<div class='bResultItemContent'>
+					<div class='text-center bResultItemImg'>{$vs_rep_detail_link}</div>
+					<div class='title'>{$vs_detail_link}</div>
 					<div class='bResultItemText'>
-						{$vs_idno_detail_link}<br/>
-						{$vs_label_detail_link}<br/>
-						<br/>
-						<!-- {$vs_collection_detail_link}<br/> -->
+						<h3>{$vs_label_detail_link}</h3><p>{$vs_idno_detail}</p>
 					</div><!-- end bResultItemText -->
 				</div><!-- end bResultItemContent -->
 				<div class='bResultItemExpandedInfo' id='bResultItemExpandedInfo{$vn_id}'>
@@ -193,10 +163,3 @@
 			print "<div style='clear:both'></div>".caNavLink($this->request, _t('Next %1', $vn_hits_per_block), 'jscroll-next', '*', '*', '*', array('s' => $vn_start + $vn_results_output, 'key' => $vs_browse_key, 'view' => $vs_current_view, 'sort' => $vs_current_sort, '_advanced' => $this->getVar('is_advanced') ? 1  : 0));
 		}
 ?>
-<script type="text/javascript">
-	jQuery(document).ready(function() {
-		if($("#bSetsSelectMultipleButton").is(":visible")){
-			$(".bSetsSelectMultiple").show();
-		}
-	});
-</script>

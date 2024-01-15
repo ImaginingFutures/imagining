@@ -405,7 +405,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					<div class='col-sm-8 col-md-8 col-lg-8'>
 					{{{<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label> This project </ifcount>}}}
 					{{{<ifcount code="ca_collections.related" min="2"><label>Related collections</label> This project </ifcount>}}}
-					{{{<unit relativeTo="ca_collections" delimiter="<br/>">^relationship_typename <l>^ca_collections.related.preferred_labels.name</l></unit>}}}
+					{{{<unit relativeTo="ca_collections_x_collections" delimiter="<br/>">^relationship_typename <l>^ca_collections.related.preferred_labels.name</l></unit>}}}
 
 
 					{{{<ifcount code="ca_occurrences" min="1" max="1"><label>Related occurrence</label></ifcount>}}}
