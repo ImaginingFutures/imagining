@@ -121,7 +121,7 @@
 					<span class="icon-bar"></span>
 				</button>
 				
-				<a href="<?php print caNavUrl($this->request, "", "", "", ""); ?>" class="navbar-brand">Imagining Futures</a>
+				<a href="<?php print caNavUrl($this->request, "", "", "", ""); ?>" class="navbar-brand"><?php print caGetThemeGraphic($this->request, 'IF_logo.png') ?> Imagining Futures</a>
 			</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
