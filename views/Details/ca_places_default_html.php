@@ -181,11 +181,12 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					minLon = 180,
 					maxLon = -180;
 
+				var coordinatesDetails = {};
+
 				georeferences.forEach(function(coordinate, index) {
 
 					// Split the coordinate into latitude and longitude
 					var [lat, lon] = coordinate.replace('[', '').replace(']', '').split(',');
-
 					// Convert string values to numbers
 					lat = parseFloat(lat);
 					lon = parseFloat(lon);
@@ -196,21 +197,44 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					minLon = Math.min(minLon, lon);
 					maxLon = Math.max(maxLon, lon);
 
-					// Get the title, and other information for the current object
-					var title = titles[index];
-					var ca = caid[index];
+					var key = lat + ',' + lon;
 
-					// Get the base URL using JavaScript
-					var baseUrl = window.location.href.split('/Detail')[0];
+					if (!coordinatesDetails[key]) {
+						console.log(coordinatesDetails[key]);
+						coordinatesDetails[key] = [];
+					}
 
-					// Construct the URL using JavaScript
-					var detailLink = baseUrl + "/Detail/objects/" + ca;
+					coordinatesDetails[key].push({
+						title: titles[index],
+						ca: caid[index]
+					});
+				});
 
-					// Customize the popup content with the retrieved title and place type
-					var popupContent = "<a href='" + detailLink + "'>" + title + "</a>";
+				for (var key in coordinatesDetails) {
+					var [lat, lon] = key.split(',');
+					lat = parseFloat(lat);
+					lon = parseFloat(lon);
+
+					var details = coordinatesDetails[key];
+					var displayedDetails = details.slice(0, 10); // only shows 10 items max.
+
+					var popupContent = displayedDetails.map(function(detail) {
+						var baseUrl = window.location.href.split('/Detail')[0];
+						var detailLink = baseUrl + "/Detail/objects/" + detail.ca;
+						return "<a href='" + detailLink + "'>" + detail.title + "</a>";
+					}).join('<br/>');
+
+					if (details.length > 10) {
+						<?php
+							$browseLink = caNavLink($this->request, "<i class='far fa-plus-square' aria-label='Search'></i> Browse all elements", "browseRemoveFacet", "", "browse", "objects", array("facet" => "place_facet", "id" => $t_item->get("ca_places.place_id")));
+							$escapedBrowseLink = str_replace("'", "\'", $browseLink);
+							echo "popupContent += '<br>{$escapedBrowseLink}';";
+							?>
+					}
+
 					var marker = L.marker([lat, lon]).addTo(map);
 					marker.bindPopup(popupContent);
-				});
+				}
 
 				document.getElementById('expandButton').addEventListener('click', function () {
 					// Reset the map to the original fitBounds zoom level
