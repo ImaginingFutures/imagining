@@ -120,7 +120,8 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a href="https://ifrepo.world/" class="navbar-brand">Imagining Futures</a>
+				
+				<a href="<?php print caNavUrl($this->request, "", "", "", ""); ?>" class="navbar-brand"><?php print caGetThemeGraphic($this->request, 'IF_logo.png') ?> Imagining Futures</a>
 			</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -185,7 +186,7 @@
 					<li <?= ($this->request->getController() == "Collections") ? 'class="active"' : ''; ?>><?= caNavLink($this->request, _t("Projects"), "", "", "Collections", "index"); ?></li>
 					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "entities")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Participants"), "", "", "Browse", "participants"); ?></li>				
 					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "objects")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Resources"), "", "", "Browse", "objects"); ?></li>				
-					<li><?= caNavLink($this->request, _t("Collected Works"), "", "", "CollectedWorks", "index"); ?></li>
+					
 					<li><a href="https://imaginingfutures.world/imagining-futures-overview/" target="_blank">About</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
