@@ -60,6 +60,24 @@
 
 	$vs_default_placeholder_tag = "<div class='bResultItemImgPlaceholder'>".caGetThemeGraphic($this->request, 'IF_logo.png') ."</div>";
 		
+	# this needs to be put outside the browse view
+	function TitleCutter($title) {
+		if (strlen($title) > 45){
+			$title_reduced = "";
+			
+			$words = explode(" ", $title);
+			
+			foreach($words as $word){
+					if (strlen($title_reduced) + strlen($word) + 1 <= 45){
+							$title_reduced .= $word . " ";
+						} else {
+							return trim($title_reduced);
+						}
+			}
+		} else {
+			return trim($title);
+		}
+	}
 
 		$vn_col_span = 3;
 		$vn_col_span_sm = 4;
@@ -108,7 +126,9 @@
 					print ExternalCache::fetch($vs_cache_key, 'browse_result');
 				}else{			
 					$vs_idno_detail = $qr_res->get("{$vs_table}.idno");
-					$vs_label_detail_link 	= caDetailLink($this->request, $qr_res->get("{$vs_table}.preferred_labels"), '', $vs_table, $vn_id);
+					$preferred_label = TitleCutter($qr_res->get("{$vs_table}.preferred_labels"));
+					$vs_label_detail_link 	= caDetailLink($this->request, $preferred_label, '', $vs_table, $vn_id);
+					
 					$vs_detail_link = caDetailLink($this->request, "<i class='fas fa-hand-pointer'></i>", "", $vs_table,  $vn_id);
 					$vs_thumbnail = "";
 					$vs_type_placeholder = "";
@@ -143,10 +163,11 @@
 				<div class='bResultItemContent'>
 					<div class='text-center bResultItemImg'>{$vs_rep_detail_link}</div>
 					<div class='title'>{$vs_detail_link}</div>
-					<div class='bResultItemText'>
+					
+				</div><!-- end bResultItemContent -->
+				<div class='bResultItemText'>
 						<h3>{$vs_label_detail_link}</h3><p>{$vs_idno_detail}</p>
 					</div><!-- end bResultItemText -->
-				</div><!-- end bResultItemContent -->
 				<div class='bResultItemExpandedInfo' id='bResultItemExpandedInfo{$vn_id}'>
 					<hr>
 					{$vs_expanded_info}{$vs_add_to_set_link}
