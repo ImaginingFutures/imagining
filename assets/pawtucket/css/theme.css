@@ -1108,7 +1108,7 @@ a.readmore-js-toggle:hover {
 }
 
 .bResultItem:hover .bResultItemContent {
-    height: 270px; 
+    height: 235px; 
     min-height: 0%;
 }
 
@@ -1165,14 +1165,14 @@ a.readmore-js-toggle:hover {
 }
 
 .bResultItemCol {
-	height: 320px;
+	height: 360px;
 }
 
 .bResultItemContent {
 	display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 270px;
+    height: 235px;
     border-radius: 10px;
 }
 
@@ -1254,11 +1254,6 @@ a.readmore-js-toggle:hover {
 	background-color: transparent;
 	border: none;
 	padding: 0px 0px 0px;
-}
-
-.bResultItem .bResultItemText {
-	position: absolute;
-	bottom: 0px;
 }
 
 @media(max-width:768px) {
