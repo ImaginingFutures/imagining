@@ -51,7 +51,7 @@
 							<div class="form-group">
 								<input type="text" class="form-control" id="heroSearchInput" placeholder="<?php print _t("Search"); ?>" name="search" autocomplete="off" aria-label="<?php print _t("Search"); ?>" />
 							</div>
-							<button type="submit" class="btn-search" id="heroSearchButton"><span class="glyphicon glyphicon-search" aria-label="<?php print _t("Submit Search"); ?>"></span></button>
+							<button type="submit" class="btn-search" id="heroSearchButton"><i class="fas fa-search" aria-label="<?php print _t("Submit Search"); ?>"></i></button>
 						</div>
 					</form>
 				</div>

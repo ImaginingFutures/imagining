@@ -102,7 +102,12 @@ strong {
 }
 
 H1,
-h1,
+h1 {
+	color: #171f5c;
+	font-family: "Calluna Sans", verdana, sans-serif;
+	font-weight: 600;
+	font-size: xx-large;
+}
 H2,
 h2,
 H3,
@@ -263,12 +268,31 @@ a:hover {
 	border: 1px solid #333;
 }
 
+.navbar-brand img {
+    width: 35px;
+}
+
 .headerAdvancedSearch {
 	text-align: right;
 }
 
 .headerAdvancedSearch a {
-	font-size: 13px;
+	font-size: 12px;
+	text-decoration: none;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-family: "Calluna Sans", verdana, sans-serif;
+	color: #378bc7;
+	padding: 3px 20px;
+	display: block;
+	clear: both;
+	font-weight: normal;
+	white-space: nowrap;
+}
+
+.advancedSearchContainer {
+    background-color: #000;
+	border: none;
 }
 
 #headerSearchButton {
@@ -585,10 +609,163 @@ a.navbar-brand,
 	}
 }
 
+.entitiesTile {
+	position: relative;
+	max-width: 150px;
+	max-height: 150px;
+	padding: .5em;
+}
+
+.entitiesTile .entitiesThumbnail {
+	position: relative;
+	overflow: hidden;
+    padding-bottom: 100%;
+  }
+
+.entitiesTile .entitiesThumbnail img {
+	position: absolute;
+	max-width: 100%;
+	max-height: 100%;
+	border-radius: 50%;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	object-fit: cover;
+	object-position: center;
+  }
+
+
+.entitiesTile .entitiesThumbnailDetail {
+	position: relative;
+	overflow: hidden;
+	padding-bottom: 100%;
+	width: 100%;
+	border-radius: 50%;
+}
+
+.entitiesTile .entitiesThumbnailDetail img {
+	position: absolute;
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: cover;
+	object-position: center;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 10px;
+}
+
+.entitiesTile .entityName {
+	position: absolute;
+	top: 0;
+	left: 0;
+	border-radius: 50%;
+	background-image: url("../graphics/IF_default.jpg") ;
+	color: white;
+	opacity: 0;
+	transition: opacity 0.3s;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center; /* Vertically center the content */
+	justify-content: center; /* Horizontally center the content */
+	text-align: center;
+	padding: 1em;
+  }
+  
+.entitiesTile:hover .entityName {
+	opacity: 0.7;
+  }
+  
+.entitiesTile .entityName a {
+	font-family: "Calluna Sans", verdana, sans-serif;
+	font-weight: 700;
+	font-size: 18px;
+	color: white;
+  }
+
+
+.collectionTile {
+	position: relative;
+	box-shadow: none;
+  }
+  
+.collectionTile .title {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-image: url("../graphics/IF_default.jpg");
+	color: white;
+	opacity: 0;
+	transition: opacity 0.3s;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center; /* Vertically center the content */
+	justify-content: center; /* Horizontally center the content */
+	text-align: center;
+	padding: 1em;
+	border-radius: 10px;
+  }
+  
+.collectionTile:hover .title {
+	opacity: 0.5;
+  }
+  
+.collectionTile .title i {
+	font-size: xxx-large;
+}
+
 .collectionTile .title a {
 	font-family: "Calluna Sans", verdana, sans-serif;
-	font-weight: 400;
+	font-weight: 700;
 	font-size: 18px;
+	color: white;
+	text-decoration: none;
+  }
+  
+@media only screen and (min-width: 400px) and (max-width: 999px) {
+    .collectionTile .collectionThumbnail {
+        width: 100%; /* Adjust width as needed */
+        height: auto; /* Keep height proportional */
+    }
+	.collectionTile .collectionThumbnail img {
+		width: 150px;
+		height: 150px;
+	}
+}
+
+.collectionTile .collectionThumbnail {
+	position: relative;
+	overflow: hidden;
+	padding-bottom: 100%;
+	width: 100%;
+	border-radius: 10px;
+  }
+  
+.collectionTile .collectionThumbnail img {
+	position: absolute;
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: cover;
+	object-position: center;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 10px;
+  }
+
+.collectionTile p {
+	font-size: medium;
+	text-size-adjust: auto;
+}
+
+.collectionTile h3 {
+	text-align: center;
+}
+
+.collectionTile a {
+	text-decoration: none;
 }
 
 .detailNavBgLeft,
@@ -695,6 +872,11 @@ a.readmore-js-toggle:hover {
 	color: #171F5C;
 }
 
+.detail h4 {
+	padding-top: 15px;
+	padding-bottom: 10px;
+}
+
 #bRefine div,
 #bRefine {
 	line-height: .75em !important;
@@ -723,6 +905,22 @@ a.readmore-js-toggle:hover {
 	display: inline-block;
 	padding: 5px 30px 5px 5px;
 	font-size: 14px;
+}
+
+.collectionsHeader {
+    position: relative;
+    width: 100%; /* Adjust the width as needed */
+    height: 0;
+    padding-bottom: 40%; /* This sets the aspect ratio; here it's 16:9 */
+    overflow: hidden;
+}
+
+.collectionsHeader img {
+	position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 #collectionsWrapper .glyphicon {
@@ -804,7 +1002,7 @@ a.readmore-js-toggle:hover {
 	.collectionBrowseItems {
 		float: right;
 		top: 25px;
-		/* position: relative; */
+		position: relative;
 		padding: 10px;
 	}
 }
@@ -855,6 +1053,24 @@ a.readmore-js-toggle:hover {
 }
 
 
+/* Collection hierarchy */
+#collectionHierarchy{
+	padding-top:26px;
+   }
+
+/* Position of browse items buttons */
+@media (min-width: 768px) {
+	#main .collectionBrowseItems {
+	  position: relative;
+	  top: 25px;
+	  float: right;
+	}
+
+	#collectionsWrapper {
+	  margin-top: 20px;
+	}
+  }
+
 .detail .unit.sponsorImage {
 	text-align: center;
 }
@@ -875,10 +1091,43 @@ a.readmore-js-toggle:hover {
 }
 
 /* browse list results */
+
+.bResultItem {
+	box-shadow: none;
+	border: 2px solid transparent;
+}
+
+
+/* TODO: override the transformation behaviour that comes from default main.css */
+.bResultItem:hover {
+    min-height: initial; 
+    margin: 0px 0px 0px 0px;
+    position: relative;
+    z-index: initial;
+	box-shadow: 0 0 10px #fff;
+}
+
+.bResultItem:hover .bResultItemContent {
+    height: 235px; 
+    min-height: 0%;
+}
+
+.bResultItem:hover .bResultItemImg {
+    max-width: 100%;
+	max-height: 170px;
+	min-height: 0%; 
+}
+
+
 .bResultItemText,
 .bResultItemText a {
 	font-size: 15px;
 	text-decoration: none;
+	color: #378bc7 !important;
+}
+
+.bResultItemText p {
+	color: #242121;
 }
 
 .bResultListItem .bResultListItemText,
@@ -916,11 +1165,15 @@ a.readmore-js-toggle:hover {
 }
 
 .bResultItemCol {
-	height: 320px;
+	height: 360px;
 }
 
 .bResultItemContent {
-	height: 270px;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 235px;
+    border-radius: 10px;
 }
 
 .bResultListItemCol {
@@ -935,10 +1188,73 @@ a.readmore-js-toggle:hover {
 	height: 14x2px;
 }
 
-.bResultListItem .bResultListItemImg {
-	max-height: 92px;
+.bResultItemImg {
+	border-radius: 10px;
 }
 
+.bResultItemContent .title {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-image: url("../graphics/IF_default.jpg");
+	color: white;
+	opacity: 0;
+	transition: opacity 0.3s;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center; 
+	justify-content: center; 
+	text-align: center;
+	padding: 1em;
+	border-radius: 10px;
+  }
+  
+.bResultItemContent:hover .title {
+	opacity: 0.5;
+  }
+  
+.bResultItemContent .title i {
+	font-size: xxx-large;
+}
+
+.bResultItemContent .title a {
+	font-family: "Calluna Sans", verdana, sans-serif;
+	width: 100%;
+	height: 100%;
+	font-weight: 700;
+	font-size: 18px;
+	color: white;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+  }
+
+  .bResultItem .bResultItemImg {
+	position: absolute;
+	max-width: 100%;
+	max-height: 170px;
+	min-height: 0%;
+	object-fit: cover;
+	object-position: center;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	min-width: 150px;
+}
+
+@media(max-width:768px) {
+	.bResultItem .bResultItemImg {
+		min-width: 0%;
+	}
+}
+
+.bResultItemImgPlaceholder {
+	background-color: transparent;
+	border: none;
+	padding: 0px 0px 0px;
+}
 
 @media(max-width:768px) {
 	.results .bSearchWithinContainer {
@@ -1126,9 +1442,10 @@ body.frontContainer #footer {
 
 .heroSearch .formOutline {
 	border: 0px;
-	-webkit-box-shadow: none;
+	/* -webkit-box-shadow: none; */
 	box-shadow: none;
-	-webkit-transition: none;
+	/* -webkit-transition: none; */
+	transition: none;
 	position: relative;
 	border-radius: 0px;
 	margin-top: 20px;
@@ -1226,4 +1543,92 @@ body.frontContainer #footer {
 	padding: 10px 0px 10px 0px;
 	opacity: .8;
 	left: 0px;
+}
+
+/* Default styles for larger screens */
+.counter {
+    display: flex;
+    flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 29px;
+    padding-top: 52px;
+	margin-left: 35px;
+}
+
+.mimetypeCat {
+    display: flex; /* Add flex display to the container */
+    flex-direction: column; /* Stack the icon and value vertically */
+    justify-content: center; /* Center the content vertically */
+    align-items: center; /* Center the content horizontally */
+    position: relative;
+    font-size: 100px;
+    color: rgba(23, 31, 92, 0.1);
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.value {
+	font-family: "Calluna Sans", verdana, sans-serif;
+    font-size: 100px;
+    display: block;
+    font-weight: bold;
+    /* color: #AA084E; */
+    position: absolute;
+    top: -50px; /* Adjust the top position to prevent overlap */
+    left: 10px; /* Adjust the left position for proper alignment */
+    z-index: 1; /* Ensure that .value is in front of .mimetypeCat */
+    width: 100%; /* Make sure .value covers the entire width of .mimetypeCat */
+    text-align: center; /* Center-align the text within .value */
+	transition: font-size 0.5s;
+}
+
+.value.first {
+	color: #171f5c;
+}
+
+.value.second {
+	color: #AA084E;
+}
+
+.value.third {
+	color: #551b72;
+}
+
+.value.fourth {
+	color: #c8720b;
+}
+
+.mimeLabel {
+	color: #171f5c;
+	text-align: center;
+	margin-bottom: 4px;
+}
+
+@media (max-width: 900px) {
+	.value {
+		font-size: 80px;
+	}
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .counter {
+        flex-direction: column; /* Change to a vertical layout */
+        height: auto; /* Let the height adjust based on content */
+		position: relative;
+    }
+
+    .mimetypeCat {
+        font-size: 50px; /* Adjust font size for smaller screens */
+        margin-bottom: 10px; /* Add spacing between elements */
+    }
+
+    .value {
+        font-size: 50px; /* Adjust font size for smaller screens */
+    }
+
+	.mimeLabel {
+		margin-top: 4px;
+	}
 }
