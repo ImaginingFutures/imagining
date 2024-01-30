@@ -60,75 +60,46 @@
     </div>
 </div>
 
-<div class="row" style="heigth: auto; background-color: #FFF6F6">
-	<div class="container">
-		<div class="col-sm-6 col-md-6">
-			<div style="width: fit-content;">
-				<h1>Imagining Futures Overview</h1>
-				<h2>Who decides what gets to be remembered into the future, and to shape it?</h2>
-				<p>We draw on the widest meaning of archive by including documents, material remains and creations, landscapes, oral transmissions, song, bodily movements, daily customs and ancestral laws. Join us in our aim is to build methodologies of egalitarian archiving practices that allow for co-existence and recognition of multiple experiences and narratives of the past that challenge a singular ‘we’.
-				<br>
-				Our aspiration, in recognising the power of archives, is to make them sites of engagement through:
-				<br>
-				<li>exploratory labs</li>
-				<li>commissioned projects</li>
-				<li>creation of new archives</li>
-				<li>preservation of archives under threat</li>
-				<li>reading existing archives against the grain</li>
-				<li>and (re)thinking sites of memory.</li>
-				Through these activities we seek to advocate for culture to be recognised as a human need.</p>
-			</div>
-		</div>
-
-		<div class="col-sm-6 col-md-6">
-			<div id="myCarousel" class="carousel slide" style="max-height: 100%; width: 100%">
-			<ol class="carousel-indicators">
-			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-			<li data-target="#myCarousel" data-slide-to="1" class=""></li>
-			<li data-target="#myCarousel" data-slide-to="2" class=""></li>
-			</ol>
-			<div class="carousel-inner">
-
-			<div class="item active">
-			<div class="container" style="height: 60rem; width: 100%; display: block">
-			<div class="carousel-caption" style="width: fit-content;">
-				<h1>What</h1>
-				<p>Through the Imagining Futures Network we aim is to facilitate the opening-up and sensitive use of existing archives, to create new ones, and articulate methods for egalitarian archival practices that respect multiple and divergent narratives. We embrace archives as intrinsically constructed and multi-vocal. This is crucial as we seek to address legacies from difficult and contested pasts. We use the intrinsic power of the archive for its capacity to build confidence, enhance understanding and reveal connected histories, to reduce conflict within and between groups, enhancing the potential for sustainable peace. Our wider ambition, through exposing cultural practices as important sites of negotiation, is to advocate for culture to be officially recognised as a human need. We are, therefore, also building towards a co-produced policy-manifesto, in dialogue with governing bodies and supra-state organisations.</p>
-				</div>
-			</div>
-			</div>
-
-			<div class="item">
-			<img src="" data-src="" alt="" style="width: 100%; display: block">
-			<div class="container">
-				<div class="carousel-caption" style="width: fit-content;">
-				<h1>WHY</h1>
-				<p>Our premise is that archives are sites of negotiation about visions of the future. Decisions of what is to be collected, accessed or preserved tend to privilege certain narratives over others. It is about whose story will continue to be told and how, and whose silenced, and these questions are acute in moments of post-conflict, displacement and reconstruction. Acts of archiving that draw on local knowledges and joint decision-making in what is to be remembered or forgotten, have a unique authority. They counter, stereotypes, gentrification, discrimination, and the lack of appreciation for shared histories and of community’s place in the global context.</p>
-				</div>
-			</div>
-			</div>
-
-			<div class="item">
-			<img src="" data-src="" alt="" style="height: 60rem; width: 100%; display: block">
-			<div class="container">
-				<div class="carousel-caption" style="width: fit-content;">
-				<h1>HOW</h1>
-				<p>Our project team invites a broad spectrum of experiences and approaches that integrate multiple forms of archival imaginings; ones that disrupt categories of national, legal, economic and securitisation frameworks. We build on engagement with locally established groups, organisations and institutions, including individuals experiencing displacement. The Network has no geographic boundary, and has already begun linking expertise from ground-work in ‘Labs’ situated across Lebanon, Tanzania, Ghana, South Africa, Syria and the UK. Here we have begun to explore and build methodologies of egalitarian archiving practice that allow for co-existence and recognition of multiple experiences of the past. These are experiences that draw on dialogues across generations, gender, class, ethnicities, status categories and multiple stakeholders.</p>
-				</div>
-			</div>
-			</div>
-			</div>
-			<a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-			<a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-			</div>
-		</div>
+<section name="IF Overview">
+    <div class="row" style="height: auto;">
+        <div class="container">
+            <h1>Imagining Futures Overview</h1>
+            <div class="col-sm-6 col-md-6">
+                <div style="width: fit-content;">
+                    <h2>Who decides what gets to be remembered into the future, and to shape it?</h2>
+                    <p>We draw on the widest meaning of archive by including documents, material remains and creations, landscapes, oral transmissions, song, bodily movements, daily customs and ancestral laws. Join us in our aim is to build methodologies of egalitarian archiving practices that allow for co-existence and recognition of multiple experiences and narratives of the past that challenge a singular ‘we’.
+                        <br> Our aspiration, in recognizing the power of archives, is to make them sites of engagement through:
+                        <br>
+                        <ul>
+                            <li>exploratory labs</li>
+                            <li>commissioned projects</li>
+                            <li>creation of new archives</li>
+                            <li>preservation of archives under threat</li>
+                            <li>reading existing archives against the grain</li>
+                            <li>and (re)thinking sites of memory.</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <div class="container">
+				<button class="prj_desc_button" onclick="showContent('what')" data-type="what">What</button>
+				<button class="prj_desc_button" onclick="showContent('why')" data-type="why">Why</button>
+				<button class="prj_desc_button" onclick="showContent('how')" data-type="how">How</button>
+                </div>
+                <div class="prj_desc_block" id="content">
+                    <!-- Content will be displayed here based on the selected button -->
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
+
 
 <section name="explore">
 <div class="row" style="height: auto;">
 	<div class="container">
-		<h1>Explore Us</h1>
+		<h1>Explore the Repository</h1>
 		<div class="container">
 			<div class="col-sm-6 col-lg-4 col-mb-4">  
 				<div class="homecard1">
@@ -160,8 +131,7 @@
 						<p>Explore our resources (Style 3)</p>
 					</div>
 				</div>
-			</div>
-			
+			</div>			
 		</div>
 	</div>
 </div>
@@ -201,48 +171,7 @@
 				</div>
 			</div>
 
-
-
-
-
 </section>
-
-
-<div class="row" style="heigth: auto; background-color: #FFF6F6">
-	<div class="container">
-	<h1>Imagining Futures Overview</h1>
-		<div class="col-sm-6 col-md-6">
-			<div style="width: fit-content;">
-				<h2>Who decides what gets to be remembered into the future, and to shape it?</h2>
-				<p>We draw on the widest meaning of archive by including documents, material remains and creations, landscapes, oral transmissions, song, bodily movements, daily customs and ancestral laws. Join us in our aim is to build methodologies of egalitarian archiving practices that allow for co-existence and recognition of multiple experiences and narratives of the past that challenge a singular ‘we’.
-				<br>
-				Our aspiration, in recognising the power of archives, is to make them sites of engagement through:
-				<br>
-				<li>exploratory labs</li>
-				<li>commissioned projects</li>
-				<li>creation of new archives</li>
-				<li>preservation of archives under threat</li>
-				<li>reading existing archives against the grain</li>
-				<li>and (re)thinking sites of memory.</li>
-				Through these activities we seek to advocate for culture to be recognised as a human need.</p>
-			</div>
-		</div>
-
-		<div class="col-sm-6 col-md-6">
-			<div class="container">
-				<button class="prj_desc_button" onclick="showContent('what')">What</button>
-				<button class="prj_desc_button" onclick="showContent('how')">How</button>
-				<button class="prj_desc_button" onclick="showContent('why')">Why</button>
-				</div>
-
-				<div class="prj_desc_block" id="content">
-				<!-- Content will be displayed here based on the selected button -->
-				</div>
-			</div>
-		</div>
-	</div>
-
-
 
 
 
@@ -270,26 +199,48 @@
         </script>
 
 <script>
-  function showContent(type) {
-    var content = '';
+    function showContent(type, button) {
+        var content = '';
 
-    switch (type) {
-      case 'what':
-        content = '<h1>What</h1><p>Through the Imagining Futures Network we aim is to facilitate the opening-up and sensitive use of existing archives, to create new ones, and articulate methods for egalitarian archival practices that respect multiple and divergent narratives. We embrace archives as intrinsically constructed and multi-vocal. This is crucial as we seek to address legacies from difficult and contested pasts. We use the intrinsic power of the archive for its capacity to build confidence, enhance understanding and reveal connected histories, to reduce conflict within and between groups, enhancing the potential for sustainable peace. Our wider ambition, through exposing cultural practices as important sites of negotiation, is to advocate for culture to be officially recognised as a human need. We are, therefore, also building towards a co-produced policy-manifesto, in dialogue with governing bodies and supra-state organisations.</p>';
-        break;
-      case 'how':
-		content = '<h1>HOW</h1><p>Our project team invites a broad spectrum of experiences and approaches that integrate multiple forms of archival imaginings; ones that disrupt categories of national, legal, economic and securitisation frameworks. We build on engagement with locally established groups, organisations and institutions, including individuals experiencing displacement. The Network has no geographic boundary, and has already begun linking expertise from ground-work in ‘Labs’ situated across Lebanon, Tanzania, Ghana, South Africa, Syria and the UK. Here we have begun to explore and build methodologies of egalitarian archiving practice that allow for co-existence and recognition of multiple experiences of the past. These are experiences that draw on dialogues across generations, gender, class, ethnicities, status categories and multiple stakeholders.</p>';
-        break;
-      case 'why':
-        content = '<h1>WHY</h1><p>Our premise is that archives are sites of negotiation about visions of the future. Decisions of what is to be collected, accessed or preserved tend to privilege certain narratives over others. It is about whose story will continue to be told and how, and whose silenced, and these questions are acute in moments of post-conflict, displacement and reconstruction. Acts of archiving that draw on local knowledges and joint decision-making in what is to be remembered or forgotten, have a unique authority. They counter, stereotypes, gentrification, discrimination, and the lack of appreciation for shared histories and of community’s place in the global context.</p>';
-				   break;
-      default:
-        content = '<h1>HOW</h1><p>Our project team invites a broad spectrum of experiences and approaches that integrate multiple forms of archival imaginings; ones that disrupt categories of national, legal, economic and securitisation frameworks. We build on engagement with locally established groups, organisations and institutions, including individuals experiencing displacement. The Network has no geographic boundary, and has already begun linking expertise from ground-work in ‘Labs’ situated across Lebanon, Tanzania, Ghana, South Africa, Syria and the UK. Here we have begun to explore and build methodologies of egalitarian archiving practice that allow for co-existence and recognition of multiple experiences of the past. These are experiences that draw on dialogues across generations, gender, class, ethnicities, status categories and multiple stakeholders.</p>';
-        break;
+        // Remove the 'active' class from all buttons
+        var buttons = document.getElementsByClassName('prj_desc_button');
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove('active');
+        }
+
+        // Add the 'active' class to the clicked button
+        button.classList.add('active');
+
+        switch (type) {
+            case 'what':
+                content = '<h1>What</h1><p>Through the Imagining Futures Network we aim is to facilitate the opening-up and sensitive use of existing archives, to create new ones, and articulate methods for egalitarian archival practices that respect multiple and divergent narratives. We embrace archives as intrinsically constructed and multi-vocal. This is crucial as we seek to address legacies from difficult and contested pasts. We use the intrinsic power of the archive for its capacity to build confidence, enhance understanding and reveal connected histories, to reduce conflict within and between groups, enhancing the potential for sustainable peace. Our wider ambition, through exposing cultural practices as important sites of negotiation, is to advocate for culture to be officially recognised as a human need. We are, therefore, also building towards a co-produced policy-manifesto, in dialogue with governing bodies and supra-state organisations.</p>';
+                break;
+
+            case 'why':
+                content = '<h1>Why</h1><p>Our premise is that archives are sites of negotiation about visions of the future. Decisions of what is to be collected, accessed or preserved tend to privilege certain narratives over others. It is about whose story will continue to be told and how, and whose silenced, and these questions are acute in moments of post-conflict, displacement and reconstruction. Acts of archiving that draw on local knowledges and joint decision-making in what is to be remembered or forgotten, have a unique authority. They counter, stereotypes, gentrification, discrimination, and the lack of appreciation for shared histories and of community’s place in the global context.</p>';
+                break;
+			case 'how':
+            content = '<h1>How</h1><p>Our project team invites a broad spectrum of experiences and approaches that integrate multiple forms of archival imaginings; ones that disrupt categories of national, legal, economic and securitisation frameworks. We build on engagement with locally established groups, organisations and institutions, including individuals experiencing displacement. The Network has no geographic boundary, and has already begun linking expertise from ground-work in ‘Labs’ situated across Lebanon, Tanzania, Ghana, South Africa, Syria and the UK. Here we have begun to explore and build methodologies of egalitarian archiving practice that allow for co-existence and recognition of multiple experiences of the past. These are experiences that draw on dialogues across generations, gender, class, ethnicities, status categories and multiple stakeholders.</p>';
+            break;
+        }
+
+        // Display the content in the content block
+        document.getElementById('content').innerHTML = content;
     }
 
-    // Display the content in the content block
-    document.getElementById('content').innerHTML = content;
-  }
+	window.onload = function () {
+    // Set the default content and highlight the default button
+    var defaultButton = document.querySelector('.container .prj_desc_button[data-type="what"]');
+    showContent('what', defaultButton);
+
+    // Attach click event listeners to all buttons within the container
+    var buttons = document.querySelectorAll('.container .prj_desc_button');
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function (event) {
+            var buttonType = event.target.getAttribute('data-type');
+            showContent(buttonType, event.target);
+        });
+    }
+};
 </script>
 
