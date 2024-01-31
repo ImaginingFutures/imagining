@@ -123,7 +123,7 @@
 				
 				<?php $homeurl = caNavUrl($this->request, "", "", "", ""); 
 					if ($homeurl === "") {
-						$homeurl = 'index.php';
+						$homeurl = '/';
 					}
 				?>
 
