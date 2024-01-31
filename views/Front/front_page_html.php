@@ -97,82 +97,62 @@
 
 
 <section name="explore">
-<div class="row" style="height: auto;">
-	<div class="container">
-		<h1>Explore the Repository</h1>
-		<div class="container">
-			<div class="col-sm-6 col-lg-4 col-mb-4">  
-				<div class="homecard1">
-					<div>
-						<img class="homecardimg" src="/ifrepo/themes/imagining/assets/pawtucket/graphics/repo.jpg" alt="sda">
-					</div>
-					<div class="homecardcontent1">
-						<h3>Projects (Style 1) </h3>
-						<p>Explore our projects. More text about the collections?(Style 1)</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-6 col-lg-4 col-mb-4">  
-				<div class="homecard">
-					<img class="homecardimg" src="/ifrepo/themes/imagining/assets/pawtucket/graphics/repo.jpg" alt="sda">
-					<div class="homecardcontent2">
-						<h3>People (Style 2)</h3>
-						<p>Explore our people (Style 2)</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-6 col-lg-4 col-mb-4">  
+    <div class="row" style="height: auto;">
+        <h1>Explore the Repository</h1>
+            <div class="col-sm-6 col-lg-4 col-mb-4">  
 				<div class="homecard">
 					<div>
-						<img class="homecardimg" src="/ifrepo/themes/imagining/assets/pawtucket/graphics/repo.jpg" alt="sda">
+						<img class="" src="/ifrepo/themes/imagining/assets/pawtucket/graphics/projects2.jpg" alt="sda">
 					</div>
-					<div class="homecardcontent3">
-						<h3>Resources (Style 3)</h3>
-						<p>Explore our resources (Style 3)</p>
-					</div>
-				</div>
-			</div>			
-		</div>
-	</div>
-</div>
-
-
-<h1>Trying some images.</h1>
-
-<div class="col-sm-6 col-lg-4 col-mb-4">  
-				<div class="homecard1">
-					<div>
-						<img class="homecardimg" src="/ifrepo/themes/imagining/assets/pawtucket/graphics/projects.jpg" alt="sda">
-					</div>
-					<div class="homecardcontent1">
-						<h3>Projects (Style 1)</h3>
-						<p>Explore our projects (Style 1)</p>
+					<div class="homecardcontent">
+						<h3>Projects</h3>
+						<p>Explore our projects</p>
+                        <p>There are xx projects from different regions of the world. And xxx prj types.</p>
+                        <button class="butexplore">Explore</button>
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6 col-lg-4 col-mb-4">  
-				<div class="homecard">
-					<img class="homecardimg" src="/ifrepo/themes/imagining/assets/pawtucket/graphics/people.jpg" alt="sda">
-					<div class="homecardcontent2">
-						<h3>People (Style 2) </h3>
-						<p>Explore our People (Style 2)</p>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-6 col-lg-4 col-mb-4">  
+            <div class="col-sm-6 col-lg-4 col-mb-4">  
 				<div class="homecard">
 					<div>
-						<img class="homecardimg" src="/ifrepo/themes/imagining/assets/pawtucket/graphics/resource.jpg" alt="sda">
+						<img class="" src="/ifrepo/themes/imagining/assets/pawtucket/graphics/people.jpg" alt="sda">
 					</div>
-					<div class="homecardcontent3">
-						<h3>Resources (Style 3)</h3>
-						<p>Explore our resources (Style 3)</p>
+					<div class="homecardcontent">
+						<h3>People</h3>
+						<p>Explore our people</p>
+                        <button class="butexplore">Explore</button>
 					</div>
 				</div>
 			</div>
-
+            <div class="col-sm-6 col-lg-4 col-mb-4">  
+				<div class="homecard">
+					<div>
+						<img class="" src="/ifrepo/themes/imagining/assets/pawtucket/graphics/resource.jpg" alt="sda">
+					</div>
+					<div class="homecardcontent">
+						<h3>Resources</h3>
+						<p>Explore our resources</p>
+                        <button class="butexplore">Explore</button>
+					</div>
+				</div>
+			</div>
+        </div>
 </section>
 
+<section name="Just Testing">
+<div class="row" style="height: auto;">
+<div class="col-sm-4 testcolor1">
+</div>
+<div class="col-sm-4 testcolor2">
+</div>
+<div class="col-sm-4 testcolor3">
+</div>
+<div class="col-sm-4 testcolor4">
+</div>
+<div class="col-sm-4 testcolor5">
+</div>
+</div>
+</section>
 
 
 

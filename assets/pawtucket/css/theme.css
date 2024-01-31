@@ -1640,27 +1640,8 @@ section h1{
 }
 
 .homecard {
-	position: relative;
 	width: 100%;
-	height: auto;
-	box-sizing: border-box;
-	margin-bottom: 20px;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-	transition: 0.3s;
-	border-radius: 5px;
-	overflow: hidden;
-}
-
-  .homecard img {
-	width: 100%;
-	height: auto;
-	display: block;
-}
-
-
-.homecard1 {
-	width: 100%;
-	height: auto;
+	height: 30rem; /* Set a fixed height for the card */
 	box-sizing: border-box;
 	margin-bottom: 20px;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -1670,17 +1651,20 @@ section h1{
 	flex-direction: column;
 	overflow: hidden;
 	position: relative;
-}
-
-.homecard1 img {
+  }
+  
+  .homecard img {
 	width: 100%;
-	height: auto;
-	display: block;
-}
-
-.homecardcontent1 {
+	height: 100%;
+	object-fit: cover; /* Ensure the image covers the entire container */
+	position: absolute; /* Position the image absolutely within the card */
+	top: 0;
+	left: 0;
+  }
+  
+  .homecardcontent {
 	text-align: center;
-	background-color: rgba(255, 255, 255, 0.9);
+	background-color: rgba(174, 180, 213, 0.9);
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -1688,29 +1672,22 @@ section h1{
 	height: 5rem;
 	overflow: hidden;
 	transition: height 0.3s;
-}
-
-.homecardcontent2 {
-	text-align: center;
-	background-color: rgba(255, 255, 255, 0.9); 
-	height: 5rem;
-}
-
-  .homecardcontent3 {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	background-color: rgba(174, 180, 213, 0.9);
-	text-align: center;
-}
-
-.homecard:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   }
+  
 
-  .homecard1:hover .homecardcontent1 {
+.butexplore{
+	width: 7rem;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #171f5c;
+	border-radius: 0.5rem;
+	color: white;
+}
+
+  .homecard:hover .homecardcontent {
 	height: 100%;
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 
@@ -1739,3 +1716,30 @@ section h1{
 	color: white;
 	padding: 1rem;
   }
+
+
+.testcolor1{
+	background-color: #175ea4;
+	height: 3rem;
+	width: 6rem;
+}
+.testcolor2{
+	background-color: #f37639;
+	height: 3rem;
+	width: 6rem;
+}
+.testcolor3{
+	background-color: #014b2e;
+	height: 3rem;
+	width: 6rem;
+}
+.testcolor4{
+	background-color: #86c135;
+	height: 3rem;
+	width: 6rem;
+}
+.testcolor5{
+	background-color: #0f96d6;
+	height: 3rem;
+	width: 6rem;
+}
