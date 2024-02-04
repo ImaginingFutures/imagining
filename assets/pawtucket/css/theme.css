@@ -1743,3 +1743,23 @@ section h1{
 	height: 3rem;
 	width: 6rem;
 }
+
+
+section[name="Map"] {
+	position: relative;
+	text-align: center;
+}
+
+section[name="Map"] img {
+	width: 100%;
+	opacity: 0.8; /* Adjust the opacity value as needed */
+}
+
+/* Style for the text overlay */
+.map-overlay {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: white;
+}

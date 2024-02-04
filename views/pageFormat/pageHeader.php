@@ -59,6 +59,12 @@
 	<head>
 	<meta charset="utf-8">
 	<?= AssetLoadManager::getLoadHTML($this->request); ?>
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 	
 	<title><?= (MetaTagManager::getWindowTitle()) ? MetaTagManager::getWindowTitle() : $this->request->config->get("app_display_name"); ?></title>
@@ -69,7 +75,6 @@
 	<!-- Dynamic meta tags -->
 	<?= MetaTagManager::getHTML(); ?>
 	<script src="https://kit.fontawesome.com/122ccc1a9c.js" crossorigin="anonymous"></script>
-
 
 <?php
 	if(!in_array(strToLower($this->request->getAction), array("objects"))){
@@ -96,6 +101,7 @@
 		print $o_debugbar_renderer->renderHead();
 	}
 ?>
+
 </head> 
 
 <body class='<?php print (strtoLower($this->request->getController()) == "front") ? "frontContainer" : ""; ?>'>
