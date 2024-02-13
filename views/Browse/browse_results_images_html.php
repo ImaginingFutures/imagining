@@ -157,24 +157,37 @@
 					$vs_expanded_info = $qr_res->getWithTemplate($vs_extended_info_template);
 
 					$vs_result_output = "
-		<div class='bResultItemCol col-xs-{$vn_col_span_xs} col-sm-{$vn_col_span_sm} col-md-{$vn_col_span}'>
-			<div class='bResultItem' id='row{$vn_id}'>
-				<div class='bSetsSelectMultiple'><input type='checkbox' name='object_ids' value='{$vn_id}'></div>
-				<div class='bResultItemContent'>
-					<div class='text-center bResultItemImg'>{$vs_rep_detail_link}</div>
-					<div class='title'>{$vs_detail_link}</div>
-					
-				</div><!-- end bResultItemContent -->
-				<div class='bResultItemText'>
-						<h3>{$vs_label_detail_link}</h3><p>{$vs_idno_detail}</p>
-					</div><!-- end bResultItemText -->
-				<div class='bResultItemExpandedInfo' id='bResultItemExpandedInfo{$vn_id}'>
-					<hr>
-					{$vs_expanded_info}{$vs_add_to_set_link}
-				</div><!-- bResultItemExpandedInfo -->
-			</div><!-- end bResultItem -->
-		</div><!-- end col -->";
-					ExternalCache::save($vs_cache_key, $vs_result_output, 'browse_result', $o_config->get("cache_timeout"));
+		
+		
+				
+			<div class='col-sm-6 col-lg-4 col-mb-4'>  
+				<div class='browsecard'>
+					<div>
+					icon
+						<img class='' src='{$vs_rep_detail_link}'>
+					</div>
+					<div class='browsecardcontent'>
+						<h3>{$vs_label_detail_link}</h3>
+						<p>ID: {$vs_idno_detail}</p>
+						<p>Creator: xxx </p>
+						<p>Explore____Like</p>
+						<p>Licence____Obj type</p>
+					</div>
+					<div class='bResultItemExpandedInfo' id='bResultItemExpandedInfo{$vn_id}'>
+							<hr>
+							{$vs_expanded_info}{$vs_add_to_set_link}
+						</div><!-- bResultItemExpandedInfo -->
+				</div>
+			</div>
+				
+				";
+		
+
+
+
+
+		
+		ExternalCache::save($vs_cache_key, $vs_result_output, 'browse_result', $o_config->get("cache_timeout"));
 					print $vs_result_output;
 				}				
 				$vn_c++;

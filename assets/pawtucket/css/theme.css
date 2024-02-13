@@ -1090,45 +1090,71 @@ a.readmore-js-toggle:hover {
 	height: auto;
 }
 
-/* browse list results */
-
-.bResultItem {
-	box-shadow: none;
-	border: 2px solid transparent;
-}
 
 
-/* TODO: override the transformation behaviour that comes from default main.css */
-.bResultItem:hover {
-    min-height: initial; 
-    margin: 0px 0px 0px 0px;
-    position: relative;
-    z-index: initial;
-	box-shadow: 0 0 10px #fff;
-}
+								/* !!!!!!!!!!!!!!!!!!!!BROWSE LIST RESULTS!!!!!!!!!!!!!!! */
 
-.bResultItem:hover .bResultItemContent {
-    height: 235px; 
-    min-height: 0%;
-}
+.browsecard {
+	width: 100%;
+	height: 30rem; /* Set a fixed height for the card */
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	transition: 0.3s;
+	border-radius: 5px;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	position: relative;
+  }
+  
+  .browsecard img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover; /* Ensure the image covers the entire container */
+	position: absolute; /* Position the image absolutely within the card */
+	top: 0;
+	left: 0;
+  }
+  
+  .browsecardcontent {
+	text-align: center;
+	background-color: rgba(174, 180, 213, 0.9);
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 5rem;
+	overflow: hidden;
+	transition: height 0.3s;
+  }
 
-.bResultItem:hover .bResultItemImg {
-    max-width: 100%;
-	max-height: 170px;
-	min-height: 0%; 
-}
+  .browsecardcontent h3 {
+	font-size: 2rem; margin-bottom: 0.5rem;
+	margin-top: 0.2rem;
+	text-transform: capitalize; 
+  }
 
-
-.bResultItemText,
-.bResultItemText a {
-	font-size: 15px;
+  .browsecardcontent h3 a {
 	text-decoration: none;
-	color: #378bc7 !important;
+	color: black; 
+  }
+
+  .browsecard:hover .browsecardcontent {
+	height: 50%;
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    font-weight: bold; 
+	display: block;
 }
 
-.bResultItemText p {
-	color: #242121;
+.browsecardcontent p {
+	display: none;
 }
+.browsecard:hover .browsecardcontent p {
+	display: block;
+}
+
+
 
 .bResultListItem .bResultListItemText,
 .bResultListItem .bResultListItemText a {
@@ -1164,18 +1190,6 @@ a.readmore-js-toggle:hover {
 
 }
 
-.bResultItemCol {
-	height: 360px;
-}
-
-.bResultItemContent {
-	display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 235px;
-    border-radius: 10px;
-}
-
 .bResultListItemCol {
 	height: 152px;
 }
@@ -1188,70 +1202,9 @@ a.readmore-js-toggle:hover {
 	height: 14x2px;
 }
 
-.bResultItemImg {
-	border-radius: 10px;
-}
-
-.bResultItemContent .title {
-	position: absolute;
-	top: 0;
-	left: 0;
-	background-image: url("../graphics/IF_default.jpg");
-	color: white;
-	opacity: 0;
-	transition: opacity 0.3s;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	align-items: center; 
-	justify-content: center; 
-	text-align: center;
-	padding: 1em;
-	border-radius: 10px;
-  }
-  
-.bResultItemContent:hover .title {
-	opacity: 0.5;
-  }
-  
-.bResultItemContent .title i {
-	font-size: xxx-large;
-}
-
-.bResultItemContent .title a {
-	font-family: "Calluna Sans", verdana, sans-serif;
-	width: 100%;
-	height: 100%;
-	font-weight: 700;
-	font-size: 18px;
-	color: white;
-	text-decoration: none;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-  }
-
-  .bResultItem .bResultItemImg {
-	position: absolute;
-	max-width: 100%;
-	max-height: 170px;
-	min-height: 0%;
-	object-fit: cover;
-	object-position: center;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	min-width: 150px;
-}
-
-@media(max-width:768px) {
-	.bResultItem .bResultItemImg {
-		min-width: 0%;
-	}
-}
 
 .bResultItemImgPlaceholder {
-	background-color: transparent;
+	background-color: rgba(174, 180, 213, 0.9);
 	border: none;
 	padding: 0px 0px 0px;
 }
@@ -1744,22 +1697,3 @@ section h1{
 	width: 6rem;
 }
 
-
-section[name="Map"] {
-	position: relative;
-	text-align: center;
-}
-
-section[name="Map"] img {
-	width: 100%;
-	opacity: 0.8; /* Adjust the opacity value as needed */
-}
-
-/* Style for the text overlay */
-.map-overlay {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	color: white;
-}
