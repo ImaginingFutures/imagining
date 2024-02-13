@@ -156,45 +156,6 @@ $t_object = 			$this->getVar("item");
 </section>
 
 
-<section name="Map">
-    <h1>Explore the Map</h1>
-    <div class="row" style="height: auto; position: relative;">
-        <img src="/ifrepo/themes/imagining/assets/pawtucket/graphics/map.jpg" alt="">
-        <div class="map-overlay">
-            <p>Your overlay text here</p>
-        </div>
-    </div>
-</section>
-
-
-<div class="parallax hero<?php print $vs_hero; ?>" style="background-image: url('/ifrepo/themes/imagining/assets/pawtucket/graphics/map.jpg');">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
-                
-                <div class="heroSearch">
-                    <h1>
-                        <div class="line1">Welcome to</div>
-                        <div class="line2">Imagining Futures<br/> Repository (Pilot)</div>
-                    </h1>
-                    <form role="search" action="<?php print caNavUrl($this->request, '', 'MultiSearch', 'Index'); ?>">
-                        <div class="formOutline">
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="heroSearchInput" placeholder="<?php print _t("Search"); ?>" name="search" autocomplete="off" aria-label="<?php print _t("Search"); ?>" />
-                            </div>
-                            <button type="submit" class="btn-search" id="heroSearchButton"><span class="glyphicon glyphicon-search" aria-label="<?php print _t("Submit Search"); ?>"></span></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
 
     <div class="row">
         <div class="col-sm-8 col-sm-offset-2">

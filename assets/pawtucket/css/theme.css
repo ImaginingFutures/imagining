@@ -1679,8 +1679,8 @@ section h1{
 	width: 7rem;
     text-align: center;
     cursor: pointer;
-    border: 1px solid #ccc;
-    background-color: #171f5c;
+    border: 1px solid black;
+    background-color: #0f96d6;
 	border-radius: 0.5rem;
 	color: white;
 }
@@ -1696,7 +1696,7 @@ section h1{
     text-align: center;
     cursor: pointer;
     border: 1px solid #ccc;
-    background-color: #171f5c;
+    background-color: #175ea4;
 	border-top-right-radius: 1rem;
 	color: white;
   }
