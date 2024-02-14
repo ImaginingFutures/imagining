@@ -1119,7 +1119,7 @@ a.readmore-js-toggle:hover {
   
   .browsecardcontent {
 	text-align: center;
-	background-color: rgba(174, 180, 213, 0.9);
+	background-color: white;
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -1127,7 +1127,10 @@ a.readmore-js-toggle:hover {
 	height: 5rem;
 	overflow: hidden;
 	transition: height 0.3s;
+	opacity: 0.8;
   }
+
+
 
   .browsecardcontent h3 {
 	font-size: 2rem; margin-bottom: 0.5rem;
@@ -1141,20 +1144,66 @@ a.readmore-js-toggle:hover {
   }
 
   .browsecard:hover .browsecardcontent {
-	height: 50%;
-	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    height: 50%; /* Change height to auto when hovered */
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     font-weight: bold; 
-	display: block;
+    display: block;
 }
 
 .browsecardcontent p {
 	display: none;
+	text-align: left;
 }
 .browsecard:hover .browsecardcontent p {
-	display: block;
+    display: block;
+    height: auto; /* Allow the height to be auto for the text content */
+    margin: 0.5rem; 
 }
 
+.browsecard_button {
+	display: none;
+}
 
+.browsecard:hover .browsecard_button {
+	display: block;
+	width: 3rem;
+	height: 3rem;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #171f5c;
+	border-radius: 1rem;
+	color: white;
+	position: absolute;
+    top: 1rem;
+    right: 1rem;
+	justify-content: center;
+    align-items: center; 
+  }
+
+  .heart-icon {
+	position: relative;
+	top: 0.1rem;
+    right: 0.1rem;
+  }
+
+  .cardicon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 1rem;
+	color: white;
+	font-size: larger;
+}
+
+.cardicon2 {
+    position: absolute;
+    top: 3rem;
+    left: 0;
+    margin: 1rem;
+	color: white;
+	font-size: larger;
+}
 
 .bResultListItem .bResultListItemText,
 .bResultListItem .bResultListItemText a {

@@ -129,6 +129,9 @@
 					$preferred_label = TitleCutter($qr_res->get("{$vs_table}.preferred_labels"));
 					$vs_label_detail_link 	= caDetailLink($this->request, $preferred_label, '', $vs_table, $vn_id);
 					
+					$vs_prj_name = $qr_res->get("{$vs_table}.collections.preferred_labels");
+					$vs_person = $qr_res->get("{$vs_table}.entities");
+					
 					$vs_detail_link = caDetailLink($this->request, "<i class='fas fa-hand-pointer'></i>", "", $vs_table,  $vn_id);
 					$vs_thumbnail = "";
 					$vs_type_placeholder = "";
@@ -163,15 +166,23 @@
 			<div class='col-sm-6 col-lg-4 col-mb-4'>  
 				<div class='browsecard'>
 					<div>
-					icon
+					
 						<img class='' src='{$vs_rep_detail_link}'>
+						
+						
 					</div>
+					
+					<button class='browsecard_button'><span class='heart-icon fa fa-heart'></span></button>
+					
+					<span class='cardicon fa fa-image'></span> 
+					<span class='cardicon2 fab fa-creative-commons'></span> 
+
 					<div class='browsecardcontent'>
+
 						<h3>{$vs_label_detail_link}</h3>
 						<p>ID: {$vs_idno_detail}</p>
-						<p>Creator: xxx </p>
-						<p>Explore____Like</p>
-						<p>Licence____Obj type</p>
+						<p>Project: {$vs_prj_name} </p>
+						<p>Creator: {$vs_person} </p>
 					</div>
 					<div class='bResultItemExpandedInfo' id='bResultItemExpandedInfo{$vn_id}'>
 							<hr>
