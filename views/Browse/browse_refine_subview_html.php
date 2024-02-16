@@ -30,7 +30,10 @@
 	$va_criteria 		= $this->getVar('criteria');			// array of browse criteria
 	$vs_key 			= $this->getVar('key');					// cache key for current browse
 	$va_access_values 	= $this->getVar('access_values');		// list of access values for this user
-	$vs_view			= $this->getVar('view');
+	
+	$va_views			= $this->getVar('views');
+	$vs_current_view	= $this->getVar('view');
+	$va_view_icons		= $this->getVar('viewIcons');
 	$vs_browse_type		= $this->getVar('browse_type');
 	$o_browse			= $this->getVar('browse');
 	$vs_browse_key 		= $this->getVar('key');					// cache key for current browse
@@ -53,9 +56,32 @@
 		}
 	}
 	
-	if((is_array($va_facets) && sizeof($va_facets)) || ($vs_criteria) || ($qr_res->numHits() > 1)){
+	if ((is_array($va_facets) && sizeof($va_facets)) || ($vs_criteria) || ($qr_res->numHits() > 1)) {
 		print "<div id='bMorePanel'><!-- long lists of facets are loaded here --></div>";
-		print "<div id='bRefine'>";
+		print "<div id='mySidebar' class='sidebar'>
+				<button class='openbtn' onclick='toggleNav()'>☰</button>
+					<div id='bViewButtons'>
+					<i class='fa fa-magnifying-glass'></i>
+					";
+		if (is_array($va_views) && (sizeof($va_views) > 1)) {
+			foreach ($va_views as $vs_view => $va_view_info) {
+				if ($vs_current_view === $vs_view) {
+					print '<a href="#" class="active"><span class="glyphicon  ' . $va_view_icons[$vs_view]['icon'] . '" aria-label="' . $vs_view . '" role="button"></span></a> ';
+				} else {
+					print caNavLink($this->request, '<span class="glyphicon ' . $va_view_icons[$vs_view]['icon'] . '" aria-label="' . $vs_view . '" role="button"></span>', 'disabled', '*', '*', '*', array('view' => $vs_view, 'key' => $vs_browse_key)) . ' ';
+				}
+			}
+		}
+		print "</div>
+			  <div class='sidebar-content'>
+			
+			  ";
+		
+		
+
+
+
+
 		if($qr_res->numHits() > 1){
 ?>
 			<div class="bSearchWithinContainer">
@@ -65,9 +91,13 @@
 					<input type="hidden" name="view" value="<?php print $vs_current_view; ?>">
 				</form>
 				<div style="clear:both"></div>
+
+
 			</div>	
 <?php
 		}
+
+		
 		if((is_array($va_facets) && sizeof($va_facets)) || ($vs_criteria)){
 			print "<a href='#' class='pull-right' id='bRefineClose' onclick='jQuery(\"#bRefine\").toggle(); return false;'><i class='far fa-times-circle'></i></a>";
 			print "<H2>"._t("Filter by")."</H2>";
@@ -124,7 +154,10 @@
 				}
 			}
 		}
-		print "</div><!-- end bRefine -->\n";
+		print "
+
+		</div></div><!-- end bRefine -->\n";
+		
 ?>
 	<script type="text/javascript">
 		jQuery(document).ready(function() {
@@ -143,6 +176,11 @@
 				});
             }
 		});
+	
+	
+
+
+
 	</script>
 <?php	
 	}

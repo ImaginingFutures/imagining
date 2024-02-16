@@ -72,8 +72,10 @@ if (!$vb_ajax) {	// !ajax
 ?>
 <div class="row" style="clear:both;">
 
-<div class='<?php print ($vs_result_col_class) ? $vs_result_col_class : "col-sm-9 col-md-9 col-lg-9"; ?>'>
-		<?php 
+<div id='maincontent' class='<?php print ($vs_result_col_class) ? $vs_result_col_class : ""; ?>'>
+
+
+	<?php 
 					if($vs_sort_control_type == 'list'){
 						if(is_array($va_sorts = $this->getVar('sortBy')) && sizeof($va_sorts)) {
 							print "<div id='bSortByList'><ul><li><strong>"._t("Sort by:")."</strong></li>\n";
@@ -197,20 +199,8 @@ if (!$vb_ajax) {	// !ajax
 	
 
 	
-<div class="<?php print ($vs_refine_col_class) ? $vs_refine_col_class : "col-sm-3 col-md-3 col-lg-3"; ?>">
-			<div id="bViewButtons">
-		<?php
-			if(is_array($va_views) && (sizeof($va_views) > 1)){
-				foreach($va_views as $vs_view => $va_view_info) {
-					if ($vs_current_view === $vs_view) {
-						print '<a href="#" class="active"><span class="glyphicon  '.$va_view_icons[$vs_view]['icon'].'" aria-label="'.$vs_view.'" role="button"></span></a> ';
-					} else {
-						print caNavLink($this->request, '<span class="glyphicon '.$va_view_icons[$vs_view]['icon'].'" aria-label="'.$vs_view.'" role="button"></span>', 'disabled', '*', '*', '*', array('view' => $vs_view, 'key' => $vs_browse_key)).' ';
-					}
-				}
-			}
-		?>
-			</div>
+<div class="<?php print ($vs_refine_col_class) ? $vs_refine_col_class : ""; ?>">
+
 		<?php
 			print $this->render("Browse/browse_refine_subview_html.php");
 		?>			
@@ -253,6 +243,41 @@ if (!$vb_ajax) {	// !ajax
 		}
 ?>
 	});
+
+
+	function toggleNav() {
+  var sidebar = document.getElementById('mySidebar');
+  var maincontent = document.getElementById('maincontent');
+  var sidebarContent = document.querySelector('.sidebar-content');
+  var bViewButtons = document.getElementById('bViewButtons'); // Get the element with ID bViewButtons
+
+  if (sidebar.style.width === '250px') {
+    sidebar.style.width = '5rem';
+    maincontent.style.marginLeft = '5rem';
+    sidebarContent.style.display = 'none'; // Hide the sidebar content when closing
+    bViewButtons.style.display = 'flow'; // Hide the bViewButtons when closing
+  } else {
+    sidebar.style.width = '250px';
+    maincontent.style.marginLeft = '250px';
+    sidebarContent.style.display = 'block'; // Show the sidebar content when opening
+    bViewButtons.style.display = 'flex'; // Change the display to flex
+  }
+}
+
+function closeNav() {
+  var sidebar = document.getElementById('mySidebar');
+  var maincontent = document.getElementById('maincontent');
+  var sidebarContent = document.querySelector('.sidebar-content');
+  var bViewButtons = document.getElementById('bViewButtons'); // Get the element with ID bViewButtons
+  
+  sidebar.style.width = '5rem';
+  maincontent.style.marginLeft = '5rem';
+  sidebarContent.style.display = 'none'; // Hide the sidebar content when closing
+  bViewButtons.style.display = 'none'; // Hide the bViewButtons when closing
+}
+
+
+
 
 </script>
 <?php
