@@ -892,6 +892,9 @@ a.readmore-js-toggle:hover {
     padding-top: 60px;
     z-index: 0;
     overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
+	place-items: center;
+	justify-content: center; /* Horizontally center the icon */
+    align-items: center;
 }
 
 .sidebar-content {
@@ -903,7 +906,16 @@ a.readmore-js-toggle:hover {
 
 }
 
+#bViewButtons {
+    text-align: center;
+}
 
+.searchicon {
+font-size: 2.5rem;
+padding-left: 1.5rem;
+padding-top: 1rem;
+transition: 0.5s;
+}
 
   .sidebar a {
     padding: 10px 15px;
@@ -925,7 +937,7 @@ a.readmore-js-toggle:hover {
     color: white;
     padding: 10px 15px;
     border: none;
-    top: 10px;
+    top: 10rem;
     left: 1rem;
     z-index: 2;
   }

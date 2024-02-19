@@ -250,17 +250,20 @@ if (!$vb_ajax) {	// !ajax
   var maincontent = document.getElementById('maincontent');
   var sidebarContent = document.querySelector('.sidebar-content');
   var bViewButtons = document.getElementById('bViewButtons'); // Get the element with ID bViewButtons
+  var icons = document.querySelector('.searchicon');
 
   if (sidebar.style.width === '250px') {
     sidebar.style.width = '5rem';
     maincontent.style.marginLeft = '5rem';
     sidebarContent.style.display = 'none'; // Hide the sidebar content when closing
     bViewButtons.style.display = 'flow'; // Hide the bViewButtons when closing
+	icons.style.display = 'flex'; // Change the display to flex
   } else {
     sidebar.style.width = '250px';
     maincontent.style.marginLeft = '250px';
     sidebarContent.style.display = 'block'; // Show the sidebar content when opening
     bViewButtons.style.display = 'flex'; // Change the display to flex
+	icons.style.display = 'none'; // Change the display to flex
   }
 }
 
@@ -269,11 +272,13 @@ function closeNav() {
   var maincontent = document.getElementById('maincontent');
   var sidebarContent = document.querySelector('.sidebar-content');
   var bViewButtons = document.getElementById('bViewButtons'); // Get the element with ID bViewButtons
+  var icons = document.querySelector('.searchicon');
   
   sidebar.style.width = '5rem';
   maincontent.style.marginLeft = '5rem';
   sidebarContent.style.display = 'none'; // Hide the sidebar content when closing
   bViewButtons.style.display = 'none'; // Hide the bViewButtons when closing
+  icons.style.display = 'none';
 }
 
 
