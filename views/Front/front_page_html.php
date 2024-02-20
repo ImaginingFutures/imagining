@@ -103,37 +103,43 @@ $t_object = 			$this->getVar("item");
             <div class="col-sm-6 col-lg-4 col-mb-4">  
 				<div class="homecard">
 					<div>
-						<img class="" src="/ifrepo/themes/imagining/assets/pawtucket/graphics/projects2.jpg" alt="sda">
+                    <?php print caGetThemeGraphic($this->request, 'projects2.jpg') ?>
 					</div>
 					<div class="homecardcontent">
 						<h3>Projects</h3>
 						<p>Explore our projects</p>
                         <p>There are xx projects from different regions of the world. And xxx prj types.</p>
+                        <a href="https://testing.ifrepo.world/index.php/Collections/index">
                         <button class="butexplore">Explore</button>
+</a>
 					</div>
 				</div>
 			</div>
             <div class="col-sm-6 col-lg-4 col-mb-4">  
 				<div class="homecard">
 					<div>
-						<img class="" src="/ifrepo/themes/imagining/assets/pawtucket/graphics/people.jpg" alt="sda">
+                        <?php print caGetThemeGraphic($this->request, 'people.jpg') ?>
 					</div>
 					<div class="homecardcontent">
 						<h3>People</h3>
 						<p>Explore our people</p>
+                        <a href="https://testing.ifrepo.world/index.php/Browse/participants">
                         <button class="butexplore">Explore</button>
+</a>
 					</div>
 				</div>
 			</div>
             <div class="col-sm-6 col-lg-4 col-mb-4">  
 				<div class="homecard">
 					<div>
-						<img class="" src="/ifrepo/themes/imagining/assets/pawtucket/graphics/resource.jpg" alt="sda">
+                        <?php print caGetThemeGraphic($this->request, 'resource.jpg') ?>
 					</div>
 					<div class="homecardcontent">
 						<h3>Resources</h3>
 						<p>Explore our resources</p>
+                        <a href="https://testing.ifrepo.world/index.php/Browse/objects">
                         <button class="butexplore">Explore</button>
+</a>
 					</div>
 				</div>
 			</div>

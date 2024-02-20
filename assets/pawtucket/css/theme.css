@@ -899,11 +899,18 @@ a.readmore-js-toggle:hover {
 
 .sidebar-content {
 	display: none; /* Initially hide the content */
+	padding-bottom: 30rem;
 }
 
 .sidebar-content.show {
   display: block; /* Display the content when the sidebar is opened */
+}
 
+.sidebar-content h2{
+	color: white;
+}
+.facet-toggle {
+	color: white;
 }
 
 #bViewButtons {
@@ -939,7 +946,7 @@ transition: 0.5s;
     border: none;
     top: 10rem;
     left: 1rem;
-    z-index: 2;
+    z-index: 1;
   }
 
   .openbtn:hover {
@@ -1817,4 +1824,5 @@ section h1{
 	height: 3rem;
 	width: 6rem;
 }
+
 
