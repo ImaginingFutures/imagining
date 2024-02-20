@@ -109,7 +109,7 @@ $t_object = 			$this->getVar("item");
 						<h3>Projects</h3>
 						<p>Explore our projects</p>
                         <p>There are xx projects from different regions of the world. And xxx prj types.</p>
-                        <?= caNavLink($this->request, '<button class="butexplore">Explore</button>', "", "", "Collections", "index"); ?>
+                        <?= caNavLink($this->request, '<button class="butexplore">Explore</button>', "", "", "Browse", "collections"); ?>
 </div>
 				</div>
 			</div>
