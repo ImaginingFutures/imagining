@@ -109,10 +109,8 @@ $t_object = 			$this->getVar("item");
 						<h3>Projects</h3>
 						<p>Explore our projects</p>
                         <p>There are xx projects from different regions of the world. And xxx prj types.</p>
-                        <a href="https://testing.ifrepo.world/index.php/Collections/index">
-                        <button class="butexplore">Explore</button>
-</a>
-					</div>
+                        <?= caNavLink($this->request, '<button class="butexplore">Explore</button>', "", "", "Collections", "index"); ?>
+</div>
 				</div>
 			</div>
             <div class="col-sm-6 col-lg-4 col-mb-4">  
@@ -123,8 +121,8 @@ $t_object = 			$this->getVar("item");
 					<div class="homecardcontent">
 						<h3>People</h3>
 						<p>Explore our people</p>
-                        <a href="https://testing.ifrepo.world/index.php/Browse/participants">
-                        <button class="butexplore">Explore</button>
+                        <?php print caNavLink($this->request, "<button class='butexplore'>Explore</button>", "", "", "Browse", "participants"); ?>
+                        
 </a>
 					</div>
 				</div>
@@ -137,8 +135,8 @@ $t_object = 			$this->getVar("item");
 					<div class="homecardcontent">
 						<h3>Resources</h3>
 						<p>Explore our resources</p>
-                        <a href="https://testing.ifrepo.world/index.php/Browse/objects">
-                        <button class="butexplore">Explore</button>
+                        <?php print caNavLink($this->request, "<button class='butexplore'>Explore</button>", "", "", "Browse", "objects"); ?>
+                        
 </a>
 					</div>
 				</div>
