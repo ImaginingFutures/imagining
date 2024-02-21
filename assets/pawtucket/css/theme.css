@@ -1173,6 +1173,8 @@ transition: 0.5s;
 
 								/* !!!!!!!!!!!!!!!!!!!!BROWSE LIST RESULTS!!!!!!!!!!!!!!! */
 
+			/* !!!!!!!!!!!!!! GRID VIEW !!!!!!!!!!!!!!!!!! */
+
 .browsecard {
 	width: 100%;
 	height: 25rem; /* Set a fixed height for the card */
@@ -1284,6 +1286,12 @@ transition: 0.5s;
 	font-size: larger;
 }
 
+			/* !!!!!!!!!!!!!!!! LIST VIEW !!!!!!!!!!!!!!!!!!! */
+
+.bResultListItem {
+	padding: 0.5rem;
+}
+
 .bResultListItem .bResultListItemText,
 .bResultListItem .bResultListItemText a {
 	font-size: 17px;
@@ -1319,16 +1327,41 @@ transition: 0.5s;
 }
 
 .bResultListItemCol {
-	height: 152px;
+	height: 12rem;
 }
+
+
 
 .bResultListItemContent {
-	height: 102px;
+    display: flex;
+    align-items: center; /* Align items vertically */
+    padding: 10px; /* Add padding for spacing */
 }
 
-.bResultListItem:hover {
-	height: 14x2px;
+.listItemImgSpace {
+    width: 10rem;
+    flex-shrink: 0; /* Ensure this space doesn't shrink */
+	background-color: grey;
 }
+
+.listItemImg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.listItemImg img {
+    max-width: 100%; /* Ensure image doesn't exceed container width */
+    max-height: 100%; /* Ensure image doesn't exceed container height */
+    object-fit: cover; /* Ensure the image covers the entire container */
+}
+
+.bResultListItemText {
+    margin-left: 10px; /* Add space between image and text */
+}
+
 
 
 .bResultItemImgPlaceholder {
@@ -1722,7 +1755,7 @@ section h1{
 
 .homecard {
 	width: 100%;
-	height: 30rem; /* Set a fixed height for the card */
+	height: 40rem; /* Set a fixed height for the card */
 	box-sizing: border-box;
 	margin-bottom: 20px;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
