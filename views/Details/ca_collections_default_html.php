@@ -415,9 +415,22 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
 					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
 					{{{<unit relativeTo="ca_places" delimiter="<br/>">This project ^relationship_typename <l>^ca_places.preferred_labels</l></unit>}}}
+			
+					<div class="colcard">
+				
+				{{{<ifcount code="ca_collections" min="1" max="1"><label>External Resource</label></ifcount>}}}
+				{{{<ifcount code="ca_collections" min="2"><label>External Resources</label></ifcount>}}}
+				{{{<unit relativeTo="ca_collections" delimiter="<br/>">This project ^ca_collections.exresource</unit>}}}
+
+				</div>
+			
 				</div><!-- end col -->
 
+			
 				</div><!-- end col -->
+
+
+				
 			</div><!-- end row -->
 
 		</div>
