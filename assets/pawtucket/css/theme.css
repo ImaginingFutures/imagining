@@ -1676,10 +1676,9 @@ body.frontContainer #footer {
     justify-content: center; /* Center the content vertically */
     align-items: center; /* Center the content horizontally */
     position: relative;
-    font-size: 100px;
+    font-size: 1rem;
     color: rgba(23, 31, 92, 0.1);
-	padding-left: 5px;
-	padding-right: 5px;
+
 }
 
 .value {
@@ -1729,17 +1728,17 @@ body.frontContainer #footer {
 @media (max-width: 768px) {
     .counter {
         flex-direction: column; /* Change to a vertical layout */
-        height: auto; /* Let the height adjust based on content */
+        height: 4rem; /* Let the height adjust based on content */
 		position: relative;
     }
 
     .mimetypeCat {
-        font-size: 50px; /* Adjust font size for smaller screens */
-        margin-bottom: 10px; /* Add spacing between elements */
+        font-size: 5rem; /* Adjust font size for smaller screens */
+        margin-bottom: 5rem; /* Add spacing between elements */
     }
 
     .value {
-        font-size: 50px; /* Adjust font size for smaller screens */
+        font-size: 5rem; /* Adjust font size for smaller screens */
     }
 
 	.mimeLabel {
@@ -1859,12 +1858,31 @@ section h1{
 }
 
 
+
 .colcard {
-	background-color: burlywood;
+	background-color: #f37639;
 	color: whitesmoke;
 	height: 15rem;
-	width: 25rem;
+	width: 30rem;
 	border-radius: 0.5rem;
 	text-align: center;
-	padding-top: 3rem;
+	padding: 3rem;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	text-align: center;
+}
+
+.colbutton{
+	width: 10rem;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid black;
+    background-color: #4e0fd6;
+	border-radius: 0.5rem;
+	color: white;
+
+	position: absolute;
+    bottom: 1rem;
+
 }

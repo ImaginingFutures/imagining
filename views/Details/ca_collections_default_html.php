@@ -75,6 +75,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 			{{{previousLink}}}{{{resultsLink}}}
 		</div><!-- end detailNavBgLeft -->
 	</div><!-- end col -->
+	
 	<div class='col-xs-12 col-sm-10 col-md-10 col-lg-10'>
 
 		<div class="row">
@@ -187,9 +188,10 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 				</div><!-- end col -->
 				
-					
-
 			</div><!-- end row -->
+			
+
+<div class="row">
 
 			<?php
 
@@ -242,7 +244,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 				print "</div>";
 			} 
 		?>
-
+</div><!-- end row -->
 			<?php
 			 
 			// MIMETYPES SCRIPT
@@ -347,18 +349,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					<?php
 					if ($vb_show_objects_link || $vb_show_collections_link) {
 					?>
-						<div class='collectionBrowseItems'>
-
-							<?php
-							if ($vb_show_objects_link) {
-								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Look inside the Collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-							}
-							if ($vb_show_collections_link) {
-								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-eye' aria-label='Search'></i> Look in all collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-							}
-							?>
-
-						</div>
+						
 					<?php
 					}
 
@@ -375,32 +366,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					?>
 
 
-					<div class='counter'>
-						<?php
-						if (!$category_counts) {
-							echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-folder-minus'></i><div class='value'>0</div><div class='mimeLabel'>No items yet</div></div>";
-						}
-						$colors = ['first', 'second', 'third', 'fourth'];
-
-						$counter = 0;
-						foreach ($category_counts as $category => $count) {
-							$catData = $mimetypes[$category];
-							$colorClass = 'value ' . $colors[$counter % count($colors)];
-							if ($count > 1) {
-								$cat_label = $catData['label'] . 's';
-							} else {
-								$cat_label = $catData['label'];
-							}
-							echo "<div class='mimetypeCat'><i class='fas fa-" . strtolower($category) . "'></i><div class='$colorClass' akhi='$count'>0</div><div class='mimeLabel'>" . strtoupper($cat_label) . "</div></div>";
-
-							if ($counter == 4) {
-								$counter = 0;
-							} else {
-								$counter++;
-							}
-						}
-						?>
-					</div>
+					
 					
 					<div class='col-sm-8 col-md-8 col-lg-8'>
 					{{{<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label> This project </ifcount>}}}
@@ -414,35 +380,107 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
 					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
-					{{{<unit relativeTo="ca_places" delimiter="<br/>">This project ^relationship_typename <l>^ca_places.preferred_labels</l></unit>}}}
-			
-					<div class="colcard">
-				
-				{{{<ifcount code="ca_collections" min="1" max="1"><label>External Resource</label></ifcount>}}}
-				{{{<ifcount code="ca_collections" min="2"><label>External Resources</label></ifcount>}}}
-				{{{<unit relativeTo="ca_collections" delimiter="<br/>">This project ^ca_collections.exresource</unit>}}}
-
-				</div>
+					{{{<unit relativeTo="ca_places" delimiter="<br/>">This project ^relationship_typename <l>^ca_places.preferred_labels</l></unit>}}}		
 			
 				</div><!-- end col -->
 
-			
 				</div><!-- end col -->
 
-
-				
 			</div><!-- end row -->
-
+			
 		</div>
 
-	</div><!-- end col -->
-	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
+		<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
 		<div class="detailNavBgRight">
 			{{{nextLink}}}
 		</div><!-- end detailNavBgLeft -->
 	</div><!-- end col -->
+	
 </div><!-- end row -->
 
+<section name="routes">
+<div class="">
+
+<?php
+if ($vb_show_objects_link) {
+    $category_content = '';
+
+    // Check if category counts are available
+    if (!$category_counts) {
+        // If not, display a default message
+        $category_content .= "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-folder-minus'></i><div class='value'>0</div><div class='mimeLabel'>No items yet</div></div>";
+    } else {
+        // Loop through category counts
+        $colors = ['first', 'second', 'third', 'fourth'];
+        $counter = 0;
+
+        foreach ($category_counts as $category => $count) {
+            $catData = $mimetypes[$category];
+            $colorClass = 'value ' . $colors[$counter % count($colors)];
+            if ($count > 1) {
+                $cat_label = $catData['label'] . 's';
+            } else {
+                $cat_label = $catData['label'];
+            }
+            $category_content .= 
+			"<div class='mimetypeCat'><i class='fas fa-" . strtolower($category) . "'></i><div class='$colorClass' akhi='$count'>0</div><div class='mimeLabel'>" . strtoupper($cat_label) . "</div></div>";
+
+            if ($counter == 4) {
+                $counter = 0;
+            } else {
+                $counter++;
+            }
+        }
+    }
+
+    // Now, include the retrieved category content within the caNavLink
+    print caNavLink(
+        $this->request, 
+        '<div class="col-sm-6 col-lg-4 col-mb-4">
+            <h3>Resources</h3>
+            <div class="colcard">
+                ' . $category_content . '
+  				<button class="colbutton">Explore</button>
+				</a>
+            </div>
+        </div>', 
+        "browseRemoveFacet", 
+        "", 
+        "browse", 
+        "objects", 
+        array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id"))
+    );
+}
+?>
+				
+		<div class="col-sm-6 col-lg-4 col-mb-4">
+			<h3>{{{<unit relativeTo="ca_collections" delimiter="<br/>">^ca_collections.exresource.exlist</unit>}}}</h3>
+			<div class="colcard">		
+				{{{<ifcount code="ca_collections" min="1" max="1"><label>External Resource</label></ifcount>}}}
+				{{{<ifcount code="ca_collections" min="2"><label>External Resources</label></ifcount>}}}
+				{{{<unit relativeTo="ca_collections" delimiter="<br/>">^ca_collections.exresource.exname</unit>}}}
+				<a href="{{{<unit relativeTo="ca_collections" delimiter="<br/>">^ca_collections.exresource.exurl</unit>}}}">
+  				<button class="colbutton">Visit</button>
+				</a>
+			</div>
+		</div>
+		
+
+		<div class="col-sm-6 col-lg-4 col-mb-4">
+		<h3>Contribution</h3>
+			<div class="colcard">		
+				{{{<ifcount code="ca_collections" min="1" max="1"><label>Contribute</label></ifcount>}}}
+				{{{<ifcount code="ca_collections" min="2"><label>Contribute</label></ifcount>}}}
+				{{{<unit relativeTo="ca_collections" delimiter="<br/>">^ca_collections.contribution.cont_text</unit>}}}
+				<a href="{{{<unit relativeTo="ca_collections" delimiter="<br/>">^ca_collections.contribution.cont_url</unit>}}}">
+  				<button class="colbutton">Contribute</button>
+				</a>
+			</div>
+		</div>
+
+
+</div><!-- end col -->
+</section>
 
 <script>
 	const counters = document.querySelectorAll('.value');
