@@ -145,43 +145,109 @@
 					$vs_typecode = "";
 					$vs_image = ($vs_table === 'ca_objects') ? $qr_res->getMediaTag("ca_object_representations.media", 'small', array("checkAccess" => $va_access_values)) : $va_images[$vn_id];
 				
-					if(!$vs_image){
+					
+					
+
+
+					if(!$vs_image) {
 						if ($vs_table == 'ca_objects') {
 							$t_list_item->load($qr_res->get("type_id"));
 							$vs_typecode = $t_list_item->get("idno");
-							if($vs_type_placeholder = caGetPlaceholder($vs_typecode, "placeholder_media_icon")){
+							if ($vs_type_placeholder = caGetPlaceholder($vs_typecode, "placeholder_media_icon")) {
 								$vs_image = "<div class='bResultItemImgPlaceholder'>".$vs_type_placeholder."</div>";
-							}else{
+							} else {
 								$vs_image = $vs_default_placeholder_tag;
 							}
-						}else{
+						} else {
 							$vs_image = $vs_default_placeholder_tag;
 						}
 					}
-					$vs_rep_detail_link 	= caDetailLink($this->request, $vs_image, '', $vs_table, $vn_id);	
-				
+					$vs_rep_detail_link = caDetailLink($this->request, $vs_image, '', $vs_table, $vn_id);
+					
 					$vs_add_to_set_link = "";
-					if(($vs_table == 'ca_objects') && is_array($va_add_to_set_link_info) && sizeof($va_add_to_set_link_info)){
+					
+					if (($vs_table == 'ca_objects') && is_array($va_add_to_set_link_info) && sizeof($va_add_to_set_link_info)) {
 						$vs_add_to_set_link = "<a href='#' onclick='caMediaPanel.showPanel(\"".caNavUrl($this->request, '', $va_add_to_set_link_info["controller"], 'addItemForm', array($vs_pk => $vn_id))."\"); return false;' title='".$va_add_to_set_link_info["link_text"]."'>".$va_add_to_set_link_info["icon"]."</a>";
 					}
-				
+					
 					$vs_expanded_info = $qr_res->getWithTemplate($vs_extended_info_template);
+					$vs_idno_detail = $qr_res->get("{$vs_table}.idno");
+					
+// Check if the table is 'ca_objects'
+if ($vs_table == 'ca_objects') {
+    // Retrieve entity information related to the current object
+    if ($va_entity_rels = $qr_res->get('ca_objects_x_entities.relation_id', array('returnAsArray' => true))) {
+        $va_entities_by_type = array();
+        foreach ($va_entity_rels as $va_key => $va_entity_rel) {
+            $t_rel = new ca_objects_x_entities($va_entity_rel);
+            $vn_type_id = $t_rel->get('ca_relationship_types.preferred_labels');
+            $va_entities_by_type[$vn_type_id][] = caNavLink($this->request, $t_rel->get('ca_entities.preferred_labels'), '', '', 'Detail', 'entities/' . $t_rel->get('ca_entities.entity_id'));
+        }
+    }
+
+    $contributors = '';
+
+    // Check if there are creators in the array
+    if (isset($va_entities_by_type['had as creator'])) {
+        $creators = array_unique($va_entities_by_type['had as creator']);
+        $contributors = implode(', ', $creators);
+    } else {
+        // If no creators, check for contributors and other entity types
+        $contributorString = '';
+
+        // Check if there are contributors in the array
+        if (isset($va_entities_by_type['had as contributor'])) {
+            $contributorString .= implode(', ', $va_entities_by_type['had as contributor']);
+        }
+
+        // Iterate through other entity types and add them to the contributorString
+        foreach ($va_entities_by_type as $type => $entities) {
+            if ($type !== 'had as contributor') {
+                if (!empty($contributorString)) {
+                    $contributorString .= ', ';
+                }
+                $contributorString .= implode(', ', $entities);
+            }
+        }
+
+        if (!empty($contributorString)) {
+            $contributors = $contributorString;
+        } else {
+            $contributors = 'Unknown';
+        }
+    }
+} else {
+    // If the table is not 'ca_objects', set the contributors to 'Unknown'
+    $contributors = 'Unknown';
+}
+
 
 					$vs_result_output = "
-		<div class='bResultListItemCol col-xs-{$vn_col_span_xs} col-sm-{$vn_col_span_sm} col-md-{$vn_col_span}'>
-			<div class='bResultListItem' id='row{$vn_id}' onmouseover='jQuery(\"#bResultListItemExpandedInfo{$vn_id}\").show();'  onmouseout='jQuery(\"#bResultListItemExpandedInfo{$vn_id}\").hide();'>
-				<div class='bSetsSelectMultiple'><input type='checkbox' name='object_ids[]' value='{$vn_id}'></div>
-				<div class='bResultListItemContent'>".(($vs_table == 'ca_objects') ? 
-				"<div class='listItemImgSpace'>
-				<div class='listItemImg'>{$vs_rep_detail_link}</div></div>" : "")."
-					<div class='bResultListItemText'>
-						{$vs_label_detail_link}
-					</div><!-- end bResultListItemText -->
-				</div><!-- end bResultListItemContent -->
-				
-				
-			</div><!-- end bResultListItem -->
-		</div><!-- end col -->";
+					<div class='bResultListItemCol'>
+						<div class='bResultListItem' id='row{$vn_id}'>
+							<div class='bSetsSelectMultiple'><input type='checkbox' name='object_ids[]' value='{$vn_id}'></div>
+							<div class='bResultListItemContent'>".(($vs_table == 'ca_objects') ? 
+							"<div class='listItemImgSpace'>
+							<div class='listItemImg'>{$vs_rep_detail_link}</div></div>" : "")."
+								<div class='bResultListItemText'>
+							
+								<p id='cardtitle'> {$vs_label_detail_link} </p>
+								<p> ID: {$vs_idno_detail}</p>
+								<p> Creator: {$contributors} </p>
+								<p> Project: {$vs_prj_name}twst </p>
+								
+								
+								
+								</div><!-- end bResultListItemText -->
+								<span class='listcardicon fa fa-image'></span> 
+							</div><!-- end bResultListItemContent -->
+						
+						<span class='listcardicon2 fab fa-creative-commons'></span> 
+						
+						</div><!-- end bResultListItem -->
+						
+					</div><!-- end col -->";
+					
 					ExternalCache::save($vs_cache_key, $vs_result_output, 'browse_result');
 					print $vs_result_output;
 				}				

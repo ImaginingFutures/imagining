@@ -174,9 +174,7 @@
 
 					<button class='browsecard_button'><span class='heart-icon fa fa-heart'></span></button>
 					
-					<span class='cardicon fa fa-image'></span> 
-					<span class='cardicon2 fab fa-creative-commons'></span> 
-
+					
 					<div class='browsecardcontent'>
 
 							<h3>{$vs_label_detail_link}</h3>

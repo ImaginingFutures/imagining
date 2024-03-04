@@ -1289,15 +1289,64 @@ transition: 0.5s;
 			/* !!!!!!!!!!!!!!!! LIST VIEW !!!!!!!!!!!!!!!!!!! */
 
 .bResultListItem {
-	padding: 0.5rem;
+    padding: 0.3rem;
+    height: 12rem;
+    align-items: center;
+    display: flex;
+}
+
+.bResultListItem:hover {
+    -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 10px rgba(81, 109, 202, 0.2);
+    padding: unset;
+    margin: unset;
+    height: unset;
+    font-size: unset;
+	background-color: #f8eeee;
+}
+
+.bResultListItemText p{
+	font-size: 2rem;
+	line-height: 0.5rem;
 }
 
 .bResultListItem .bResultListItemText,
 .bResultListItem .bResultListItemText a {
-	font-size: 17px;
 	text-decoration: none;
 	color: #454545;
 }
+
+#cardtitle{
+	font-size: 2rem;
+	font-weight: bold;
+}
+
+@media screen and (max-width: 650px){
+
+.bResultListItemText p{
+	font-size: 1.2rem;
+	line-height: 0.1rem;
+}	
+#cardtitle{
+	font-size: 1.3rem;
+}
+}
+
+.listcardicon {
+    position: absolute;
+    right: 0;
+    margin: 1rem;
+	color: black;
+}
+
+.listcardicon2 {
+    position: absolute;
+
+    right: 0;
+    margin: 1rem;
+	color: black;
+}
+
 
 .bResultListItemText .bResultListItemTextDate,
 .bResultListItemText .bResultListItemTextDate a {
@@ -1330,18 +1379,17 @@ transition: 0.5s;
 	height: 12rem;
 }
 
-
-
 .bResultListItemContent {
     display: flex;
-    align-items: center; /* Align items vertically */
     padding: 10px; /* Add padding for spacing */
+	height: 12rem;
 }
 
 .listItemImgSpace {
-    width: 10rem;
+    width: 12rem;
     flex-shrink: 0; /* Ensure this space doesn't shrink */
 	background-color: grey;
+	height: 10rem;
 }
 
 .listItemImg {
@@ -1352,17 +1400,18 @@ transition: 0.5s;
     height: 100%;
 }
 
-.listItemImg img {
-    max-width: 100%; /* Ensure image doesn't exceed container width */
-    max-height: 100%; /* Ensure image doesn't exceed container height */
-    object-fit: cover; /* Ensure the image covers the entire container */
-}
+
 
 .bResultListItemText {
     margin-left: 10px; /* Add space between image and text */
 }
 
-
+.bResultListItem img {
+    max-width: 100%; /* Ensure image doesn't exceed container width */
+	width: 100%;
+    height: 10rem;
+	object-fit: contain;
+}
 
 .bResultItemImgPlaceholder {
 	background-color: rgba(174, 180, 213, 0.9);
