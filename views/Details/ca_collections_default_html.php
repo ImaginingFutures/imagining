@@ -58,6 +58,8 @@ if ($t_item->get("ca_collections.children.collection_id", array("checkAccess" =>
 	$vb_show_collections_link = true;
 }
 
+$qr_res = $o_browse->getResults(); // retrieve all objects
+
 # --------------------
 # Mimetypes
 #$mimetypes = $this->render("Details/data/mimetypes.php");
@@ -166,7 +168,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						<ifdef code="ca_collections.description"><label>About</label>^ca_collections.description<br/></ifdef>
 					}}}
 
-
+					
 					<?php
 					# Comment and Share Tools
 					if ($vn_comments_enabled | $vn_share_enabled) {
@@ -191,15 +193,58 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 			</div><!-- end row -->
 
+			<!-- Resources cards -->
+			<?php
+			// This needs to be improved, it's just an optional approach
+					
+
+					if($vb_show_objects_link){
+						echo '<div class="row">';
+
+						// Resources panel
+						echo '<div class="col-sm-4">';
+						echo '<div class="panel panel-info">';
+						echo '<div class="panel-heading">
+								<h3 class="panel-title">Resources of this Project</h3>
+								</div>';
+
+						echo '<div class="panel-body collections-panel">';
+								print caNavLink($this->request, "<button type='button' class='btn btn-info btn-lg'>Explore Project Resources</button>", "", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+						echo '</div></div>';
+						echo '</div>'; // end of panel
+					}
+					elseif($t_item->get('ca_collections.exresource')) {
+						echo '<div class="row">';
+					}
+					?>
+
+					{{{<ifcount code="ca_collections.exresource" min="1"><unit relativeTo="ca_collections.exresource" delimiter="<div></div>">
+						<div class="col-sm-4">
+						<div class="panel panel-info"> 
+							<div class="panel-heading">
+								<h3 class="panel-title">^ca_collections.exresource.exlist</h3>
+								</div>
+								<div class="panel-body collections-panel">
+								<a href="^ca_collections.exresource.exurl" class="btn btn-info btn-lg">^ca_collections.exresource.exname</a>
+								</div>
+						</div>
+						</div>
+					
+						</unit></ifcount>}}}
+						<?php 
+							if($vb_show_objects_link or $t_item->get('ca_collections.exresource')){
+								echo '</div>';
+							}
+						?>
+						
+			<!-- End of resources cards -->
+
 			<?php
 
 			// COLLECTIONS MAP
 
 			# Retrieving objects data for map
 			$vs_cache_key = md5($vs_browse_key);
-			
-			$qr_res = $o_browse->getResults();
-
 			
 
 			if (($o_collections_config->get("cache_timeout") > 0) && ExternalCache::contains($vs_cache_key,'ca_collections_default')) {
