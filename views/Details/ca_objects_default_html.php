@@ -473,7 +473,7 @@ try {
 				</div>
 
 				<div class='col-sm-6 col-md-6'>
-					<?php
+				<?php
 					if ($va_entity_rels = $t_object->get('ca_objects_x_entities.relation_id', array('returnAsArray' => true))) {
 						$va_entities_by_type = array();
 						foreach ($va_entity_rels as $va_key => $va_entity_rel) {
@@ -483,36 +483,17 @@ try {
 						}
 					}
 
-					$contributors = '';
+					$contributors = 'Unknown';
 
 					// Check if there are creators in the array
 					if (isset($va_entities_by_type['had as creator'])) {
 						$creators = array_unique($va_entities_by_type['had as creator']);
 						$contributors = implode(', ', $creators);
-					} else {
-						// If no creators, check for contributors and other entity types
-						$contributorString = '';
-
-						// Check if there are contributors in the array
-						if (isset($va_entities_by_type['had as contributor'])) {
-							$contributorString .= implode(', ', $va_entities_by_type['had as contributor']);
-						}
-
-						// Iterate through other entity types and add them to the contributorString
-						foreach ($va_entities_by_type as $type => $entities) {
-							if ($type !== 'had as contributor') {
-								if (!empty($contributorString)) {
-									$contributorString .= ', ';
-								}
-								$contributorString .= implode(', ', $entities) . " ($type)";
-							}
-						}
-
-						if (!empty($contributorString)) {
-							$contributors = $contributorString;
-						} else {
-							$contributors = 'Unknown';
-						}
+					} elseif (isset($va_entities_by_type['had as rights holder'])) {
+						$rightsHolders = array_unique($va_entities_by_type['had as rights holder']);
+						$contributors = implode(', ', $rightsHolders);
+					} elseif (isset($va_entities_by_type['had as contributor'])) {
+						$contributors = implode(', ', $va_entities_by_type['had as contributor']);
 					}
 
 					$yearofcreation = date("Y", $date_created);
