@@ -1334,6 +1334,7 @@ transition: 0.5s;
 .bResultListItem .bResultListItemText,
 .bResultListItem .bResultListItemText a {
 	text-decoration: none;
+	line-height: 0.5rem;
 	color: #454545;
 }
 
@@ -1346,11 +1347,12 @@ transition: 0.5s;
 
 .bResultListItemText p{
 	font-size: 1.2rem;
-	line-height: 0.1rem;
+	line-height: 0.3rem;
 }	
 #cardtitle{
 	font-size: 1.3rem;
 }
+
 }
 
 .listcardicon {

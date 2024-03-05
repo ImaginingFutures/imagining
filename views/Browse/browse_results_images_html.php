@@ -159,28 +159,97 @@
 					}
 					$vs_expanded_info = $qr_res->getWithTemplate($vs_extended_info_template);
 
+
+					// Check if the table is 'ca_objects'
+if ($vs_table == 'ca_objects') {
+    // Retrieve entity information related to the current object
+    if ($va_entity_rels = $qr_res->get('ca_objects_x_entities.relation_id', array('returnAsArray' => true))) {
+        $va_entities_by_type = array();
+        foreach ($va_entity_rels as $va_key => $va_entity_rel) {
+            $t_rel = new ca_objects_x_entities($va_entity_rel);
+            $vn_type_id = $t_rel->get('ca_relationship_types.preferred_labels');
+            $va_entities_by_type[$vn_type_id][] = caNavLink($this->request, $t_rel->get('ca_entities.preferred_labels'), '', '', 'Detail', 'entities/' . $t_rel->get('ca_entities.entity_id'));
+        }
+    }
+
+    $contributors = '';
+    $lastContributorEntityType = '';
+
+    // Check if there are creators in the array
+    if (isset($va_entities_by_type['had as creator'])) {
+        $creators = array_unique($va_entities_by_type['had as creator']);
+        $contributors = implode(', ', $creators);
+        $lastContributorEntityType = 'Creator'; // Set entity type to "Creator" if creators are present
+    } elseif (isset($va_entities_by_type['had as rights holder'])) {
+        $rightsHolders = array_unique($va_entities_by_type['had as rights holder']);
+        $contributors = implode(', ', $rightsHolders);
+        $lastContributorEntityType = 'Rights Holder'; // Set entity type to "Rights Holder" if rights holders are present
+    } elseif (isset($va_entities_by_type['had as contributor'])) {
+        $contributors = implode(', ', $va_entities_by_type['had as contributor']);
+        // Retrieve the last contributor's entity type
+        $lastContributorEntities = end($va_entities_by_type['had as contributor']);
+        $lastContributorEntityType = !empty($lastContributorEntities) ? key($lastContributorEntities) : 'Creator'; // Set entity type to "Creator" if the last contributor's entity type is unknown
+    } else {
+        // If no creators, rights holders, or contributors, check for other entity types
+        $contributorString = '';
+
+        // Iterate through other entity types and add them to the contributorString
+        foreach ($va_entities_by_type as $type => $entities) {
+            if ($type !== 'had as contributor') {
+                if (!empty($contributorString)) {
+                    $contributorString .= ', ';
+                }
+                $contributorString .= implode(', ', $entities);
+            }
+        }
+
+        if (!empty($contributorString)) {
+            $contributors = $contributorString;
+        } else {
+            $contributors = 'Unknown';
+        }
+    }
+} else {
+    // If the table is not 'ca_objects', set the contributors to 'Unknown'
+    $contributors = 'Unknown';
+}
+
+
+if ($vs_table == 'ca_objects') {
+    // Retrieve collection information related to the current object
+    if ($va_collection_rels = $qr_res->get('ca_objects_x_collections.relation_id', array('returnAsArray' => true))) {
+        $collections = array();
+        foreach ($va_collection_rels as $va_key => $va_collection_rel) {
+            $t_rel = new ca_objects_x_collections($va_collection_rel);
+            $collection_name = $t_rel->get('ca_collections.preferred_labels.name');
+            $collections[] = $collection_name;
+        }
+        // Join collection names into a single string
+        $collection_info = implode(', ', $collections);
+    } else {
+        // If no related collections found, set collection_info to 'Unknown'
+        $collection_info = 'Unknown';
+    }
+} else {
+    // If the table is not 'ca_objects', set collection_info to 'Unknown'
+    $collection_info = 'Unknown';
+}
+
 					$vs_result_output = "
-		
-		
 				
 					<div class='col-sm-6 col-lg-3 col-mb-4'>  
-					<div class='browsecard'>
+					<div class='browsecard'>{$vs_label_detail_link}
 						<div>
-
 							<img class='' src='{$vs_rep_detail_link}'>
-
 						
 						</div>
-
 					<button class='browsecard_button'><span class='heart-icon fa fa-heart'></span></button>
-					
-					
 					<div class='browsecardcontent'>
 
 							<h3>{$vs_label_detail_link}</h3>
 							<p>ID: {$vs_idno_detail}</p>
-							<p>Project: {$vs_prj_name} </p>
-							<p>Creator: {$vs_person} </p>
+							<p> Project: {$collection_info}</p>
+							<p> {$lastContributorEntityType}: {$contributors} </p>
 					</div>
 						<button class='browsecard_button'><span class='heart-icon fa fa-heart'></span></button>
 						<span class='cardicon fa fa-image'></span> 

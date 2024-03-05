@@ -172,7 +172,6 @@
 					
 					$vs_expanded_info = $qr_res->getWithTemplate($vs_extended_info_template);
 					$vs_idno_detail = $qr_res->get("{$vs_table}.idno");
-					
 // Check if the table is 'ca_objects'
 if ($vs_table == 'ca_objects') {
     // Retrieve entity information related to the current object
@@ -186,19 +185,26 @@ if ($vs_table == 'ca_objects') {
     }
 
     $contributors = '';
+    $lastContributorEntityType = '';
 
     // Check if there are creators in the array
     if (isset($va_entities_by_type['had as creator'])) {
+		
         $creators = array_unique($va_entities_by_type['had as creator']);
         $contributors = implode(', ', $creators);
+        $lastContributorEntityType = 'Creator'; // Set entity type to "Creator" if creators are present
+    } elseif (isset($va_entities_by_type['had as rights holder'])) {
+        $rightsHolders = array_unique($va_entities_by_type['had as rights holder']);
+        $contributors = implode(', ', $rightsHolders);
+        $lastContributorEntityType = 'Rights Holder'; // Set entity type to "Rights Holder" if rights holders are present
+    } elseif (isset($va_entities_by_type['had as contributor'])) {
+        $contributors = implode(', ', $va_entities_by_type['had as contributor']);
+        // Retrieve the last contributor's entity type
+        $lastContributorEntities = end($va_entities_by_type['had as contributor']);
+        $lastContributorEntityType = !empty($lastContributorEntities) ? key($lastContributorEntities) : 'Creator'; // Set entity type to "Creator" if the last contributor's entity type is unknown
     } else {
-        // If no creators, check for contributors and other entity types
+        // If no creators, rights holders, or contributors, check for other entity types
         $contributorString = '';
-
-        // Check if there are contributors in the array
-        if (isset($va_entities_by_type['had as contributor'])) {
-            $contributorString .= implode(', ', $va_entities_by_type['had as contributor']);
-        }
 
         // Iterate through other entity types and add them to the contributorString
         foreach ($va_entities_by_type as $type => $entities) {
@@ -221,32 +227,45 @@ if ($vs_table == 'ca_objects') {
     $contributors = 'Unknown';
 }
 
+if ($vs_table == 'ca_objects') {
+    // Retrieve collection information related to the current object
+    if ($va_collection_rels = $qr_res->get('ca_objects_x_collections.relation_id', array('returnAsArray' => true))) {
+        $collections = array();
+        foreach ($va_collection_rels as $va_key => $va_collection_rel) {
+            $t_rel = new ca_objects_x_collections($va_collection_rel);
+            $collection_name = $t_rel->get('ca_collections.preferred_labels.name');
+            $collections[] = $collection_name;
+        }
+        // Join collection names into a single string
+        $collection_info = implode(', ', $collections);
+    } else {
+        // If no related collections found, set collection_info to 'Unknown'
+        $collection_info = 'Unknown';
+    }
+} else {
+    // If the table is not 'ca_objects', set collection_info to 'Unknown'
+    $collection_info = 'Unknown';
+}
 
-					$vs_result_output = "
-					<div class='bResultListItemCol'>
-						<div class='bResultListItem' id='row{$vn_id}'>
-							<div class='bSetsSelectMultiple'><input type='checkbox' name='object_ids[]' value='{$vn_id}'></div>
-							<div class='bResultListItemContent'>".(($vs_table == 'ca_objects') ? 
-							"<div class='listItemImgSpace'>
-							<div class='listItemImg'>{$vs_rep_detail_link}</div></div>" : "")."
-								<div class='bResultListItemText'>
-							
-								<p id='cardtitle'> {$vs_label_detail_link} </p>
-								<p> ID: {$vs_idno_detail}</p>
-								<p> Creator: {$contributors} </p>
-								<p> Project: {$vs_prj_name}twst </p>
-								
-								
-								
-								</div><!-- end bResultListItemText -->
-								<span class='listcardicon fa fa-image'></span> 
-							</div><!-- end bResultListItemContent -->
-						
-						<span class='listcardicon2 fab fa-creative-commons'></span> 
-						
-						</div><!-- end bResultListItem -->
-						
-					</div><!-- end col -->";
+
+$vs_result_output = "
+    <div class='bResultListItemCol'>
+        <div class='bResultListItem' id='row{$vn_id}'>
+            <div class='bSetsSelectMultiple'><input type='checkbox' name='object_ids[]' value='{$vn_id}'></div>
+            <div class='bResultListItemContent'>".(($vs_table == 'ca_objects') ? 
+            "<div class='listItemImgSpace'>
+            <div class='listItemImg'>{$vs_rep_detail_link}</div></div>" : "")."
+                <div class='bResultListItemText'>
+                    <p id='cardtitle'> {$vs_label_detail_link} </p>
+                    <p> ID: {$vs_idno_detail}</p>
+                    <p> Project: {$collection_info}</p>
+                    <p> {$lastContributorEntityType}: {$contributors} </p>										
+                </div><!-- end bResultListItemText -->
+                <span class='listcardicon fa fa-image'></span> 
+            </div><!-- end bResultListItemContent -->
+            <span class='listcardicon2 fab fa-creative-commons'></span> 
+        </div><!-- end bResultListItem -->
+    </div><!-- end col -->";
 					
 					ExternalCache::save($vs_cache_key, $vs_result_output, 'browse_result');
 					print $vs_result_output;

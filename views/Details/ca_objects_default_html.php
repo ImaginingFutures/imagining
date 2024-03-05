@@ -474,27 +474,37 @@ try {
 
 				<div class='col-sm-6 col-md-6'>
 				<?php
-					if ($va_entity_rels = $t_object->get('ca_objects_x_entities.relation_id', array('returnAsArray' => true))) {
-						$va_entities_by_type = array();
-						foreach ($va_entity_rels as $va_key => $va_entity_rel) {
-							$t_rel = new ca_objects_x_entities($va_entity_rel);
-							$vn_type_id = $t_rel->get('ca_relationship_types.preferred_labels');
-							$va_entities_by_type[$vn_type_id][] = caNavLink($this->request, $t_rel->get('ca_entities.preferred_labels'), '', '', 'Detail', 'entities/' . $t_rel->get('ca_entities.entity_id'));
-						}
-					}
+if ($va_entity_rels = $t_object->get('ca_objects_x_entities.relation_id', array('returnAsArray' => true))) {
+    $va_entities_by_type = array();
+    foreach ($va_entity_rels as $va_key => $va_entity_rel) {
+        $t_rel = new ca_objects_x_entities($va_entity_rel);
+        $vn_type_id = $t_rel->get('ca_relationship_types.preferred_labels');
+        $va_entities_by_type[$vn_type_id][] = caNavLink($this->request, $t_rel->get('ca_entities.preferred_labels'), '', '', 'Detail', 'entities/' . $t_rel->get('ca_entities.entity_id'));
+    }
+}
 
-					$contributors = 'Unknown';
+$contributors = 'Unknown';
+$lastContributorEntityType = '';
 
-					// Check if there are creators in the array
-					if (isset($va_entities_by_type['had as creator'])) {
-						$creators = array_unique($va_entities_by_type['had as creator']);
-						$contributors = implode(', ', $creators);
-					} elseif (isset($va_entities_by_type['had as rights holder'])) {
-						$rightsHolders = array_unique($va_entities_by_type['had as rights holder']);
-						$contributors = implode(', ', $rightsHolders);
-					} elseif (isset($va_entities_by_type['had as contributor'])) {
-						$contributors = implode(', ', $va_entities_by_type['had as contributor']);
-					}
+// Check if there are creators in the array
+if (isset($va_entities_by_type['had as creator'])) {
+    $creators = array_unique($va_entities_by_type['had as creator']);
+    $contributors = implode(', ', $creators);
+    $lastContributorEntityType = 'Creator'; // Set entity type to "Creator" if creators are present
+} elseif (isset($va_entities_by_type['had as rights holder'])) {
+    $rightsHolders = array_unique($va_entities_by_type['had as rights holder']);
+    $contributors = implode(', ', $rightsHolders);
+    $lastContributorEntityType = 'Rights Holder'; // Set entity type to "Rights Holder" if rights holders are present
+} elseif (isset($va_entities_by_type['had as contributor'])) {
+    $contributors = implode(', ', $va_entities_by_type['had as contributor']);
+    // Retrieve the last contributor's entity type
+    $lastContributorEntities = end($va_entities_by_type['had as contributor']);
+    $lastContributorEntityType = !empty($lastContributorEntities) ? key($lastContributorEntities) : 'Creator'; // Set entity type to "Creator" if the last contributor's entity type is unknown
+}
+
+echo "Contributors: $contributors<br>";
+echo "Last Contributor's Entity Type: $lastContributorEntityType";
+
 
 					$yearofcreation = date("Y", $date_created);
 					$title = $t_object->get('ca_objects.preferred_labels.name');
