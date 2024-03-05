@@ -161,6 +161,27 @@ a:hover {
 	text-decoration: none;
 }
 
+
+	.collections-panel {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		padding: 15px;
+	}
+
+	.collections-panel a.btn.btn-info.btn-lg {
+		color: white;
+	}
+
+	.btn-info {
+		white-space: normal;
+		min-width: 80%;
+		text-align: center;
+		margin-top: 10px;
+		color: #FFFFFF;
+	}
+
 .btn-default,
 .btn-default:active,
 .btn-default:focus,
