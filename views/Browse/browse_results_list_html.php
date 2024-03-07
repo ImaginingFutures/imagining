@@ -180,7 +180,9 @@ if ($vs_table == 'ca_objects') {
         foreach ($va_entity_rels as $va_key => $va_entity_rel) {
             $t_rel = new ca_objects_x_entities($va_entity_rel);
             $vn_type_id = $t_rel->get('ca_relationship_types.preferred_labels');
-            $va_entities_by_type[$vn_type_id][] = caNavLink($this->request, $t_rel->get('ca_entities.preferred_labels'), '', '', 'Detail', 'entities/' . $t_rel->get('ca_entities.entity_id'));
+            // Retrieve entity name without hyperlink
+            $entity_name = $t_rel->get('ca_entities.preferred_labels');
+            $va_entities_by_type[$vn_type_id][] = $entity_name;
         }
     }
 
@@ -189,7 +191,6 @@ if ($vs_table == 'ca_objects') {
 
     // Check if there are creators in the array
     if (isset($va_entities_by_type['had as creator'])) {
-		
         $creators = array_unique($va_entities_by_type['had as creator']);
         $contributors = implode(', ', $creators);
         $lastContributorEntityType = 'Creator'; // Set entity type to "Creator" if creators are present
@@ -248,27 +249,75 @@ if ($vs_table == 'ca_objects') {
 }
 
 
+
+
+// Initialize $prjleader variable
+$prjleader = '';
+
+if ($vs_table == 'ca_collections') {
+    if ($va_entity_rels = $qr_res->get('ca_collections_x_entities.relation_id', array('returnAsArray' => true))) {
+        $entities = array();
+        foreach ($va_entity_rels as $va_entity_rel) {
+            $t_rel = new ca_collections_x_entities($va_entity_rel);
+            $entity_name = $t_rel->get('ca_entities.preferred_labels.name');
+            $entities[] = $entity_name;
+        }
+        $prjleader = implode(', ', $entities); // Join entity names into a single string
+    } else {
+        $prjleader = 'Unknown'; // If no related entities found, set prjleader to 'Unknown'
+    }
+}
+
+$vs_result_output .= "<div class='bResultListItemText'>";
+$vs_result_output .= "<p>Project Leader: {$prjleader}</p>";
+$vs_result_output .= "</div><!-- end bResultListItemText -->";
+
+
+
+
 $vs_result_output = "
     <div class='bResultListItemCol'>
         <div class='bResultListItem' id='row{$vn_id}'>
             <div class='bSetsSelectMultiple'><input type='checkbox' name='object_ids[]' value='{$vn_id}'></div>
-            <div class='bResultListItemContent'>".(($vs_table == 'ca_objects') ? 
-            "<div class='listItemImgSpace'>
-            <div class='listItemImg'>{$vs_rep_detail_link}</div></div>" : "")."
-                <div class='bResultListItemText'>
-                    <p id='cardtitle'> {$vs_label_detail_link} </p>
-                    <p> ID: {$vs_idno_detail}</p>
-                    <p> Project: {$collection_info}</p>
-                    <p> {$lastContributorEntityType}: {$contributors} </p>										
-                </div><!-- end bResultListItemText -->
-                <span class='listcardicon fa fa-image'></span> 
-            </div><!-- end bResultListItemContent -->
-            <span class='listcardicon2 fab fa-creative-commons'></span> 
-        </div><!-- end bResultListItem -->
-    </div><!-- end col -->";
-					
-					ExternalCache::save($vs_cache_key, $vs_result_output, 'browse_result');
-					print $vs_result_output;
+            <div class='bResultListItemContent'>";
+
+if ($vs_table == 'ca_objects') {
+    $vs_result_output .= "<div class='listItemImgSpace'>
+                            <div class='listItemImg'>{$vs_rep_detail_link}</div>
+                          </div>";
+}
+
+$vs_result_output .= "<div class='bResultListItemText'>
+                        <p id='cardtitle'> {$vs_label_detail_link} </p>
+                        <p> ID: {$vs_idno_detail}</p>
+						";
+
+if ($vs_table == 'ca_objects') {
+    $vs_result_output .= "<p class='one-line-text'> Project: {$collection_info}</p>";
+    $vs_result_output .= "<p> {$lastContributorEntityType}: {$contributors} </p>";
+}
+
+// Add project leader information specifically for projects page
+if ($vs_table == 'ca_collections') {
+    $vs_result_output .= "<p>Project Leader:{$prjleader}</p>";
+}
+
+$vs_result_output .= "</div><!-- end bResultListItemText -->
+                    <span class='listcardicon fa fa-image'></span>";
+
+if ($vs_table == 'ca_objects') {
+    // Additional icons or information specific to objects
+}
+
+$vs_result_output .= "</div><!-- end bResultListItemContent -->
+                    <span class='listcardicon2 fab fa-creative-commons'></span> 
+                </div><!-- end bResultListItem -->
+            </div><!-- end col -->";
+            
+ExternalCache::save($vs_cache_key, $vs_result_output, 'browse_result');
+print $vs_result_output;
+
+
 				}				
 				$vn_c++;
 				$vn_results_output++;

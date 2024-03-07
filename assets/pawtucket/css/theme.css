@@ -1238,6 +1238,7 @@ transition: 0.5s;
 	font-size: 2rem; margin-bottom: 0.5rem;
 	margin-top: 0.2rem;
 	text-transform: capitalize; 
+	padding-bottom: 0.5rem;
   }
 
   .browsecardcontent h3 a {
@@ -1255,7 +1256,9 @@ transition: 0.5s;
 .browsecardcontent p {
 	display: none;
 	text-align: left;
+	line-height: 1.5rem;
 }
+
 .browsecard:hover .browsecardcontent p {
     display: block;
     height: auto; /* Allow the height to be auto for the text content */
@@ -1328,18 +1331,18 @@ transition: 0.5s;
 
 .bResultListItemText p{
 	font-size: 2rem;
-	line-height: 0.5rem;
+	line-height: 1.5rem;
 }
 
 .bResultListItem .bResultListItemText,
 .bResultListItem .bResultListItemText a {
 	text-decoration: none;
-	line-height: 0.5rem;
+	line-height: 2.5rem;
 	color: #454545;
 }
 
 #cardtitle{
-	font-size: 2rem;
+	font-size: 2.5rem;
 	font-weight: bold;
 }
 
@@ -1350,10 +1353,22 @@ transition: 0.5s;
 	line-height: 0.3rem;
 }	
 #cardtitle{
-	font-size: 1.3rem;
+	font-size: 1.5rem;
+}
+.bResultListItem .bResultListItemText,
+.bResultListItem .bResultListItemText a {
+	text-decoration: none;
+	line-height: 1.5rem;
+	color: #454545;
+}
 }
 
+.one-line-text {
+		white-space: nowrap; /* Prevent text from wrapping */
+		text-overflow: ellipsis; /* Display ellipsis (...) for overflow text */
+		max-width: 100%; /* Limit the width of the text container */
 }
+
 
 .listcardicon {
     position: absolute;
