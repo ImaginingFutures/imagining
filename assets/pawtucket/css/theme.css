@@ -1352,6 +1352,12 @@ transition: 0.5s;
 	font-size: 1.2rem;
 	line-height: 0.3rem;
 }	
+
+#one-line-text {
+	line-height: 1rem;
+}
+
+
 #cardtitle{
 	font-size: 1.5rem;
 }
@@ -1363,11 +1369,6 @@ transition: 0.5s;
 }
 }
 
-.one-line-text {
-		white-space: nowrap; /* Prevent text from wrapping */
-		text-overflow: ellipsis; /* Display ellipsis (...) for overflow text */
-		max-width: 100%; /* Limit the width of the text container */
-}
 
 
 .listcardicon {
@@ -1550,25 +1551,18 @@ body.frontContainer #footer {
 
 .parallax {
 	position: relative;
-	background-image: url("../graphics/repo.jpg");
-
-	/* Full height */
-	height: 100vh;
-
-	/* Create the parallax scrolling effect */
-	background-attachment: fixed;
-	background-position: center center;
-	background-repeat: no-repeat;
-	background-size: cover;
-
-	margin-left: -15px;
-	margin-right: -15px;
-	top: -20px;
+    background-image: url(../graphics/homepage.jpg);
+    height: 120vh;
+    background-attachment: local;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-left: -15px;
+    margin-right: -15px;
+    top: -20px;
 }
 
-.parallax.hero1 {
-	background-image: url("../graphics/repo.jpg");
-}
+
 
 .front .heroSearch {
 	position: relative;

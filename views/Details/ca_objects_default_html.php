@@ -102,6 +102,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					}}}
 
 					{{{<unit relativeTo="ca_collections" delimiter="<br/>"><label>Member of:</label><l>^ca_collections.preferred_labels.name</l></unit><ifcount min="1" code="ca_collections"><HR></ifcount>}}}
+					
 					{{{
 					<ifcount code="ca_objects.exlink.exlink_name" min="1"><div class="unit">
 						<label>External Link:</label>
@@ -115,6 +116,15 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					{{{
 					<ifdef code="ca_objects.originalid"><div class="unit"><label>Local ID:</label>^ca_objects.originalid</div></ifdef>
 					}}}
+				
+{{{
+<ifcount code="ca_objects.related" min="1">    
+     <label>Related Objects:</label>
+        <unit relativeTo="ca_objects.related"  delimiter="</br>"> <l>^ca_objects.preferred_labels.name </l>^relationship_typename</unit><HR>
+</ifcount>
+}}}
+
+
 
 					<!-- end of identification labels -->
 
@@ -388,8 +398,6 @@ var detailIndex = currentURL.indexOf("Detail");
 // Extract the substring after "Detail"
 var baseURL = currentURL.substring(0, detailIndex);
 
-console.log(baseURL);
-console.log(georeferenceString);
 
 // Remove unwanted characters and ensure proper JSON format
 georeferenceString = georeferenceString.replace(/[\[\]\s]/g, ''); // Remove brackets and whitespaces
@@ -501,9 +509,6 @@ if (isset($va_entities_by_type['had as creator'])) {
     $lastContributorEntities = end($va_entities_by_type['had as contributor']);
     $lastContributorEntityType = !empty($lastContributorEntities) ? key($lastContributorEntities) : 'Creator'; // Set entity type to "Creator" if the last contributor's entity type is unknown
 }
-
-echo "Contributors: $contributors<br>";
-echo "Last Contributor's Entity Type: $lastContributorEntityType";
 
 
 					$yearofcreation = date("Y", $date_created);

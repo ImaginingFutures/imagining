@@ -268,12 +268,6 @@ if ($vs_table == 'ca_collections') {
     }
 }
 
-$vs_result_output .= "<div class='bResultListItemText'>";
-$vs_result_output .= "<p>Project Leader: {$prjleader}</p>";
-$vs_result_output .= "</div><!-- end bResultListItemText -->";
-
-
-
 
 $vs_result_output = "
     <div class='bResultListItemCol'>
@@ -293,7 +287,9 @@ $vs_result_output .= "<div class='bResultListItemText'>
 						";
 
 if ($vs_table == 'ca_objects') {
-    $vs_result_output .= "<p class='one-line-text'> Project: {$collection_info}</p>";
+    // Truncate project name if it exceeds a certain length
+    $collection_info_short = strlen($collection_info) > 20 ? substr($collection_info, 0, 20) . '...' : $collection_info;
+    $vs_result_output .= "<p id='one-line-text'> Project: {$collection_info_short}</p>";
     $vs_result_output .= "<p> {$lastContributorEntityType}: {$contributors} </p>";
 }
 
@@ -313,7 +309,7 @@ $vs_result_output .= "</div><!-- end bResultListItemContent -->
                     <span class='listcardicon2 fab fa-creative-commons'></span> 
                 </div><!-- end bResultListItem -->
             </div><!-- end col -->";
-            
+
 ExternalCache::save($vs_cache_key, $vs_result_output, 'browse_result');
 print $vs_result_output;
 
