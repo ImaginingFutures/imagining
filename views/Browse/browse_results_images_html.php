@@ -237,23 +237,25 @@ if ($vs_table == 'ca_objects') {
 
 					$vs_result_output = "
 				
-					<div class='col-sm-6 col-lg-3 col-mb-4'>  
-					<div class='browsecard'>{$vs_label_detail_link}
+					<div class='col-xs-12 col-sm-4 col-lg-3 col-mb-4'>  
+					<div class='browsecard'>
+					
 						<div>
-							<img class='' src='{$vs_rep_detail_link}'>
-						
+						{$vs_rep_detail_link}
 						</div>
 					<button class='browsecard_button'><span class='heart-icon fa fa-heart'></span></button>
 					<div class='browsecardcontent'>
-
+					
 							<h3>{$vs_label_detail_link}</h3>
 							<p>ID: {$vs_idno_detail}</p>
 							<p> Project: {$collection_info}</p>
 							<p> {$lastContributorEntityType}: {$contributors} </p>
 					</div>
 						<button class='browsecard_button'><span class='heart-icon fa fa-heart'></span></button>
-						<span class='cardicon fa fa-image'></span> 
-						<span class='cardicon2 fab fa-creative-commons'></span> 
+						<div class='icon_holder'>
+							<span class='cardicon fa fa-image'></span> 
+							<span class='cardicon2 fab fa-creative-commons'></span> 
+						</div>
 						<div class='bResultItemExpandedInfo' id='bResultItemExpandedInfo{$vn_id}'>
 							<hr>
 							{$vs_expanded_info}{$vs_add_to_set_link}

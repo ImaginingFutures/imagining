@@ -63,7 +63,7 @@
 }
 
 .container {
-	max-width: 1500px;
+	max-width: 1800px;
 }
 
 .frontContainer .container {
@@ -1198,7 +1198,7 @@ transition: 0.5s;
 
 .browsecard {
 	width: 100%;
-	height: 25rem; /* Set a fixed height for the card */
+	height: 30rem; 
 	box-sizing: border-box;
 	margin-bottom: 20px;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -1213,7 +1213,7 @@ transition: 0.5s;
   .browsecard img {
 	width: 100%;
 	height: 100%;
-	object-fit: cover; /* Ensure the image covers the entire container */
+	object-fit: contain; /* Ensure the image covers the entire container */
 	position: absolute; /* Position the image absolutely within the card */
 	top: 0;
 	left: 0;
@@ -1292,23 +1292,37 @@ transition: 0.5s;
     right: 0.1rem;
   }
 
+  .icon_holder {
+
+	display: none;
+  }
+
+  .browsecard:hover .icon_holder {
+	background-color: #171f5c;
+	height: 6rem;
+	width: 3.5rem;
+	border-radius: 0.5rem;
+	margin-left: 0.5rem;
+	z-index: 1;
+	display: block;
+  }
+
   .cardicon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 1rem;
+    position: relative;
+    top: 0.50rem;
+    left: 0.75rem;
 	color: white;
 	font-size: larger;
 }
 
 .cardicon2 {
-    position: absolute;
-    top: 3rem;
-    left: 0;
-    margin: 1rem;
+    position: relative;
+    top: 0.25rem;
+    left: 0.75rem;
 	color: white;
 	font-size: larger;
 }
+
 
 			/* !!!!!!!!!!!!!!!! LIST VIEW !!!!!!!!!!!!!!!!!!! */
 

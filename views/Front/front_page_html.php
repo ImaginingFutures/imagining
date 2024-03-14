@@ -116,7 +116,7 @@ $t_object = 			$this->getVar("item");
             <div class="col-sm-6 col-lg-4 col-mb-4">  
 				<div class="homecard">
 					<div>
-                        <?php print caGetThemeGraphic($this->request, 'Figure 14.jpeg') ?>
+                        <?php print caGetThemeGraphic($this->request, 'people.jpg') ?>
 					</div>
 					<div class="homecardcontent">
 						<h3>People</h3>
