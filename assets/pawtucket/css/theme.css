@@ -1201,7 +1201,6 @@ transition: 0.5s;
 	height: 30rem; 
 	box-sizing: border-box;
 	margin-bottom: 20px;
-	
 	transition: 0.1s;
 	border-radius: 5px;
 	display: flex;
@@ -1230,16 +1229,14 @@ transition: 0.5s;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	height: auto;
 	overflow: hidden;
 	transition: height 0.3s;
 	opacity: 0.8;
   }
 
-
-
   .browsecardcontent h3 {
-	font-size: 2rem; margin-bottom: 0.5rem;
+	font-size: 2rem; 
+	margin-bottom: 0.5rem;
 	margin-top: 0.2rem;
 	text-transform: capitalize; 
 	padding-bottom: 0.5rem;
@@ -1255,6 +1252,10 @@ transition: 0.5s;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     font-weight: bold; 
     display: block;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }
 
 .browsecardcontent p {
@@ -1282,10 +1283,10 @@ transition: 0.5s;
     cursor: pointer;
     border: 1px solid #ccc;
     background-color: #171f5c;
-	border-radius: 1rem;
+	border-radius: 0.5rem;
 	color: white;
 	position: absolute;
-    top: 1rem;
+    top: 0.5rem;
     right: 1rem;
 	justify-content: center;
     align-items: center; 
@@ -1297,34 +1298,49 @@ transition: 0.5s;
     right: 0.1rem;
   }
 
-  .icon_holder {
-	display: none;
-  }
-
-  .browsecard:hover .icon_holder {
+  .icon_holder_media {
 	background-color: #171f5c;
-	height: 6rem;
-	width: 3.5rem;
+	height: 3rem;
+	width: 3rem;
 	border-radius: 0.5rem;
 	margin-left: 0.5rem;
 	z-index: 1;
 	display: block;
 	border-color: white;
 	border: 1px solid #ccc;
+	top: 0.5rem;
+	position: relative;
+  }
+  .icon_holder_access {
+	display: none;
   }
 
-  .cardicon {
+  .browsecard:hover .icon_holder_access {
+	background-color: #171f5c;
+	height: 3rem;
+	width: 3rem;
+	border-radius: 0.5rem;
+	margin-left: 0.5rem;
+	z-index: 1;
+	display: block;
+	border-color: white;
+	border: 1px solid #ccc;
+	top: 0.5rem;
+	position: relative;
+  }
+
+  .icon_media {
     position: relative;
-    top: 0.40rem;
-    left: 0.6rem;
+    top: 0.27rem;
+    left: 0.33rem;
 	color: white;
 	font-size: larger;
 }
 
-.cardicon2 {
+.icon_access {
     position: relative;
-    top: 0.15rem;
-    left: 0.6rem;
+    top: 0.32rem;
+    left: 0.33rem;
 	color: white;
 	font-size: larger;
 }

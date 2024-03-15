@@ -234,37 +234,41 @@ if ($vs_table == 'ca_objects') {
     // If the table is not 'ca_objects', set collection_info to 'Unknown'
     $collection_info = 'Unknown';
 }
-
 					$vs_result_output = "
 				
-					<div class='col-xs-12 col-sm-4 col-lg-3 col-mb-4'>  
-					<div class='browsecard'>
-					
-						<div>
-						{$vs_rep_detail_link}
-						</div>
-					<button class='browsecard_button'><span class='heart-icon fa fa-heart'></span></button>
-					<div class='browsecardcontent'>
-					
-							<h3>{$vs_label_detail_link}</h3>
-							<p>ID: {$vs_idno_detail}</p>
-							<p> Project: {$collection_info}</p>
-							<p> {$lastContributorEntityType}: {$contributors} </p>
-					</div>
-						<button class='browsecard_button'><span class='heart-icon fa fa-heart'></span></button>
-						<div class='icon_holder'>
-							<span class='cardicon fa fa-image'></span> 
-							<span class='cardicon2 fab fa-creative-commons'></span> 
-						</div>
-						<div class='bResultItemExpandedInfo' id='bResultItemExpandedInfo{$vn_id}'>
-							<hr>
-							{$vs_expanded_info}{$vs_add_to_set_link}
-						</div><!-- bResultItemExpandedInfo -->
-					</div>
+		<div class='col-xs-12 col-sm-4 col-lg-3 col-mb-4'>  
+			<div class='browsecard'>
+				<div class='icon_holder_media'>
+					<span class='icon_media fa fa-image'></span>
 				</div>
-	
+				<div class='icon_holder_access'>
+					<span class='icon_access fab fa-creative-commons'></span> 
+				</div>
+					<button class='browsecard_button'><span class='heart-icon fa fa-heart'></span></button>
 				
-				";
+				<div>
+					{$vs_rep_detail_link}
+				</div>
+			
+				<div class='browsecardcontent'>				
+					<h3>{$vs_label_detail_link}</h3>
+					<p>ID: {$vs_idno_detail}</p>
+					<p> Project: {$collection_info}</p>
+					<p> {$lastContributorEntityType}: {$contributors} </p>
+				</div>
+				
+				<button class='browsecard_button'><span class='heart-icon fa fa-heart'></span></button>
+			
+				<div class='bResultItemExpandedInfo' id='bResultItemExpandedInfo{$vn_id}'>
+					<hr>
+					{$vs_expanded_info}{$vs_add_to_set_link}
+				</div><!-- bResultItemExpandedInfo -->
+			</div>
+			
+
+
+		</div>
+	";
 		
 
 
