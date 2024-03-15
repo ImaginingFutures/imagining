@@ -56,11 +56,9 @@
 
 	$o_icons_conf = caGetIconsConfig();
 	$va_object_type_specific_icons = $o_icons_conf->getAssoc("placeholders");
-	if(!($vs_default_placeholder = $o_icons_conf->get("placeholder_media_icon"))){
-		$vs_default_placeholder = "<i class='fa fa-picture-o fa-2x'></i>";
-	}
-	$vs_default_placeholder_tag = "<div class='bResultItemImgPlaceholder'>".$vs_default_placeholder."</div>";
 
+	$vs_default_placeholder_tag = "<div class='bResultItemImgPlaceholder'>".caGetThemeGraphic($this->request, 'IF_logo.png') ."</div>";
+		
 	
 	$va_add_to_set_link_info = caGetAddToSetInfo($this->request);
 	
@@ -86,7 +84,7 @@
 				}
 			
 				$qr_res->seek($vn_start);
-				#$va_images = caGetDisplayImagesForAuthorityItems($vs_table, $va_ids, array('version' => 'small', 'relationshipTypes' => caGetOption('selectMediaUsingRelationshipTypes', $va_options, null), 'objectTypes' => caGetOption('selectMediaUsingTypes', $va_options, null), 'checkAccess' => $va_access_values));
+				$va_images = caGetDisplayImagesForAuthorityItems($vs_table, $va_ids, array('version' => 'small', 'relationshipTypes' => caGetOption('selectMediaUsingRelationshipTypes', $va_options, null), 'objectTypes' => caGetOption('selectMediaUsingTypes', $va_options, null), 'checkAccess' => $va_access_values));
 			} else {
 				$va_images = null;
 			}
@@ -143,30 +141,27 @@
 					$vs_thumbnail = "";
 					$vs_type_placeholder = "";
 					$vs_typecode = "";
-					$vs_image = ($vs_table === 'ca_objects') ? $qr_res->getMediaTag("ca_object_representations.media", 'small', array("checkAccess" => $va_access_values)) : $va_images[$vn_id];
-				
+			
 					
-					
-
-
-					if(!$vs_image) {
-						if ($vs_table == 'ca_objects') {
+					if ($vs_table == 'ca_objects') {
+						if(!($vs_thumbnail = $qr_res->get('ca_object_representations.media.medium', array("checkAccess" => $va_access_values)))){
 							$t_list_item->load($qr_res->get("type_id"));
 							$vs_typecode = $t_list_item->get("idno");
-							if ($vs_type_placeholder = caGetPlaceholder($vs_typecode, "placeholder_media_icon")) {
-								$vs_image = "<div class='bResultItemImgPlaceholder'>".$vs_type_placeholder."</div>";
-							} else {
-								$vs_image = $vs_default_placeholder_tag;
-							}
-						} else {
-							$vs_image = $vs_default_placeholder_tag;
+							$vs_thumbnail = $vs_default_placeholder_tag;
 						}
+						$vs_info = null;
+						
+						$vs_rep_detail_link 	= caDetailLink($this->request, $vs_thumbnail, '', $vs_table, $vn_id);				
+					} else {
+						if($va_images[$vn_id]){
+							$vs_thumbnail = $va_images[$vn_id];
+						}else{
+							$vs_thumbnail = $vs_default_placeholder_tag;
+						}
+						$vs_rep_detail_link 	= caDetailLink($this->request, $vs_thumbnail, '', $vs_table, $vn_id);			
 					}
-					$vs_rep_detail_link = caDetailLink($this->request, $vs_image, '', $vs_table, $vn_id);
-					
 					$vs_add_to_set_link = "";
-					
-					if (($vs_table == 'ca_objects') && is_array($va_add_to_set_link_info) && sizeof($va_add_to_set_link_info)) {
+					if(($vs_table == 'ca_objects') && is_array($va_add_to_set_link_info) && sizeof($va_add_to_set_link_info)){
 						$vs_add_to_set_link = "<a href='#' onclick='caMediaPanel.showPanel(\"".caNavUrl($this->request, '', $va_add_to_set_link_info["controller"], 'addItemForm', array($vs_pk => $vn_id))."\"); return false;' title='".$va_add_to_set_link_info["link_text"]."'>".$va_add_to_set_link_info["icon"]."</a>";
 					}
 					
@@ -287,9 +282,7 @@ $vs_result_output .= "<div class='bResultListItemText'>
 						";
 
 if ($vs_table == 'ca_objects') {
-    // Truncate project name if it exceeds a certain length
-    $collection_info_short = strlen($collection_info) > 20 ? substr($collection_info, 0, 20) . '...' : $collection_info;
-    $vs_result_output .= "<p id='one-line-text'> Project: {$collection_info_short}</p>";
+	$vs_result_output .= "<p> Project: {$collection_info}</p>";
     $vs_result_output .= "<p> {$lastContributorEntityType}: {$contributors} </p>";
 }
 

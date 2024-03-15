@@ -1201,8 +1201,8 @@ transition: 0.5s;
 	height: 30rem; 
 	box-sizing: border-box;
 	margin-bottom: 20px;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-	transition: 0.3s;
+	
+	transition: 0.1s;
 	border-radius: 5px;
 	display: flex;
 	flex-direction: column;
@@ -1210,6 +1210,10 @@ transition: 0.5s;
 	position: relative;
   }
   
+  .browsecard:hover {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  }
+
   .browsecard img {
 	width: 100%;
 	height: 100%;
@@ -1221,12 +1225,12 @@ transition: 0.5s;
   
   .browsecardcontent {
 	text-align: center;
-	background-color: white;
+	background-color: whitesmoke;
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	height: 5rem;
+	height: auto;
 	overflow: hidden;
 	transition: height 0.3s;
 	opacity: 0.8;
@@ -1247,7 +1251,7 @@ transition: 0.5s;
   }
 
   .browsecard:hover .browsecardcontent {
-    height: 50%; /* Change height to auto when hovered */
+    height: auto; /* Change height to auto when hovered */
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     font-weight: bold; 
     display: block;
@@ -1257,6 +1261,7 @@ transition: 0.5s;
 	display: none;
 	text-align: left;
 	line-height: 1.5rem;
+	color: #000;
 }
 
 .browsecard:hover .browsecardcontent p {
@@ -1293,7 +1298,6 @@ transition: 0.5s;
   }
 
   .icon_holder {
-
 	display: none;
   }
 
@@ -1305,20 +1309,22 @@ transition: 0.5s;
 	margin-left: 0.5rem;
 	z-index: 1;
 	display: block;
+	border-color: white;
+	border: 1px solid #ccc;
   }
 
   .cardicon {
     position: relative;
-    top: 0.50rem;
-    left: 0.75rem;
+    top: 0.40rem;
+    left: 0.6rem;
 	color: white;
 	font-size: larger;
 }
 
 .cardicon2 {
     position: relative;
-    top: 0.25rem;
-    left: 0.75rem;
+    top: 0.15rem;
+    left: 0.6rem;
 	color: white;
 	font-size: larger;
 }
@@ -1343,6 +1349,12 @@ transition: 0.5s;
 	background-color: #f8eeee;
 }
 
+.bResultListItem:hover .bResultItemImgPlaceholder{
+	border: none;
+	padding: 10px 0px 0px;
+	background-color: #f8eeee;
+}
+
 .bResultListItemText p{
 	font-size: 2rem;
 	line-height: 1.5rem;
@@ -1352,7 +1364,7 @@ transition: 0.5s;
 .bResultListItem .bResultListItemText a {
 	text-decoration: none;
 	line-height: 2.5rem;
-	color: #454545;
+	color: black;
 }
 
 #cardtitle{
@@ -1441,7 +1453,6 @@ transition: 0.5s;
 .listItemImgSpace {
     width: 12rem;
     flex-shrink: 0; /* Ensure this space doesn't shrink */
-	background-color: grey;
 	height: 10rem;
 }
 
@@ -1452,8 +1463,6 @@ transition: 0.5s;
     width: 100%;
     height: 100%;
 }
-
-
 
 .bResultListItemText {
     margin-left: 10px; /* Add space between image and text */
@@ -1467,9 +1476,9 @@ transition: 0.5s;
 }
 
 .bResultItemImgPlaceholder {
-	background-color: rgba(174, 180, 213, 0.9);
 	border: none;
-	padding: 0px 0px 0px;
+	padding: 10px 0px 0px;
+	background-color: white;
 }
 
 @media(max-width:768px) {
