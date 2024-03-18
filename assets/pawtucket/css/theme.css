@@ -1,66 +1,6 @@
 /* yellow: #378bc7;  gray: rgb(83, 88, 90) or #53585a; redish-link: #378bc7; redish-link hover: #a5578c;*/
-@font-face {
-	font-family: "Calluna Sans";
-	src: url("calluna/CallunaSans-LightIt.woff2") format("woff2"), url("calluna/CallunaSans-LightIt.woff") format("woff");
-	font-weight: 300;
-	font-style: italic;
-}
 
-@font-face {
-	font-family: "Calluna Sans";
-	src: url("calluna/CallunaSans-Regular.woff2") format("woff2"), url("calluna/CallunaSans-Regular.woff") format("woff");
-	font-weight: 400;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: "Calluna Sans";
-	src: url("calluna/CallunaSans-SemiBold.woff2") format("woff2"), url("calluna/CallunaSans-SemiBold.woff") format("woff");
-	font-weight: 600;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: "Calluna Sans";
-	src: url("calluna/CallunaSans-BoldIt.woff2") format("woff2"), url("calluna/CallunaSans-BoldIt.woff") format("woff");
-	font-weight: 700;
-	font-style: italic;
-}
-
-@font-face {
-	font-family: "Calluna";
-	src: url("calluna/Calluna-Light.woff2") format("woff2"), url("calluna/Calluna-Light.woff") format("woff");
-	font-weight: 300;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: "Calluna";
-	src: url("calluna/Calluna-Regular.woff2") format("woff2"), url("calluna/Calluna-Regular.woff") format("woff");
-	font-weight: 400;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: "Calluna";
-	src: url("calluna/Calluna-RegularIt.woff2") format("woff2"), url("calluna/Calluna-RegularIt.woff") format("woff");
-	font-weight: 400;
-	font-style: italic;
-}
-
-@font-face {
-	font-family: "Calluna";
-	src: url("calluna/Calluna-Semibold.woff2") format("woff2"), url("calluna/Calluna-Semibold.woff") format("woff");
-	font-weight: 600;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: "Calluna";
-	src: url("calluna/Calluna-SemiboldIt.woff2") format("woff2"), url("calluna/Calluna-SemiboldIt.woff") format("woff");
-	font-weight: 600;
-	font-style: italic;
-}
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
 
 .container {
 	max-width: 1500px;
@@ -88,7 +28,7 @@ body {
 body,
 p,
 div {
-	font-family: "Calluna", times, serif;
+	font-family: "Source Sans 3", Times, serif;
 	font-size: 18px;
 	font-weight: 300;
 	text-rendering: optimizeLegibility;
@@ -97,46 +37,56 @@ div {
 
 b,
 strong {
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	font-weight: 600;
 }
 
 H1,
 h1 {
 	color: #171f5c;
-	font-family: "Calluna Sans", verdana, sans-serif;
-	font-weight: 600;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	font-size: xx-large;
 }
+
 H2,
 h2,
 H3,
 h3,
 H4,
-H4,
+H4 {
+	color: #171f5c;
+	font-size: large;
+	font-weight: 500;
+} 
 H5,
 h5 {
 	color: #000000;
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	font-weight: 600;
 }
 
 H6,
 h6 {
 	color: #000000;
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	font-weight: 600;
 	font-size: 16px;
 }
 
+.front H1 {
+	color: #171f5c;
+	font-family: "Source Sans 3", Verdana, sans-serif;
+	font-size: xx-large;
+}
+
 label {
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 }
 
 .detail label {
 	display: block;
 	color: #000000;
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	font-weight: 600;
 	font-size: 12px;
 	text-transform: uppercase;
@@ -302,7 +252,7 @@ a:hover {
 	text-decoration: none;
 	text-transform: uppercase;
 	letter-spacing: 1px;
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	color: #378bc7;
 	padding: 3px 20px;
 	display: block;
@@ -326,7 +276,7 @@ a.navbar-brand,
 	padding-top: 0px;
 	color: #fFF;
 	font-weight: 400;
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	text-decoration: none;
 	text-transform: uppercase;
 }
@@ -392,7 +342,7 @@ a.navbar-brand,
 .nav>li>a,
 .nav>li>a:hover,
 .nav>li>a:focus {
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	font-weight: 400;
 	text-transform: lowercase;
 	font-size: 16px;
@@ -435,7 +385,7 @@ a.navbar-brand,
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	color: #378bc7;
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	text-decoration: none;
 }
 
@@ -513,7 +463,7 @@ a.navbar-brand,
 	background-color: #171f5c;
 	border-top: 0px;
 	color: #FFFFFF;
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	font-weight: 300;
 	padding: 25px 0px 25px 0px;
 	height: 250px;
@@ -527,7 +477,7 @@ a.navbar-brand,
 
 #footer div {
 	color: #FFFFFF;
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	font-weight: 300;
 	font-size: 18px;
 	background-color: #171f5c;
@@ -541,7 +491,7 @@ a.navbar-brand,
 .footerHighlight {
 	color: #c1d2df;
 	font-weight: 600;
-	font-family: "Calluna", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 }
 
 #footerLogos {
@@ -607,15 +557,28 @@ a.navbar-brand,
 	width: 100%;
 }
 
+
+
 .hpCallout {
-	font-family: "Calluna Sans", verdana, sans-serif;
-	font-weight: 400;
-	font-size: 36px;
-	color: #53585a;
-	text-align: center;
+	font-family: "Source Sans 3", Verdana, sans-serif;
+	font-weight: 600;
+	font-size: 28px;
+	color:#3e4244;
+	text-align: left;
 	padding-top: 50px;
-	padding-bottom: 50px;
 	line-height: 1.2em;
+}
+
+.hpCallout::before {
+	position: absolute;
+	content: '';
+	top: 100%;
+	left: 0;
+	width: 100%;
+	max-width: 300px;
+	height: 3px;
+	background-color: #3e4244;
+	margin-top: 20px;
 }
 
 @media(max-width:768px) {
@@ -628,6 +591,70 @@ a.navbar-brand,
 	.hpTiles .btn-default {
 		margin-bottom: 30px;
 	}
+}
+
+@media(max-width:480px){
+	.hpCallout {
+		font-size: 24px;
+	}
+}
+
+.description {
+	font-family: inherit;
+	font-size: 1.143em;
+	line-height: 1.5;
+	font-weight: 300;
+	padding-top: 40px;
+}
+
+.home-more-btn {
+	display: block;
+	text-align: right;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-right: 100px;
+}
+
+@media(max-width:1200px) {
+	.home-more-btn {
+		padding-right: 30px;
+	}
+}
+
+@media(max-width:480px) {
+	.home-more-btn {
+		text-align: center;
+		padding-right: 0px;
+	}
+}
+
+
+.card-img-top-container {
+	width: 100%;
+	padding-top: 75%;
+	position: relative;
+	border-radius: 4px 4px 0 0;
+	overflow: hidden;
+}
+
+.card-img-top {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.card-body {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+h3.card-title {
+	display: block;
+	text-align: center;
 }
 
 .entitiesTile {
@@ -699,7 +726,7 @@ a.navbar-brand,
   }
   
 .entitiesTile .entityName a {
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	font-weight: 700;
 	font-size: 18px;
 	color: white;
@@ -738,7 +765,7 @@ a.navbar-brand,
 }
 
 .collectionTile .title a {
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	font-weight: 700;
 	font-size: 18px;
 	color: white;
@@ -872,7 +899,7 @@ a.readmore-js-toggle:hover {
 
 .detail .detailTool a {
 	color: #a60845;
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	font-weight: 600;
 	font-size: 14px;
 	text-transform: uppercase;
@@ -1240,7 +1267,7 @@ a.readmore-js-toggle:hover {
 }
 
 .bResultItemContent .title a {
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	width: 100%;
 	height: 100%;
 	font-weight: 700;
@@ -1371,13 +1398,12 @@ body.frontContainer #footer {
 .parallax {
 	position: relative;
 	background-image: url("../graphics/hero_1.jpg");
-
 	/* Full height */
 	height: 100vh;
 
 	/* Create the parallax scrolling effect */
-	background-attachment: fixed;
-	background-position: center center;
+	background-attachment: scroll;
+	background-position: center bottom;
 	background-repeat: no-repeat;
 	background-size: cover;
 
@@ -1386,9 +1412,19 @@ body.frontContainer #footer {
 	top: -20px;
 }
 
-.parallax.hero1 {
-	background-image: url("../graphics/hero_1.jpg");
+@media(max-width: 768px) {
+	.parallax {
+		background-attachment: scroll;
+		background-position: 35% center;
+	}
 }
+
+@media (max-width: 480px) {
+	.parallax.hero1 {
+	  background-attachment: scroll;
+	  background-position: 25% center;
+	}
+  }
 
 .front .heroSearch {
 	position: relative;
@@ -1442,7 +1478,7 @@ body.frontContainer #footer {
 .heroSearch H1 .line1 {
 	font-size: 28px;
 	text-transform: none;
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
 	font-weight: 400;
 	text-transform: uppercase;
 	color: #fff;
@@ -1456,7 +1492,7 @@ body.frontContainer #footer {
 	color: #FFF;
 	padding-top: 10px;
 	padding-bottom: 0px;
-	font-family: "Calluna", verdana, sans-serif;
+	font-family: "Source Serif 4", Times, serif;
 	line-height: 1.2em;
 	text-shadow: 0px 0px 3px #000000;
 }
@@ -1520,6 +1556,41 @@ body.frontContainer #footer {
 	}
 }
 
+.image-attribution {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0; 
+	color: white;
+	text-align: center;
+	margin-top: 5px;
+	padding: 10px 0;
+	font-size: 14px; 
+	z-index: 10; 
+  }
+  
+.image-attribution p {
+	font-size: 14px;
+}
+
+  @media (max-width: 768px) {
+	.image-attribution {
+	  font-size: 12px;
+	}
+
+	.image-attribution p {
+		font-size: 12px;
+	}
+  }
+
+@media (max-width: 480px) {
+	.image-attribution {
+		font-size: 11px;
+		padding-top: 20px 0;
+		background-color: rgba(0, 0, 0, 0.5);
+	}
+}
+
 .hpIntro .callout {
 	text-align: center;
 	font-size: 28px;
@@ -1566,6 +1637,32 @@ body.frontContainer #footer {
 	left: 0px;
 }
 
+.explore-header {
+	font-family: "Source Sans 3", Verdana, sans-serif;
+	color: #171F5C;
+	position: relative;
+	display: block;
+	text-align: center;
+	font-size: 1.45em;
+	font-weight: 800;
+	padding-top: 20px;
+}
+
+.explore-header::after {
+	position: absolute;
+	content: '';
+	top: 0%;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 100%;
+	height: 1px;
+	background-color: #3e4244;
+}
+
+.explore-cards {
+	padding-top: 20px;
+}
+
 /* Default styles for larger screens */
 .counter {
     display: flex;
@@ -1590,7 +1687,7 @@ body.frontContainer #footer {
 }
 
 .value {
-	font-family: "Calluna Sans", verdana, sans-serif;
+	font-family: "Source Sans 3", Verdana, sans-serif;
     font-size: 100px;
     display: block;
     font-weight: bold;
