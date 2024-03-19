@@ -100,7 +100,7 @@
 
 <body class='<?php print (strtoLower($this->request->getController()) == "front") ? "frontContainer" : ""; ?>'>
 	<div id="skipNavigation"><a href="#main">Skip to main content</a></div>
-	<nav class="navbar navbar-default yamm" style="background-color: #171f5c;" role="navigation">
+	<nav class="navbar navbar-default yamm" role="navigation">
 		<div class="container menuBar">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
