@@ -74,7 +74,7 @@
 	</div>
 	<div class="row">
 	<div class="home-more-btn">
-		<a href="https://imaginingfutures.world/imagining-futures-overview/" class="btn btn-outline-dark btn-lg">More <i class="far fa-plus-square"></i></a>
+		<a href="https://imaginingfutures.world/imagining-futures-overview/" class="btn btn-outline-dark btn-lg">More <i class="fas fa-angle-double-right"></i></a>
 		</div>
 	</div>
 </div>
