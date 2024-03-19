@@ -31,12 +31,23 @@
 		<footer id="footer">
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-12 col-md-6">
+					<div class="col-sm-12 col-md-4">
 					<p><a href="https://imaginingfutures.world/" target="_blank"><?php print caGetThemeGraphic($this->request, 'logo-one-line-light-bg.png', array('alt' => "Imagining Futures, Trough Un/Archived Pasts")); ?></a></p>
 						<br/><b><i class="fas fa-envelope"></i> <a href="mailto:imaginingfutures@exeter.ac.uk">imaginingfutures@exeter.ac.uk</a>	
 				
 					</div>
-					<div class="col-sm-12 col-md-4 col-md-offset-2">
+
+					<div class="col-sm-12 col-md-4">
+						<dl class="nav-list">
+						<dt>About</dt> <!-- You can style this header as needed -->
+						<dd><a href="#">Team</a></dd>
+						<dd><?= caNavLink($this->request, _t("Credits"), "", "", "About", "credits"); ?></dd>
+						<dd><a href="#">Overview</a></dd>
+						<dd><a href="#">Labs</a></dd>
+						</dl>
+					</div>
+
+					<div class="col-sm-12 col-md-4">
 					<br/>Imagining Futures is an Arts and Humanities Research Council, GCRF Network+ funded by the UKRI
 					<div id="footerLogos" class="d-flex flex-wrap justify-content-between">
 							<a href="https://www.ukri.org/councils/ahrc/" target="_blank"><img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-ukri.png" alt="UK Research and Innovation" class="img-fluid"></a>
