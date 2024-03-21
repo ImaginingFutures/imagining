@@ -74,6 +74,15 @@
 			
 			</div>
 		</div>
+
+		<script>
+			$(document).ready(function(){
+		$('[data-toggle="tooltip"]').tooltip();   
+		});
+
+		</script>
+
+
 		<script type="text/javascript">
 			/*
 				Set up the "caMediaPanel" panel that will be triggered by links in object detail

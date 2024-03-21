@@ -184,7 +184,7 @@ if (!$vb_ajax) {	// !ajax
 			print "</div>";
 		}
 ?>		
-		<div id="bViewButtons" class="bFacetDescription">
+		<div id="bViewButtons" class="bFacetDescription pull-right">
 
 			<?php
 				if(is_array($va_views) && (sizeof($va_views) > 1)){
@@ -192,7 +192,7 @@ if (!$vb_ajax) {	// !ajax
 						if ($vs_current_view === $vs_view) {
 							print '<a href="#" class="active"><span class="glyphicon  '.$va_view_icons[$vs_view]['icon'].'" aria-label="'.$vs_view.'" role="button"></span></a> ';
 						} else {
-							print caNavLink($this->request, '<span class="glyphicon '.$va_view_icons[$vs_view]['icon'].'" aria-label="'.$vs_view.'" role="button"></span>', 'disabled', '*', '*', '*', array('view' => $vs_view, 'key' => $vs_browse_key)).' ';
+							print caNavLink($this->request, '<span class="glyphicon '.$va_view_icons[$vs_view]['icon'].'" aria-label="'.$vs_view.'" role="button"></span>', 'disabled', '*', '*', '*', array('view' => $vs_view, 'key' => $vs_browse_key), array('data-toggle' => 'tooltip', 'data-placemente' => 'top', 'title'=> ucwords($vs_view) . " view")).' ';
 						}
 					}
 				}

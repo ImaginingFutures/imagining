@@ -1849,3 +1849,11 @@ body.frontContainer #footer {
     max-width: 250px;
     padding: 10px;
 }
+
+.results a.active .glyphicon {
+	color:#306aa2 !important;
+}
+
+.results a .glyphicon, .results a .fa {
+	color:#1c1b1a !important;
+}
