@@ -58,6 +58,8 @@
 <html lang="en" <?php print ((strtoLower($this->request->getController()) == "front")) ? "class='frontContainer'" : ""; ?>>
 	<head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
+
 	<?= AssetLoadManager::getLoadHTML($this->request); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 	
@@ -65,10 +67,9 @@
 
 	<meta property="og:url" content="<?php print $this->request->config->get("site_host").caNavUrl($this->request, "*", "*", "*"); ?>" />
 	<meta property="og:type" content="website" />
-
+	
 	<!-- Dynamic meta tags -->
 	<?= MetaTagManager::getHTML(); ?>
-	<script src="https://kit.fontawesome.com/122ccc1a9c.js" crossorigin="anonymous"></script>
 
 
 <?php
@@ -119,6 +120,11 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
+				</button>
+
+				<button type="button" class='navbar-toggle navbar-toggle-filters' data-toggle="collapse" id="sidebarCollapse">
+					<span class="sr-only">Filters</span>	
+					<span id="toggleIcon" class="fas fa-filter"></span>
 				</button>
 				
 				<?php $homeurl = caNavUrl($this->request, "", "", "", ""); 

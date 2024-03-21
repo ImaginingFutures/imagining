@@ -69,8 +69,8 @@
 <?php
 		}
 		if((is_array($va_facets) && sizeof($va_facets)) || ($vs_criteria)){
-			print "<a href='#' class='pull-right' id='bRefineClose' onclick='jQuery(\"#bRefine\").toggle(); return false;'><i class='far fa-times-circle'></i></a>";
-			print "<H2>"._t("Filter by")."</H2>";
+			print "<a href='#' class='pull-right' id='bRefineClose' onclick='document.getElementById(\"bRefine\").classList.remove(\"visible\"); document.getElementById(\"bRefine\").classList.add(\"collapsed\"); return false;'><i class='far fa-times-circle'></i></a>"; 
+			print "<H2>"._t("Filters")."</H2>";
 			if($vs_criteria){
 				print "<div class='bCriteria'>".$vs_criteria."</div>";
 			}
@@ -144,6 +144,43 @@
             }
 		});
 	</script>
+
+<script>
+	$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function updateRefineVisibility() {
+        var bRefine = document.getElementById('bRefine');
+        if (window.innerWidth < 767) {
+            bRefine.classList.add('collapsed');
+            bRefine.classList.remove('visible');
+        } else {
+            bRefine.classList.remove('collapsed');
+            bRefine.classList.add('visible');
+        }
+    }
+
+    updateRefineVisibility();
+    window.addEventListener('resize', updateRefineVisibility);
+
+    document.getElementById('sidebarCollapse').addEventListener('click', function () {
+        var bRefine = document.getElementById('bRefine');
+        if (bRefine.classList.contains('visible')) {
+            bRefine.classList.remove('visible');
+            bRefine.classList.add('collapsed');
+        } else {
+            bRefine.classList.add('visible');
+            bRefine.classList.remove('collapsed');
+        }
+    });
+});
+</script>
+
+
 <?php	
 	}
 ?>
