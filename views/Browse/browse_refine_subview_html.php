@@ -74,18 +74,44 @@
 			if($vs_criteria){
 				print "<div class='bCriteria'>".$vs_criteria."</div>";
 			}
+			
 			foreach($va_facets as $vs_facet_name => $va_facet_info) {
 			
 				if ((caGetOption('deferred_load', $va_facet_info, false) || ($va_facet_info["group_mode"] == 'hierarchical')) && ($o_browse->getFacet($vs_facet_name))) {
 					print "<H3>".$va_facet_info['label_singular']."</H3>";
 					print "<p>".$va_facet_info['description']."</p>";
+					echo "<select class='filter-dropdown-hierarchical' id='select_{$vs_facet_name}' style='width: 100%;'></select>"; 
+
 	?>
 						<script type="text/javascript">
-							jQuery(document).ready(function() {
-								jQuery("#bHierarchyList_<?php print $vs_facet_name; ?>").load("<?php print caNavUrl($this->request, '*', '*', 'getFacetHierarchyLevel', array('facet' => $vs_facet_name, 'browseType' => $vs_browse_type, 'key' => $vs_key, 'linkTo' => 'morePanel')); ?>");
+							jQuery(document).ready(function () {
+								var selectElement = jQuery('#select_<?php echo $vs_facet_name; ?>').select2({
+									data: [{id: 0, text: 'Select an option'}]
+								});
+
+								jQuery.ajax({
+									url: "<?php print caNavUrl($this->request, '*', '*', 'getFacetHierarchyLevel', array('facet' => $vs_facet_name, 'browseType' => $vs_browse_type, 'key' => $vs_key, 'linkTo' => 'morePanel')); ?>",
+									success: function(htmlResponse) {
+										var data = [];
+										jQuery(htmlResponse).find('a').each(function() {
+											var link = jQuery(this);
+											var id = link.attr('href').match(/id\/(\d+)/)[1];
+											var text = link.text();
+											data.push({id:id, text:text})
+										});
+
+										selectElement.select2({
+											data: data
+										});
+									},
+									error: function(xhr, status, error) {
+										console.log("Error fetching data: ", status, error)
+									}
+								});
 							});
-						</script>
-						<div id='bHierarchyList_<?php print $vs_facet_name; ?>'><?php print caBusyIndicatorIcon($this->request).' '.addslashes(_t('Loading...')); ?></div>
+							</script>
+						<!-- Busy indicator not required for Select2 -->
+						<!-- <div id='bHierarchyList_<?php print $vs_facet_name; ?>'><?php print caBusyIndicatorIcon($this->request).' '.addslashes(_t('Loading...')); ?></div> -->
 	<?php
 				} else {				
 					if (!is_array($va_facet_info['content']) || !sizeof($va_facet_info['content'])) { continue; }
@@ -96,9 +122,17 @@
 						default:
 							$vn_facet_size = sizeof($va_facet_info['content']);
 							$vn_c = 0;
+							echo "<select class='filter-dropdown' name='filter' style='width: 100%;'>";
 							foreach($va_facet_info['content'] as $va_item) {
 								$vs_content_count = (isset($va_item['content_count']) && ($va_item['content_count'] > 0)) ? " (".$va_item['content_count'].")" : "";
-								print "<div>".caNavLink($this->request, $va_item['label'].$vs_content_count, '', '*', '*','*', array('key' => $vs_key, 'facet' => $vs_facet_name, 'id' => $va_item['id'], 'view' => $vs_view))."</div>";
+								
+								$facet_link = caNavUrl($this->request, '', '*', '*', array('key' => $vs_key, 'facet' => $vs_facet_name, 'id' => $va_item['id'], 'view' => $vs_view));
+								
+								echo "<option value='{$facet_link}'>" . htmlspecialchars($va_item['label'].$vs_content_count) . "</option>";
+								/* commented just for referencing legacy code */
+								/* print "<div>".caNavLink($this->request, $va_item['label'].$vs_content_count, '', '*', '*','*', array('key' => $vs_key, 'facet' => $vs_facet_name, 'id' => $va_item['id'], 'view' => $vs_view))."</div>"; */
+								
+								/* TODO: review the functionality of Select2 with large lists of filters. */
 								$vn_c++;
 						
 								if (($vn_c == $vn_facet_display_length_initial) && ($vn_facet_size > $vn_facet_display_length_initial) && ($vn_facet_size <= $vn_facet_display_length_maximum)) {
@@ -108,7 +142,9 @@
 										break;
 									}
 								}
-							}
+							} echo "</select>";
+
+							/* TODO: test if vn_facet_display_length_maximum is required with Select2 */
 							if (($vn_facet_size > $vn_facet_display_length_initial) && ($vn_facet_size <= $vn_facet_display_length_maximum)) {
 								print "</span>\n";
 						
@@ -180,6 +216,21 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<!-- Script to handle the dropdown selection -->
+<script>
+	$(document).ready(function() {
+    $('.filter-dropdown').select2({
+        placeholder: "Select a filter",
+        allowClear: true
+    }).on('change', function() {
+        var selectedUrl = $(this).val(); // This will be the URL from the option's value
+        if(selectedUrl) { // Check if something is selected
+            window.location.href = selectedUrl; // Redirect to the selected URL
+        }
+    });
+});
+
+</script>
 
 <?php	
 	}

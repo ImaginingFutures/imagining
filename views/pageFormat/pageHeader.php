@@ -70,6 +70,11 @@
 	
 	<!-- Dynamic meta tags -->
 	<?= MetaTagManager::getHTML(); ?>
+	<!-- Select2 CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+	<!-- Select2 JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 
 <?php
