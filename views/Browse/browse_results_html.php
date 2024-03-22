@@ -73,7 +73,7 @@ if (!$vb_ajax) {	// !ajax
 <div class="row" style="clear:both;">
 
 
-<div class="container-fluid col-sm-4 col-md-3">
+<div class="container-fluid col-sm-4 col-md-3 col-lg-3">
   <!-- Hamburger toggle button -->
   <div id="sidebar" class="<?php print ($vs_refine_col_class) ? $vs_refine_col_class : ""; ?>">
   
@@ -85,7 +85,7 @@ if (!$vb_ajax) {	// !ajax
 </div>
 
 
-	<div class='<?php print ($vs_result_col_class) ? $vs_result_col_class : "col-sm-8 col-md-8 col-lg-8 results"; ?>'>
+	<div class='<?php print ($vs_result_col_class) ? $vs_result_col_class : "col-sm-8 col-md-9 col-lg-9  elements_browse"; ?>'>
 	
 <?php 
 			if($vs_sort_control_type == 'list'){
