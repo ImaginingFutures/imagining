@@ -81,13 +81,6 @@
 		$('[data-toggle="tooltip"]').tooltip();   
 		});
 
-		$(document).ready(function() {
-			$('.filter-dropdown').select2({
-				placeholder: "Select a filter",
-				allowClear: true
-			});
-		});
-
 		</script>
 
 

@@ -86,7 +86,8 @@
 						<script type="text/javascript">
 							jQuery(document).ready(function () {
 								var selectElement = jQuery('#select_<?php echo $vs_facet_name; ?>').select2({
-									data: [{id: 0, text: 'Select an option'}]
+									data: [{id: 0, text: 'Select a filter'}],
+									allowClear: true
 								});
 
 								jQuery.ajax({
@@ -96,8 +97,9 @@
 										jQuery(htmlResponse).find('a').each(function() {
 											var link = jQuery(this);
 											var id = link.attr('href').match(/id\/(\d+)/)[1];
+											var url = link.attr('href');
 											var text = link.text();
-											data.push({id:id, text:text})
+											data.push({id:url, text:text})
 										});
 
 										selectElement.select2({
@@ -108,6 +110,11 @@
 										console.log("Error fetching data: ", status, error)
 									}
 								});
+							}).on('change', function() {
+								var selectedUrl = jQuery(this).val(); 
+								if(selectedUrl) { 
+									window.location.href = selectedUrl; // Navigate to the selected URL
+								}
 							});
 							</script>
 						<!-- Busy indicator not required for Select2 -->
@@ -123,6 +130,7 @@
 							$vn_facet_size = sizeof($va_facet_info['content']);
 							$vn_c = 0;
 							echo "<select class='filter-dropdown' name='filter' style='width: 100%;'>";
+							echo " <option></option>";
 							foreach($va_facet_info['content'] as $va_item) {
 								$vs_content_count = (isset($va_item['content_count']) && ($va_item['content_count'] > 0)) ? " (".$va_item['content_count'].")" : "";
 								
@@ -223,9 +231,9 @@ document.addEventListener('DOMContentLoaded', function() {
         placeholder: "Select a filter",
         allowClear: true
     }).on('change', function() {
-        var selectedUrl = $(this).val(); // This will be the URL from the option's value
-        if(selectedUrl) { // Check if something is selected
-            window.location.href = selectedUrl; // Redirect to the selected URL
+        var selectedUrl = $(this).val(); 
+        if(selectedUrl) { 
+            window.location.href = selectedUrl;
         }
     });
 });
