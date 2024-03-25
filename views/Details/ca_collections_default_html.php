@@ -114,7 +114,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 		<div class="row">
 			<div class='col-sm-8 col-md-8 col-lg-8'>
-				<label>People:</label>
+				<label>Team:</label>
 			</div>
 		</div>
 
@@ -163,12 +163,21 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					
 						<ifdef code="ca_collections.prjtype"><label>Project type:</label>^ca_collections.prjtype</ifdef>
 
-						<ifdef code="ca_collections.prjregion"><label>Region:</label>^ca_collections.prjregion</ifdef>
-
+						<ifcount code="ca_list_items" restrictToRelationshipTypes="prjregion" min="1">    
+   
+						<label>Project Region:</label>
+        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="prjregion" delimiter="</br>">   
+			<l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+</ifcount>
 						<ifdef code="ca_collections.description"><label>About</label>^ca_collections.description<br/></ifdef>
 					}}}
+					{{{
+<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
+     <label>Keywords:</label>
+        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="keyword" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+</ifcount>
+}}}
 
-					
 					<?php
 					# Comment and Share Tools
 					if ($vn_comments_enabled | $vn_share_enabled) {
@@ -487,68 +496,17 @@ if ($vb_show_objects_link) {
 
     // Render the HTML
     ?>
-    <div class="col-sm-6 col-lg-4 col-mb-4">
-        <div class="center-content">    
-         
-		<h3>Resources</h3>
-        <div class="colcard">   
-			<?php echo $category_content; ?>
-                <?php
-                if ($vb_show_objects_link) {
-                    print caNavLink($this->request, "<button class='colbutton'>Explore</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-                }
-                if ($vb_show_collections_link) {
-                    print caNavLink($this->request, "<button class='colbutton'>Explore</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-                }
-                ?>
-            </div>
-		
-        </div>
-    </div>
+
     <?php
 }
 ?>
 
 
-
-
-
                 
-        <div class="col-sm-6 col-lg-4 col-mb-4">
-        <div class="center-content">    
-		<h3>{{{<unit relativeTo="ca_collections" delimiter="<br/>">^ca_collections.exresource.exlist</unit>}}}</h3>
-            <div class="colcard">       
-                {{{<ifcount code="ca_collections" min="1" max="1"><label>External Resource</label></ifcount>}}}
-                {{{<ifcount code="ca_collections" min="2"><label>External Resources</label></ifcount>}}}
-                {{{<unit relativeTo="ca_collections" delimiter="<br/>">^ca_collections.exresource.exname</unit>}}}
-                <a href="{{{<unit relativeTo="ca_collections" delimiter="<br/>">^ca_collections.exresource.exurl</unit>}}}">
-                <button class="colbutton">Visit</button>
-                </a>
-            </div>
-        </div>
-		</div>
-        
-
-	<div class="col-sm-6 col-lg-4 col-mb-4">
-    	<div class="center-content">
-        <h3>Contribution</h3>
-        <div class="colcard">       
-            {{{<ifcount code="ca_collections" min="1" max="1"><label>Contribute</label></ifcount>}}}
-            {{{<ifcount code="ca_collections" min="2"><label>Contribute</label></ifcount>}}}
-            {{{<unit relativeTo="ca_collections" delimiter="<br/>">^ca_collections.contribution.cont_text</unit>}}}
-            <a href="{{{<unit relativeTo="ca_collections" delimiter="<br/>">^ca_collections.contribution.cont_url</unit>}}}">
-                <button class="colbutton">Contribute</button>
-            </a>
-        </div>
-    </div>
-</div>
 
 
 </div><!-- end col -->
 </section>
-
-
-
 
 
 <script>

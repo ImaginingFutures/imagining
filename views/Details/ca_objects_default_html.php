@@ -144,27 +144,18 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					{{{<ifcount code="ca_objects.langmaterial.lang" min="1"><div class="unit"><label>Language:</label><unit relativeTo="ca_objects.langmaterial" delimiter="<br/>">^ca_objects.langmaterial.langlabel: ^ca_objects.langmaterial.lang</unit></div></ifcount>}}}
 
 					{{{
-<ifcount code="ca_list_items" restrictToRelationshipTypes="theme" min="1">    
-     <label>Themes:</label>
-        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="theme" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
+     <label>Keywords:</label>
+        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="keyword" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
 </ifcount>
 }}}
 
-					{{{
-					<ifcount code="ca_objects.keyword" min="1"><div class="unit"><label>Keywords:</label><unit relativeTo="ca_objects.keyword" delimiter="<br/>">^ca_objects.keyword</unit></div></ifcount>
-					}}}
 
 					{{{
 					<ifdef code="ca_objects.notes"><div class="unit"><label>Notes:</label>^ca_objects.notes</div></ifdef>
 					}}}
 
 					<!-- end of Content and Scope labels -->
-
-
-
-
-
-
 
 					<!-- Custom labels -->
 
@@ -332,6 +323,10 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 
 					<!-- end of Intellectual Property labels -->
 
+					{{{
+<ifdef code="ca_objects.contributercontainer"><div class="unit"><label>Contributors:</label>^ca_objects.contributercontainer.ent_cont ^ca_objects.contributercontainer.occupationsl</div></ifdef>
+}}}
+
 					<!-- Access and Sensitivity -->
 					{{{
 <ifdef code="ca_objects.cultsens"><div class="unit"><label>Cultural Sensitivity:</label>^ca_objects.cultsens</div></ifdef>
@@ -367,17 +362,16 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 			<div class='row'>
 				<hr>
 				<div class='col-sm-6 col-md-6'>
-					<!-- Geographical Coverage -->
+			
+				<!-- Geographical Coverage -->
 
-					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
-					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
-					{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels.name</l> ^ca_places.type_id</unit>}}}
-
-
-
-				</div>
-				<div class='col-sm-6 col-md-6'>
-
+			{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
+			{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
+			{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels.name</l> ^ca_places.type_id</unit>}}}
+			{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.alt_place_name</l></unit>}}}
+			</div>
+				
+			<div class='col-sm-6 col-md-6'>
 					<div id="map" style="height: 180px;"></div>
 
 					{{{
@@ -385,7 +379,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 // Assuming ^ca_objects.georeference contains a string like "[39.920124257515,32.855112550338]"
 var georeferenceString = '^ca_objects.georeference';
 var titles = '^ca_objects.preferred_labels';
-var objid = '^ca_objects.idno';
+var objid = '^ca_objects.idno'; // Move the definition of objid here
 var caid = '^ca_objects.object_id';
 var currentURL = window.location.href;
 
@@ -404,21 +398,9 @@ georeferenceString = georeferenceString.replace(/[\[\]\s]/g, ''); // Remove brac
 
 try {
   if (georeferenceString) {
-    var placesLabels = '^ca_places.preferred_labels';
-    const placesLabelsArray = placesLabels.split(";");
-    var lastPlaceLabel = placesLabelsArray[placesLabelsArray.length - 1];
 
-    var placesIDs = '^ca_places.place_id';
-    const placesIDsArray = placesIDs.split(";");
-    var lastPlaceID = placesIDsArray[placesIDsArray.length - 1];
-    console.log(placesIDs);
-
-    var placeType = '^ca_places.type_id';
-    const placeTypesArray = placeType.split(";");
-    var lastPlaceType = placeTypesArray[placeTypesArray.length - 1];
-    console.log(placeType);
-
-	var detailPageURL = baseURL + 'Detail/places/' + lastPlaceID; // Use the city name as the identifier
+    // Move the definition of detailPageURL here
+    var detailPageURL = baseURL + 'Detail/objects/' + caid; // 
 
     // Parse the georeference string into a JavaScript array
     var georeferenceArray = JSON.parse("[" + georeferenceString + "]");
@@ -434,18 +416,17 @@ try {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    if (lastPlaceType.toLowerCase() === 'address') {
-      var popupContent = `<a href="${detailPageURL}">${lastPlaceLabel}</a>`;
 
-      var marker = L.marker([lat, lon]).addTo(map);
-      marker.bindPopup(popupContent);
-    }
+    var popupContent = `<a href="${detailPageURL}">${titles}</a>`;
+
+    var marker = L.marker([lat, lon]).addTo(map);
+    marker.bindPopup(popupContent);
   }
-
 } catch (error) {
   console.error("Error:", error);
 }
 </script>
+
 
 
 }}}
