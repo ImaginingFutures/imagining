@@ -349,7 +349,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 			?>
 
 		</div><!-- end container -->
-		<div class="col-sm-4 col-md-3 col-lg-3">
+		<div class="">
 			<div class="row">
 				<div class='col-sm-12'>
 

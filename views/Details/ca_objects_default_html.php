@@ -102,7 +102,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					}}}
 
 					{{{<unit relativeTo="ca_collections" delimiter="<br/>"><label>Member of:</label><l>^ca_collections.preferred_labels.name</l></unit><ifcount min="1" code="ca_collections"><HR></ifcount>}}}
-					
+
 					{{{
 					<ifcount code="ca_objects.exlink.exlink_name" min="1"><div class="unit">
 						<label>External Link:</label>
