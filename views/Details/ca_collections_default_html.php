@@ -159,23 +159,26 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 				<div class='col-sm-8 col-md-8 col-lg-8'>
 					{{{
-						<ifdef code="ca_collections.exwebpage"><label>Project Website:</label><a href="^ca_collections.exwebpage" target="_blank">^ca_collections.exwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
-					
-						<ifdef code="ca_collections.prjtype"><label>Project type:</label>^ca_collections.prjtype</ifdef>
+						<ifcount code="ca_list_items" restrictToRelationshipTypes="prjtype" min="1">    						
+						<label>Project Type:</label>
+						<unit relativeTo="ca_list_items" restrictToRelationshipTypes="prjtype" delimiter="</br>">   
+						<l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+						</ifcount>
 
-						<ifcount code="ca_list_items" restrictToRelationshipTypes="prjregion" min="1">    
-   
+						<ifcount code="ca_list_items" restrictToRelationshipTypes="prjregion" min="1">       
 						<label>Project Region:</label>
-        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="prjregion" delimiter="</br>">   
-			<l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
-</ifcount>
+						<unit relativeTo="ca_list_items" restrictToRelationshipTypes="prjregion" delimiter="</br>">   
+						<l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+						</ifcount>
 						<ifdef code="ca_collections.description"><label>About</label>^ca_collections.description<br/></ifdef>
-					}}}
-					{{{
-<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
-     <label>Keywords:</label>
-        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="keyword" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
-</ifcount>
+
+						<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
+						<label>Keywords:</label>
+						<unit relativeTo="ca_list_items" restrictToRelationshipTypes="keyword" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+						</ifcount>
+						<ifdef code="ca_collections.ifwebpage"><label>Project IF Page:</label><a href="^ca_collections.ifwebpage" target="_blank">^ca_collections.ifwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
+						<ifdef code="ca_collections.exwebpage"><label>Project Website:</label><a href="^ca_collections.exwebpage" target="_blank">^ca_collections.exwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
+
 }}}
 
 					<?php
@@ -205,7 +208,6 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 			<!-- Resources cards -->
 			<?php
 			// This needs to be improved, it's just an optional approach
-					
 
 					if($vb_show_objects_link){
 						echo '<div class="row">';
@@ -436,11 +438,6 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 			</div><!-- end row -->
 		</div>
 	</div><!-- end col -->
-
-
-
-
-
 
 	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
 		<div class="detailNavBgRight">
