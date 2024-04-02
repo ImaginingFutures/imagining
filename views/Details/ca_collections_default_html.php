@@ -170,7 +170,11 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						<unit relativeTo="ca_list_items" restrictToRelationshipTypes="prjregion" delimiter="</br>">   
 						<l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
 						</ifcount>
-						<ifdef code="ca_collections.description"><label>About</label>^ca_collections.description<br/></ifdef>
+						<ifdef code="ca_collections.synopsis"><label>Synopsis and Position</label>^ca_collections.synopsis<br/></ifdef>
+						<ifdef code="ca_collections.objectivesmethods"><label>Objectives and Methods</label>^ca_collections.objectivesmethods<br/></ifdef>
+						<ifdef code="ca_collections.workshopsevents"><label>Workshops and Events</label>^ca_collections.workshopsevents<br/></ifdef>
+						<ifdef code="ca_collections.activities"><label>Activities</label>^ca_collections.activities<br/></ifdef>
+						<ifdef code="ca_collections.descriptionalt"><label>Project Description Alternative</label>^ca_collections.descriptionalt<br/></ifdef>
 
 						<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
 						<label>Keywords:</label>
