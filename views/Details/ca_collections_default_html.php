@@ -193,51 +193,55 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 			</div><!-- end row -->
 
-			<!-- Resources cards -->
-			<?php
-			// This needs to be improved, it's just an optional approach
-					
+			<?php if ($vb_show_objects_link || $t_item->get('ca_collections.exresource')): ?>
+				<?php
+				$icon_map = [
+						'Map' => 'fa-map',
+						'Interactive Form' => 'fa-file-alt',
+						'Channel' => 'fa-video',
+						'Exhibition' => 'fa-photo-video',
+					];?>
 
-					if($vb_show_objects_link){
+				<div class="row">
+				<?php 
+				$exresource = $t_item->get('ca_collections.exresource');
+				$resource_types = $t_item->get('ca_collections.exresource.exlist.preferred_labels'); // Assuming this also returns a semicolon-separated string
+				
+				if ($exresource) {
+					$resources = explode(';', $exresource);
+					$types = explode(';', $resource_types);
+				
+					if (count($resources) % 3 == 0) {
 						echo '<div class="row">';
-
-						// Resources panel
-						echo '<div class="col-sm-4">';
-						echo '<div class="panel panel-info">';
-						echo '<div class="panel-heading">
-								<h3 class="panel-title">Resources of this Project</h3>
-								</div>';
-
-						echo '<div class="panel-body collections-panel">';
-								print caNavLink($this->request, "<button type='button' class='btn btn-info btn-lg'>Explore Project Resources</button>", "", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-						echo '</div></div>';
-						echo '</div>'; // end of panel
-					}
-					elseif($t_item->get('ca_collections.exresource')) {
-						echo '<div class="row">';
-					}
-					?>
-
-					{{{<ifcount code="ca_collections.exresource" min="1"><unit relativeTo="ca_collections.exresource" delimiter="<div></div>">
-						<div class="col-sm-4">
-						<div class="panel panel-info"> 
-							<div class="panel-heading">
-								<h3 class="panel-title">^ca_collections.exresource.exlist</h3>
+						echo '<label>External Resources:</label>';
+						for ($i = 0; $i < count($resources); $i += 3) {
+							$name = $resources[$i];
+							$url = $resources[$i + 1];
+							$id = $resources[$i + 2];
+							$type = $types[intval($i / 3)];
+							$icon = $icon_map[$type] ?? 'fa-question'; // Fallback to a generic icon if type is not defined
+							?>
+							<div class="col-sm-4">
+								<div class="card">
+									<div class="card-body">
+										<a href="<?= htmlspecialchars($url); ?>">
+										<i class="fas <?= htmlspecialchars($icon); ?>"></i> <?= htmlspecialchars($name); ?>
+										</a>
+									</div>
 								</div>
-								<div class="panel-body collections-panel">
-								<a href="^ca_collections.exresource.exurl" class="btn btn-info btn-lg">^ca_collections.exresource.exname</a>
-								</div>
-						</div>
-						</div>
-					
-						</unit></ifcount>}}}
-						<?php 
-							if($vb_show_objects_link or $t_item->get('ca_collections.exresource')){
-								echo '</div>';
-							}
-						?>
-						
-			<!-- End of resources cards -->
+							</div>
+
+							<?php
+						}
+						echo '</div>';
+					} else {
+						echo "<p>Error: Resource data is malformed.</p>";
+					}
+				}
+				?>
+				</div>
+			<?php endif; ?>
+
 
 			<?php
 
@@ -287,6 +291,32 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 				print "</div>";
 			} 
 		?>
+
+<div class="row">
+
+{{{<ifcount code="ca_objects" min="2">
+	<div class="row">
+		<div id="browseResultsContainer">
+			<?php print caBusyIndicatorIcon($this->request).' '.addslashes(_t('Loading...')); ?>
+		</div><!-- end browseResultsContainer -->
+	</div><!-- end row -->
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			jQuery("#browseResultsContainer").load("<?php print caNavUrl($this->request, '', 'Search', 'objects', array('search' => 'collection_id:^ca_collections.collection_id'), array('dontURLEncodeParameters' => true)); ?>", function() {
+				jQuery('#browseResultsContainer').jscroll({
+					autoTrigger: true,
+					loadingHtml: '<?php print caBusyIndicatorIcon($this->request).' '.addslashes(_t('Loading...')); ?>',
+					padding: 20,
+					nextSelector: 'a.jscroll-next'
+				});
+			});
+			
+			
+		});
+	</script>
+</ifcount>}}}
+</div>
+
 
 			<?php
 			 
@@ -464,10 +494,13 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 				</div><!-- end col -->
 			</div><!-- end row -->
+			</div>
+		
+		
+			
 
-		</div>
+		</div><!-- end col -->
 
-	</div><!-- end col -->
 	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
 		<div class="detailNavBgRight">
 			{{{nextLink}}}
