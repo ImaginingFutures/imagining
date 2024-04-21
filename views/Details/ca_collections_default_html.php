@@ -234,9 +234,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 							<?php
 						}
 						echo '</div>';
-					} else {
-						echo "<p>Error: Resource data is malformed.</p>";
-					}
+					} 
 				}
 				?>
 				</div>
