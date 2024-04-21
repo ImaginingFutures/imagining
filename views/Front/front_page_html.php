@@ -89,7 +89,7 @@
         <div class="col-sm-4">
             <div class="card">
 				<div class="card-img-top-container">
-				<a href=<?php print caNavUrl($this->request, "Collections", "index", "") ?>>
+				<a href=<?php print caNavUrl($this->request, "Browse", "collections", "") ?>>
 				<?php print caGetThemeGraphic($this->request, 'projects_thumbnail.jpg', array('alt' => "Imagining Futures, Trough Un/Archived Pasts", 'class' => "card-img-top")); ?></a>
 				</div>
 			<div class="card-body">

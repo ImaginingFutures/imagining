@@ -200,7 +200,7 @@
 
 				<ul class="nav navbar-nav navbar-right menuItems" role="list" aria-label="<?php print _t("Primary Navigation"); ?>">
 				<li <?php print (strToLower($this->request->getController()) == "front") ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Home"), "", "", "", ""); ?></li>
-					<li <?= ($this->request->getController() == "Collections") ? 'class="active"' : ''; ?>><?= caNavLink($this->request, _t("Projects"), "", "", "Collections", "index"); ?></li>
+					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "collections")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Projects"), "", "", "Browse", "collections"); ?></li>
 					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "entities")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Participants"), "", "", "Browse", "participants"); ?></li>				
 					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "objects")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Resources"), "", "", "Browse", "objects"); ?></li>				
 					

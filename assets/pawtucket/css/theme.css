@@ -1286,6 +1286,16 @@ div.bResultItemWrapper {
     transition: box-shadow 0.3s, transform 0.3s;
 }
 
+div.bResultItemWrapper.collections {
+	min-height: 400px;
+	max-height: 400px;
+}
+
+div.bResultItemWrapper.entities {
+	min-height: 500px;
+	max-height: 500px;
+}
+
 @media (max-width: 600px) {
     .creator-link, .collection-link {
         height: auto;
@@ -1327,25 +1337,36 @@ div.bResultItemImg {
 }
 
 .bResultItemExpandedInfo {
-	flex-grow: 1;
-	overflow: auto;
-    display: block !important; /* Always display */
+    flex-grow: 1;
+    overflow: auto;  /* Allows scrolling within the container */
+    display: block;  /* Always display */
     position: relative;
     z-index: 1000;
     padding: 10px;
 }
 
 .bResultItemExpandedInfo p {
-	color: #4d4d4d;
+    color: #4d4d4d;
+    display: block; /* Default block display */
+    overflow: hidden;  /* Hides overflow text */
+    text-overflow: ellipsis;  /* Adds ellipsis to overflow text */
+    white-space: nowrap;  /* Prevents text from wrapping */
+    margin-bottom: 10px;  /* Adds spacing between paragraphs */
+}
+
+/* Responsive or conditional expansion */
+.bResultItemExpandedInfo p.expandable {
     display: -webkit-box;
-    -webkit-line-clamp: 3;  /* Number of lines for description */
-    -webkit-box-orient: vertical;  
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;  
-    max-height: 4.5em;  
-    line-height: 1.5em; 
-    margin-bottom: 10px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;  /* Limit text to 3 lines */
+    white-space: normal;  /* Allows normal text wrapping */
+}
+
+.bResultItemExpandedInfo p.expandable-mini {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;  /* Limit text to 3 lines */
+    white-space: normal;  /* Allows normal text wrapping */
 }
 
 
