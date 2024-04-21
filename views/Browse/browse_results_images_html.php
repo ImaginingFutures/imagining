@@ -55,39 +55,39 @@
 
 	$vb_ajax			= (bool)$this->request->isAjax();
 	
+	require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 	$va_add_to_set_link_info = caGetAddToSetInfo($this->request);
 
 	$vs_default_placeholder_tag = "<div class='bResultItemImgPlaceholder'>".caGetThemeGraphic($this->request, 'IF_logo.png') ."</div>";
-		
-	# this needs to be put outside the browse view
-	function TitleCutter($title) {
-		if (strlen($title) > 45){
-			$title_reduced = "";
-			
-			$words = explode(" ", $title);
-			
-			foreach($words as $word){
-					if (strlen($title_reduced) + strlen($word) + 1 <= 45){
-							$title_reduced .= $word . " ";
-						} else {
-							return trim($title_reduced);
-						}
-			}
-		} else {
-			return trim($title);
+	
+	function getColumnSpan($isFacetAvailable) {
+		if ($isFacetAvailable) {
+			return [12, 6, 4]; // md, sm, xs
 		}
+		return [12, 6, 3]; // Default column spans
 	}
 
-		$vn_col_span = 3;
-		$vn_col_span_sm = 4;
-		$vb_refine = false;
-		if(is_array($va_facets) && sizeof($va_facets)){
-			$vb_refine = true;
-			$vn_col_span = 3;
-			$vn_col_span_sm = 6;
-			$vn_col_span_xs = 6;
+	# this needs to be put outside the browse view
+	function cutTitle($title) {
+		if (strlen($title) <= 45) return $title;
+	
+		$reducedTitle = "";
+		$words = explode(" ", $title);
+		foreach ($words as $word) {
+			if (strlen($reducedTitle) + strlen($word) + 1 > 45) break;
+			$reducedTitle .= $word . " ";
 		}
+		return trim($reducedTitle) . '...';
+	}
+
+	function trimText($text, $maxChars = 150) {
+		if (strlen($text) > $maxChars) {
+			$text = substr($text, 0, $maxChars) . '...';
+		}
+		return $text;
+	}
+
 		if ($vn_start < $qr_res->numHits()) {
 			$vn_c = 0;
 			$vn_results_output = 0;
@@ -126,7 +126,7 @@
 					print ExternalCache::fetch($vs_cache_key, 'browse_result');
 				}else{			
 					$vs_idno_detail = $qr_res->get("{$vs_table}.idno");
-					$preferred_label = TitleCutter($qr_res->get("{$vs_table}.preferred_labels"));
+					$preferred_label = cutTitle($qr_res->get("{$vs_table}.preferred_labels"));
 					$vs_label_detail_link 	= caDetailLink($this->request, $preferred_label, '', $vs_table, $vn_id);
 					
 					$vs_detail_link = caDetailLink($this->request, "<i class='fas fa-hand-pointer'></i>", "", $vs_table,  $vn_id);
@@ -154,26 +154,83 @@
 					if(($vs_table == 'ca_objects') && is_array($va_add_to_set_link_info) && sizeof($va_add_to_set_link_info)){
 						$vs_add_to_set_link = "<a href='#' onclick='caMediaPanel.showPanel(\"".caNavUrl($this->request, '', $va_add_to_set_link_info["controller"], 'addItemForm', array($vs_pk => $vn_id))."\"); return false;' title='".$va_add_to_set_link_info["link_text"]."'>".$va_add_to_set_link_info["icon"]."</a>";
 					}
+
+					if($vs_table == 'ca_objects') {
+						$mimeType = $qr_res->get('ca_object_representations.mimetype', array("checkAccess" => $va_access_values));
+						$mimeTypes = new MimeTypes();
+						$mediaTypeIcon = $mimeTypes->getIconClass($mimeType);
+						$wrapper_class = 'bResultItemWrapper';
+
+						$rights = $qr_res->get('ca_objects.rights.preferred_labels');
+						if(str_contains($rights, 'Creative Commons')){
+							$licenseIcon = 'fab fa-creative-commons';
+						} else {
+							$licenseIcon = 'far fa-copyright';
+						};
+
+						$entity_ids = $qr_res->get('ca_entities.entity_id', array('returnAsArray' => true));
+						$entity_labels = $qr_res->get('ca_entities.preferred_labels.displayname', array('returnAsArray' => true));
+
+						$creators = "";
+						foreach ($entity_ids as $index => $id) {
+							$label = $entity_labels[$index];
+							$creators .= caDetailLink($this->request, $label, 'creator-link', 'ca_entities', $id) . " ";
+						}
+
+						$collection_ids = $qr_res->get('ca_collections.collection_id', array('returnAsArray' => true));
+						$collection_labels = $qr_res->get('ca_collections.preferred_labels', array('returnAsArray' => true));
+
+						$collection_links = "";
+						foreach ($collection_ids as $index => $id) {
+							$label = $collection_labels[$index];
+							$collection_links .= caDetailLink($this->request, $label, 'collection-link', 'ca_collections', $id);
+						}
+
+					}
+
 					$vs_expanded_info = $qr_res->getWithTemplate($vs_extended_info_template);
 
-					$vs_result_output = "
-		<div class='bResultItemCol col-xs-{$vn_col_span_xs} col-sm-{$vn_col_span_sm} col-md-{$vn_col_span}'>
-			<div class='bResultItem' id='row{$vn_id}'>
-				<div class='bSetsSelectMultiple'><input type='checkbox' name='object_ids' value='{$vn_id}'></div>
-				<div class='bResultItemContent'>
-					<div class='text-center bResultItemImg'>{$vs_rep_detail_link}</div>
-					<div class='title'>{$vs_detail_link}</div>
+					$trimmedExpandedInfo = trimText($vs_expanded_info);
+
+					$isFacetAvailable = is_array($va_facets) && sizeof($va_facets);
+
+					list($colSpanXs, $colSpanSm, $colSpanMd) = getColumnSpan($isFacetAvailable);
+
 					
-				</div><!-- end bResultItemContent -->
-				<div class='bResultItemText'>
-						<h3>{$vs_label_detail_link}</h3><p>{$vs_idno_detail}</p>
-					</div><!-- end bResultItemText -->
-				<div class='bResultItemExpandedInfo' id='bResultItemExpandedInfo{$vn_id}'>
-					<hr>
-					{$vs_expanded_info}{$vs_add_to_set_link}
-				</div><!-- bResultItemExpandedInfo -->
-			</div><!-- end bResultItem -->
-		</div><!-- end col -->";
+
+					$vs_result_output = "
+					<div class='bResultItemCol col-xs-{$colSpanXs} col-sm-{$colSpanSm} col-md-{$colSpanMd}'>
+						<div class='{$wrapper_class}'>
+							<div class='bResultItem' id='row{$id}'>
+								<div class='bSetsSelectMultiple'>
+									<input type='checkbox' name='object_ids' value='{$vn_id}'>
+								</div>
+								<div class='bResultItemContent'>
+									<div class='text-center bResultItemImg'>{$vs_rep_detail_link}</div>
+									<div class='bResultItemText'>
+										<small>{$vs_idno_detail_link}</small>
+										<div>{$vs_label_detail_link}</div>
+									</div><!-- end bResultItemText -->
+								</div><!-- end bResultItemContent -->
+								<div class='bResultItemExpandedInfo' id='bResultItemExpandedInfo{$vn_id}'>
+								<p>{$trimmedExpandedInfo}</p>
+								<p>$creators</p>
+								<p>$collection_links</p>
+								</div><!-- bResultItemExpandedInfo -->
+								<div class='bResultItemFooter'>
+									<div class='icons-container'>
+									<i class='{$mediaTypeIcon}' aria-hidden='true'></i>
+									<i class='{$licenseIcon}' aria-hidden='true'></i>
+									</div>
+									<div class='button-container'>
+										{$vs_add_to_set_link}
+									</div>
+								</div>
+							</div><!-- end bResultItem -->
+						</div><!-- end bResultItemWrapper -->
+					</div><!-- end col -->
+
+				";
 					ExternalCache::save($vs_cache_key, $vs_result_output, 'browse_result', $o_config->get("cache_timeout"));
 					print $vs_result_output;
 				}				
@@ -191,3 +248,16 @@
 		}
 	});
 </script>
+
+<!-- <script>
+	$(document).ready(function() {
+    $('.bResultItem').hover(
+        function() {
+            $(this).find('.bResultItemExpandedInfo').slideDown();
+        }, function() {
+            $(this).find('.bResultItemExpandedInfo').slideUp();
+        }
+    );
+});
+
+</script> -->

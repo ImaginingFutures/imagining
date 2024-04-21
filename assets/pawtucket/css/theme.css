@@ -1219,9 +1219,12 @@ a.readmore-js-toggle:hover {
 
 .bResultItemText,
 .bResultItemText a {
-	font-size: 15px;
+	font-size: 2rem!important;
+	font-weight: 600;
+	line-height: 1.5!important;
+	overflow: hidden;
 	text-decoration: none;
-	color: #378bc7 !important;
+	color: #1a1a1a !important;
 }
 
 .bResultItemText p {
@@ -1262,103 +1265,155 @@ a.readmore-js-toggle:hover {
 
 }
 
-.bResultItemCol {
-	height: 360px;
+/* Increasing specificity */
+div.bResultItemCol {
+    height: auto !important; /* Override fixed height and allow it to grow with content */
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
-.bResultItemContent {
+div.bResultItemWrapper {
 	display: flex;
+	flex-direction: column;
+	min-height: 620px;
+	max-height: 620px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+
+@media (max-width: 600px) {
+    .creator-link, .collection-link {
+        height: auto;
+    }
+}
+
+div.bResultItemWrapper:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    transform: translateY(-5px); 
+}
+
+div.bResultItem {
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+    background-color: #FFFFFF !important;
+    box-shadow: none !important; 
+    line-height: normal !important; 
+    padding: 10px !important;
+    position: relative;
+    overflow: hidden;
+}
+
+div.bResultItemContent {
+    display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 235px;
-    border-radius: 10px;
+    padding: 10px 10px 5px;
+    height: auto !important; 
+    overflow: visible !important; 
 }
 
-.bResultListItemCol {
-	height: 152px;
+div.bResultItemImg {
+    height: 200px !important; /* Standardize image height */
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
 }
 
-.bResultListItemContent {
-	height: 102px;
+.bResultItemExpandedInfo {
+	flex-grow: 1;
+	overflow: auto;
+    display: block !important; /* Always display */
+    position: relative;
+    z-index: 1000;
+    padding: 10px;
 }
 
-.bResultListItem:hover {
-	height: 14x2px;
+.bResultItemExpandedInfo p {
+	color: #4d4d4d;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;  /* Number of lines for description */
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;  
+    max-height: 4.5em;  
+    line-height: 1.5em; 
+    margin-bottom: 10px;
 }
 
-.bResultItemImg {
-	border-radius: 10px;
+
+@media (max-width: 768px) {
+    div.bResultItemWrapper {
+        padding: 5px;
+        margin-bottom: 15px; 
+        margin-left: 3px;
+        margin-right: 3px;
+    }
+
+    .bResultItem {
+        padding: 5px;
+    }
 }
 
-.bResultItemContent .title {
-	position: absolute;
-	top: 0;
-	left: 0;
-	background-image: url("../graphics/IF_default.jpg");
-	color: white;
-	opacity: 0;
-	transition: opacity 0.3s;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	align-items: center; 
-	justify-content: center; 
-	text-align: center;
-	padding: 1em;
-	border-radius: 10px;
-  }
-  
-.bResultItemContent:hover .title {
-	opacity: 0.5;
-  }
-  
-.bResultItemContent .title i {
-	font-size: xxx-large;
+.bResultItemFooter {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 10px;
 }
 
-.bResultItemContent .title a {
-	font-family: "Source Sans 3", Verdana, sans-serif;
-	width: 100%;
-	height: 100%;
-	font-weight: 700;
-	font-size: 18px;
-	color: white;
+div.bResultItemContent, .bResultItemExpandedInfo, .bResultItemFooter {
+    flex-shrink: 0;
+}
+
+.mediaTypeIcon, .licenseIcon {
+    width: 24px; 
+    height: 24px; 
+}
+
+.button-container a {
+    margin-top: 10px;
+    text-align: right;
+	color: #a60845;
+}
+
+.creator-link, .collection-link {
+    margin-right: 10px; 
+	padding-top: 10px;
+    display: inline-block; 
+	font-size: 0.9em;
+	color: #333;
 	text-decoration: none;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-  }
-
-  .bResultItem .bResultItemImg {
-	position: absolute;
-	max-width: 100%;
-	max-height: 170px;
-	min-height: 0%;
-	object-fit: cover;
-	object-position: center;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	min-width: 150px;
 }
 
-@media(max-width:768px) {
-	.bResultItem .bResultItemImg {
-		min-width: 0%;
-	}
+.creator-link::after {
+    content: '|'; 
+    margin-left: 10px;
+    color: #ccc; 
 }
 
-.bResultItemImgPlaceholder {
-	background-color: transparent;
-	border: none;
-	padding: 0px 0px 0px;
+.creator-link:last-child::after {
+    content: ''; 
 }
 
-@media(max-width:768px) {
-	.results .bSearchWithinContainer {
-		display: none;
-	}
+.creator-link:hover, .collection-link:hover {
+    text-decoration: underline;
 }
+
+@media (max-width: 600px) {
+    .creator-link, .collection-link {
+        font-size: 0.8em; 
+        margin-right: 8px;
+    }
+}
+
 
 .results .bSearchWithinContainer {
 	clear: both;
