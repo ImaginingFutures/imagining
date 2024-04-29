@@ -110,11 +110,11 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 				}}}
 
 		
-		<div class="">
+		<div class="col-sm-8 col-md-8 col-lg-8">
 
 		<div class="row">
 			<div class='col-sm-8 col-md-8 col-lg-8'>
-				<label>Team:</label>
+				<label>People:</label>
 			</div>
 		</div>
 
@@ -182,9 +182,9 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						</ifcount>
 						<ifdef code="ca_collections.ifwebpage"><label>Project IF Page:</label><a href="^ca_collections.ifwebpage" target="_blank">^ca_collections.ifwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
 						<ifdef code="ca_collections.exwebpage"><label>Project Website:</label><a href="^ca_collections.exwebpage" target="_blank">^ca_collections.exwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
+					}}}
 
-}}}
-
+					
 					<?php
 					# Comment and Share Tools
 					if ($vn_comments_enabled | $vn_share_enabled) {
@@ -209,50 +209,53 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 			</div><!-- end row -->
 
-			<!-- Resources cards -->
-			<?php
-			// This needs to be improved, it's just an optional approach
+			<?php if ($vb_show_objects_link || $t_item->get('ca_collections.exresource')): ?>
+				<?php
+				$icon_map = [
+						'Map' => 'fa-map',
+						'Interactive Form' => 'fa-file-alt',
+						'Channel' => 'fa-video',
+						'Exhibition' => 'fa-photo-video',
+					];?>
 
-					if($vb_show_objects_link){
+				<div class="row">
+				<?php 
+				$exresource = $t_item->get('ca_collections.exresource');
+				$resource_types = $t_item->get('ca_collections.exresource.exlist.preferred_labels'); // Assuming this also returns a semicolon-separated string
+				
+				if ($exresource) {
+					$resources = explode(';', $exresource);
+					$types = explode(';', $resource_types);
+				
+					if (count($resources) % 3 == 0) {
 						echo '<div class="row">';
-
-						// Resources panel
-						echo '<div class="col-sm-4">';
-						echo '<div class="panel panel-info">';
-						echo '<div class="panel-heading">
-								<h3 class="panel-title">Resources of this Project</h3>
-								</div>';
-
-						echo '<div class="panel-body collections-panel">';
-								print caNavLink($this->request, "<button type='button' class='btn btn-info btn-lg'>Explore Project Resources</button>", "", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-						echo '</div></div>';
-						echo '</div>'; // end of panel
-					}
-					elseif($t_item->get('ca_collections.exresource')) {
-						echo '<div class="row">';
-					}
-					?>
-
-					{{{<ifcount code="ca_collections.exresource" min="1"><unit relativeTo="ca_collections.exresource" delimiter="<div></div>">
-						<div class="col-sm-4">
-						<div class="panel panel-info"> 
-							<div class="panel-heading">
-								<h3 class="panel-title">^ca_collections.exresource.exlist</h3>
+						echo '<label>External Resources:</label>';
+						for ($i = 0; $i < count($resources); $i += 3) {
+							$name = $resources[$i];
+							$url = $resources[$i + 1];
+							$id = $resources[$i + 2];
+							$type = $types[intval($i / 3)];
+							$icon = $icon_map[$type] ?? 'fa-question'; // Fallback to a generic icon if type is not defined
+							?>
+							<div class="col-sm-4">
+								<div class="card">
+									<div class="card-body">
+										<a href="<?= htmlspecialchars($url); ?>">
+										<i class="fas <?= htmlspecialchars($icon); ?>"></i> <?= htmlspecialchars($name); ?>
+										</a>
+									</div>
 								</div>
-								<div class="panel-body collections-panel">
-								<a href="^ca_collections.exresource.exurl" class="btn btn-info btn-lg">^ca_collections.exresource.exname</a>
-								</div>
-						</div>
-						</div>
-					
-						</unit></ifcount>}}}
-						<?php 
-							if($vb_show_objects_link or $t_item->get('ca_collections.exresource')){
-								echo '</div>';
-							}
-						?>
-						
-			<!-- End of resources cards -->
+							</div>
+
+							<?php
+						}
+						echo '</div>';
+					} 
+				}
+				?>
+				</div>
+			<?php endif; ?>
+
 
 			<?php
 
@@ -302,6 +305,32 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 				print "</div>";
 			} 
 		?>
+
+<div class="row">
+
+{{{<ifcount code="ca_objects" min="1">
+	<div class="row">
+		<div id="browseResultsContainer">
+			<?php print caBusyIndicatorIcon($this->request).' '.addslashes(_t('Loading...')); ?>
+		</div><!-- end browseResultsContainer -->
+	</div><!-- end row -->
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			jQuery("#browseResultsContainer").load("<?php print caNavUrl($this->request, '', 'Search', 'objects', array('search' => 'collection_id:^ca_collections.collection_id'), array('dontURLEncodeParameters' => true)); ?>", function() {
+				jQuery('#browseResultsContainer').jscroll({
+					autoTrigger: true,
+					loadingHtml: '<?php print caBusyIndicatorIcon($this->request).' '.addslashes(_t('Loading...')); ?>',
+					padding: 20,
+					nextSelector: 'a.jscroll-next'
+				});
+			});
+			
+			
+		});
+	</script>
+</ifcount>}}}
+</div>
+
 
 			<?php
 			 
@@ -353,7 +382,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 			?>
 
 		</div><!-- end container -->
-		<div class="">
+		<div class="col-sm-4 col-md-3 col-lg-3">
 			<div class="row">
 				<div class='col-sm-12'>
 
@@ -407,7 +436,18 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					<?php
 					if ($vb_show_objects_link || $vb_show_collections_link) {
 					?>
-						
+						<div class='collectionBrowseItems'>
+
+							<?php
+							if ($vb_show_objects_link) {
+								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Look inside the Collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+							}
+							if ($vb_show_collections_link) {
+								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-eye' aria-label='Search'></i> Look in all collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+							}
+							?>
+
+						</div>
 					<?php
 					}
 
@@ -423,6 +463,34 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					}
 					?>
 
+
+					<div class='counter'>
+						<?php
+						if (!$category_counts) {
+							echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-plus-circle'></i><div class='value'>0</div><div class='mimeLabel'>No items yet</div></div>";
+						}
+						$colors = ['first', 'second', 'third', 'fourth'];
+
+						$counter = 0;
+						foreach ($category_counts as $category => $count) {
+							$catData = $mimetypes[$category];
+							$colorClass = 'value ' . $colors[$counter % count($colors)];
+							if ($count > 1) {
+								$cat_label = $catData['label'] . 's';
+							} else {
+								$cat_label = $catData['label'];
+							}
+							echo "<div class='mimetypeCat'><i class='fas fa-" . strtolower($category) . "'></i><div class='$colorClass' akhi='$count'>0</div><div class='mimeLabel'>" . strtoupper($cat_label) . "</div></div>";
+
+							if ($counter == 4) {
+								$counter = 0;
+							} else {
+								$counter++;
+							}
+						}
+						?>
+					</div>
+					
 					<div class='col-sm-8 col-md-8 col-lg-8'>
 					{{{<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label> This project </ifcount>}}}
 					{{{<ifcount code="ca_collections.related" min="2"><label>Related collections</label> This project </ifcount>}}}
@@ -440,8 +508,12 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 				</div><!-- end col -->
 			</div><!-- end row -->
-		</div>
-	</div><!-- end col -->
+			</div>
+		
+		
+			
+
+		</div><!-- end col -->
 
 	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
 		<div class="detailNavBgRight">
@@ -449,65 +521,6 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		</div><!-- end detailNavBgLeft -->
 	</div><!-- end col -->
 </div><!-- end row -->
-
-
-<section name="routes">
-<div class="">
-
-<?php
-if ($vb_show_objects_link) {
-    $category_content = '';
-
-    // Check if category counts are available
-    if (!$category_counts) {
-        // If not, display a default message
-        $category_content .= 
-        "<div class='mimetypeCat'>
-            <i class='fas fa-folder-minus'></i>
-            <div class='value'>0</div>
-            <div class='mimeLabel'>No items yet</div>
-        </div>";
-    } else {
-        // Loop through category counts
-        $colors = ['first', 'second', 'third', 'fourth'];
-        $counter = 0;
-
-        foreach ($category_counts as $category => $count) {
-            $catData = $mimetypes[$category];
-            $colorClass = 'value ' . $colors[$counter % count($colors)];
-            if ($count > 1) {
-                $cat_label = $catData['label'] . 's';
-            } else {
-                $cat_label = $catData['label'];
-            }
-            $category_content .= 
-            "<div class='mimetypeCat'>
-                <i class='fas fa-" . strtolower($category) . "'></i>
-                <div class='$colorClass' akhi='$count'>0</div>
-                <div class='mimeLabel'>" . strtoupper($cat_label) . "</div>
-            </div>";
-
-            if ($counter == 4) {
-                $counter = 0;
-            } else {
-                $counter++;
-            }
-        }
-    }
-
-    // Render the HTML
-    ?>
-
-    <?php
-}
-?>
-
-
-                
-
-
-</div><!-- end col -->
-</section>
 
 
 <script>
