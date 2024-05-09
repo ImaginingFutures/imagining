@@ -134,15 +134,18 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.
 					{{{<ifcount code="ca_objects.langmaterial.lang" min="1"><div class="unit"><label>Language:</label><unit relativeTo="ca_objects.langmaterial" delimiter="<br/>">^ca_objects.langmaterial.langlabel: ^ca_objects.langmaterial.lang</unit></div></ifcount>}}}
 
 					{{{
-<ifcount code="ca_list_items" restrictToRelationshipTypes="theme" min="1">    
-     <label>Themes:</label>
-        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="theme" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+<ifcount code="ca_list_items" restrictToRelationshipTypes="resource_type" min="1">    
+     <label>Resource Type:</label>
+        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="resource_type" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
 </ifcount>
 }}}
 
-					{{{
-					<ifcount code="ca_objects.keyword" min="1"><div class="unit"><label>Keywords:</label><unit relativeTo="ca_objects.keyword" delimiter="<br/>">^ca_objects.keyword</unit></div></ifcount>
-					}}}
+{{{
+<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
+     <label>Keywords:</label>
+        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="keyword" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+</ifcount>
+}}}
 
 					{{{
 					<ifdef code="ca_objects.notes"><div class="unit"><label>Notes:</label>^ca_objects.notes</div></ifdef>
