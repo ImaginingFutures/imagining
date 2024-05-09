@@ -168,13 +168,20 @@
 					$vs_expanded_info = $qr_res->getWithTemplate($vs_extended_info_template);
 
 					$vs_result_output = "
-		<div class='bResultListItemCol col-xs-{$vn_col_span_xs} col-sm-{$vn_col_span_sm} col-md-{$vn_col_span}'>
-			<div class='bResultListItem' id='row{$vn_id}' onmouseover='jQuery(\"#bResultListItemExpandedInfo{$vn_id}\").show();'  onmouseout='jQuery(\"#bResultListItemExpandedInfo{$vn_id}\").hide();'>
+		<div class='bResultListItemCol'>
+			<div class='bResultListItem' id='row{$vn_id}' >
 				<div class='bSetsSelectMultiple'><input type='checkbox' name='object_ids[]' value='{$vn_id}'></div>
-				<div class='bResultListItemContent'>".(($vs_table == 'ca_objects') ? "<div class='text-center bResultListItemImg'>{$vs_rep_detail_link}</div>" : "")."
+				<div class='bResultListItemContent'>".(($vs_table == 'ca_objects') ? 
+				
+				"<div class='listItemImgSpace'>
+				<div class='listItemImg'>{$vs_rep_detail_link}</div></div>" : "").
+				"
+					
 					<div class='bResultListItemText'>
-						{$vs_label_detail_link}
+					<small>{$vs_idno_detail_link}</small>
+									<div>{$vs_label_detail_link}</div>
 					</div><!-- end bResultListItemText -->
+
 				</div><!-- end bResultListItemContent -->
 				
 					".(($vs_expanded_info  || $vs_add_to_set_link) ? "<div class='bResultListItemExpandedInfo' id='bResultListItemExpandedInfo{$vn_id}'><hr>
