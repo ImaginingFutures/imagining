@@ -1393,6 +1393,11 @@ a.readmore-js-toggle:hover {
 				border: none;
 				padding: 10px 0px 0px;
 				background-color: white;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				height: 100%;
 			}
 			
 			@media(max-width:768px) {
