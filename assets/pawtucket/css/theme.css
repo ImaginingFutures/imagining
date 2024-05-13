@@ -32,7 +32,7 @@ div {
 	font-size: 18px;
 	font-weight: 300;
 	text-rendering: optimizeLegibility;
-	line-height: 1.6666;
+	line-height: 1;
 }
 
 b,
@@ -1442,20 +1442,46 @@ div.bResultItem {
 }
 
 div.bResultItemContent {
-    display: flex;
+    display: table;
     flex-direction: column;
     justify-content: space-between;
-    padding: 10px 10px 5px;
-    height: auto !important; 
+    padding: 5px 5px 5px;
+    height: 30rem;
     overflow: visible !important; 
 }
 
 div.bResultItemImg {
-    height: 200px !important; /* Standardize image height */
+    height: 25rem;
     width: 100%;
     object-fit: cover;
     border-radius: 10px 10px 0 0;
     overflow: hidden;
+}
+
+.bResultItem img
+{
+    width: 100%;
+	object-fit: contain;
+	height: -webkit-fill-available;
+}
+
+
+.bResultItem .bResultItemImg {
+     margin-bottom: 0; 
+     max-height: 25rem;
+    min-height: 100px; 
+    overflow: hidden; 
+	object-fit: contain;
+}
+.bResultItemText, .bResultItemText a {
+    font-size: 2rem !important;
+    font-weight: 600;
+    line-height: 1.5 !important;
+    overflow: hidden;
+    text-decoration: none;
+    color: #1a1a1a !important;
+    padding-top: 5px;
+	text-align: center;
 }
 
 .bResultItemExpandedInfo {
@@ -1465,6 +1491,7 @@ div.bResultItemImg {
     position: relative;
     z-index: 1000;
     padding: 10px;
+	line-height: 1;
 }
 
 .bResultItemExpandedInfo p {
