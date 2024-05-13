@@ -1470,24 +1470,24 @@ div.bResultItemContent {
 }
 
 
-.bResultItem img
-{
+.bResultItem img {
     width: 100%;
-	object-fit: contain;
-	height: -webkit-fill-available;
+    object-fit: contain;
+    height: -webkit-fill-available;
+    border-radius: 10px 10px 0 0; /* Apply border-radius to the image */
 }
-
 
 .bResultItem .bResultItemImg {
-     margin-bottom: 0; 
-     max-height: 25rem;
+    margin-bottom: 0; 
+    max-height: 25rem;
     min-height: 100px; 
-    overflow: hidden; 
-	object-fit: contain;
-	border-radius: 10px 10px 0 0;
-	height: 25rem;
+    overflow: hidden;
+    object-fit: contain;
+    border-radius: 10px 10px 0 0; /* This applies to the container */
+    height: 25rem;
     width: 100%;
 }
+
 .bResultItemText, .bResultItemText a {
     font-size: 2rem !important;
     font-weight: 600;
