@@ -1198,22 +1198,36 @@ a.readmore-js-toggle:hover {
 
 /* TODO: override the transformation behaviour that comes from default main.css */
 .bResultItem:hover {
-    min-height: initial; 
-    margin: 0px 0px 0px 0px;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+    background-color: #FFFFFF !important;
+    box-shadow: none !important; 
+    line-height: normal !important; 
+    padding: 10px !important;
     position: relative;
-    z-index: initial;
-	box-shadow: 0 0 10px #fff;
+    overflow: hidden;
+	margin: -5px -5px 5px -5px;
 }
 
 .bResultItem:hover .bResultItemContent {
-    height: 235px; 
-    min-height: 0%;
+    display: table;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px 5px 5px;
+    height: 30rem;
+    overflow: visible !important; 
 }
 
 .bResultItem:hover .bResultItemImg {
-    max-width: 100%;
-	max-height: 170px;
-	min-height: 0%; 
+	margin-bottom: 0; 
+	max-height: 25rem;
+   min-height: 100px; 
+   overflow: hidden; 
+   object-fit: contain;
+   border-radius: 10px 10px 0 0;
+   height: 25rem;
+   width: 100%;
 }
 
 
@@ -1450,13 +1464,6 @@ div.bResultItemContent {
     overflow: visible !important; 
 }
 
-div.bResultItemImg {
-    height: 25rem;
-    width: 100%;
-    object-fit: cover;
-    border-radius: 10px 10px 0 0;
-    overflow: hidden;
-}
 
 .bResultItem img
 {
@@ -1472,6 +1479,9 @@ div.bResultItemImg {
     min-height: 100px; 
     overflow: hidden; 
 	object-fit: contain;
+	border-radius: 10px 10px 0 0;
+	height: 25rem;
+    width: 100%;
 }
 .bResultItemText, .bResultItemText a {
     font-size: 2rem !important;
