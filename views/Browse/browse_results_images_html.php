@@ -287,3 +287,13 @@
 });
 
 </script> -->
+
+<script>
+        function sanitizeTextContent() {
+            const elements = document.querySelectorAll('p.expandable, p.expandable-mini');
+            elements.forEach(el => {
+                el.textContent = el.textContent.replace(/�/g, ''); // Replace '�' with an empty string or any other character
+            });
+        }
+        document.addEventListener('DOMContentLoaded', sanitizeTextContent);
+    </script>
