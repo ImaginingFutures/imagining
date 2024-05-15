@@ -848,6 +848,7 @@ h3.card-title {
 .detailNavBgLeft,
 .detailNavBgRight {
 	top: -61px;
+	background-color: transparent!important;
 }
 
 .detail .unit {
