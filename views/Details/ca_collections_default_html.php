@@ -153,10 +153,12 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		}
 
 		?>
-
-			<div class="row projects-description">
-				
-
+			<div class="font-size-control">
+				<button type="button" name="btn1" onclick="changeSizeByBtn(-2)">-A</button>
+				<button type="button" name="btn2" onclick="resetSize()">A</button>
+				<button type="button" name="btn3" onclick="changeSizeByBtn(2)">A+</button>
+			</div>
+			<div class="row projects-description" id="projects-description-container">
 				
 					{{{
 						<ifcount code="ca_list_items" restrictToRelationshipTypes="prjtype" min="1">    						
@@ -630,4 +632,21 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
     }));
 
     map.fitBounds(bounds);
+</script>
+
+
+<script>
+	// Control the size of the font in projects-description
+
+	let cont = document.getElementById("projects-description-container");
+
+	function changeSizeByBtn(increment) {
+		let currentSize = window.getComputedStyle(cont, null).getPropertyValue('font-size');
+		let newSize = parseFloat(currentSize) + increment;
+		cont.style.fontSize = newSize + 'px';
+	}
+
+	function resetSize() {
+		cont.style.fontSize = ''; // Resets to the original CSS value
+	}
 </script>

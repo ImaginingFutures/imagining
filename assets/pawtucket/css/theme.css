@@ -128,6 +128,24 @@ a:hover {
 	line-height: normal;
 }
 
+.font-size-control {
+    display: flex;
+    justify-content: end;
+}
+
+.font-size-control button {
+	margin: 0 5px;
+    border: 0;
+    background-color: transparent;
+	transition: font-size 0.3s ease, transform 0.3s ease; 
+	font-size: 1em;
+	position: relative;
+}
+
+.font-size-control button:hover {
+	transform: scale(1.1);
+}
+
 	.btn-info {
 		white-space: normal;
 		min-width: 80%;
