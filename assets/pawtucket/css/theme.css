@@ -83,6 +83,23 @@ label {
 	font-family: "Source Sans 3", Verdana, sans-serif;
 }
 
+/* Media Viewer */
+
+.detail .repViewerNoCont img {
+	width: 100%;
+    height: auto;
+    max-height: 325px;
+    object-fit: contain;
+}
+
+.detail .repViewerExtCont {
+	display: flex;
+    justify-content: center;
+    align-items: center; 
+    width: 100%;
+    height: 100%; 
+}
+
 .detail label {
 	display: block;
 	color: #000000;
@@ -867,6 +884,11 @@ h3.card-title {
 .detailNavBgRight {
 	top: -61px;
 	background-color: transparent!important;
+}
+
+.detail .navTop a {
+	background-color: transparent!important;
+	color: #1c1b1a!important;
 }
 
 .detail .unit {
