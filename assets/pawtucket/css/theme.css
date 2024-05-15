@@ -124,6 +124,10 @@ a:hover {
 		color: white;
 	}
 
+.projects-description {
+	line-height: normal;
+}
+
 	.btn-info {
 		white-space: normal;
 		min-width: 80%;

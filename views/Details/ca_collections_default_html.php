@@ -154,10 +154,10 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 		?>
 
-			<div class="row">
+			<div class="row projects-description">
 				
 
-				<div class='col-sm-8 col-md-8 col-lg-8'>
+				
 					{{{
 						<ifcount code="ca_list_items" restrictToRelationshipTypes="prjtype" min="1">    						
 						<label>Project Type:</label>
@@ -203,7 +203,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					}
 					?>
 
-				</div><!-- end col -->
+				
 				
 					
 
