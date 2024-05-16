@@ -17,8 +17,9 @@ body{ font: "helvetica, sans-serif"; }
 
 /* thumbnails template */
 .pageContainer{position:relative;}
-.thumbnail { font: "helvetica, sans-serif"; font-size: 11px; border: 1px solid #ccc; width: 200px; height: 205px; position: absolute; text-align: center; margin: 10px 10px 10px 10px; padding: 3px; overflow: hidden; border-radius:4px;}	
-.imgThumb {text-align:center;}
+.thumbnail { font: "helvetica, sans-serif"; font-size: 11px; border: 1px solid #ccc; width: 200px; height: 300px; position: absolute; text-align: center; margin: 10px 10px 10px 10px; padding: 3px; overflow: hidden; border-radius:4px;}	
+.imgThumb {text-align:center; padding-top: 20px; padding-bottom: 10px;}
+.content {text-align:left; position: absolute;}
 .caption {font-size:10px; color:#333; display:block; line-height:1.1em; padding-top:3px;}
 .pageBreak { page-break-before: always; height:1px; }
 .clear { clear: both; height: 1px; }
