@@ -44,7 +44,7 @@
 				<div class="heroSearch">
 					<H1>
 						<div class="line1">Welcome to</div>
-						<div class="line2">Imagining Futures<br/> Repository (Pilot)</div>
+						<div class="line2">Imagining Futures<br/> Repository</div>
 					</H1>
 					<form role="search" action="<?php print caNavUrl($this->request, '', 'MultiSearch', 'Index'); ?>">
 						<div class="formOutline">
