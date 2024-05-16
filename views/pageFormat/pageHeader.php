@@ -126,11 +126,6 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-
-				<button type="button" class='navbar-toggle navbar-toggle-filters' data-toggle="collapse" id="sidebarCollapse">
-					<span class="sr-only">Filters</span>	
-					<span id="toggleIcon" class="fas fa-filter"></span>
-				</button>
 				
 				<?php $homeurl = caNavUrl($this->request, "", "", "", ""); 
 					if ($homeurl === "") {
