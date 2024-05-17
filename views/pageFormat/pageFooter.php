@@ -33,17 +33,18 @@
 				<div class="row">
 					<div class="col-sm-12 col-md-4">
 					<p><a href="https://imaginingfutures.world/" target="_blank"><?php print caGetThemeGraphic($this->request, 'logo-one-line-light-bg.png', array('alt' => "Imagining Futures, Trough Un/Archived Pasts")); ?></a></p>
-						<br/><b><i class="fas fa-envelope"></i> <a href="mailto:imaginingfutures@exeter.ac.uk">imaginingfutures@exeter.ac.uk</a>	
+					<br/><b><i class="fas fa-envelope"></i> <a href="mailto:admin@ifrepo.world">admin@ifrepo.world</a>	
+					<br/><b><i class="fas fa-envelope"></i> <a href="mailto:imaginingfutures@exeter.ac.uk">imaginingfutures@exeter.ac.uk</a>	
 				
 					</div>
 
 					<div class="col-sm-12 col-md-4">
 						<dl class="nav-list">
 						<dt>About</dt> <!-- You can style this header as needed -->
-						<dd><a href="#">Team</a></dd>
+						<!-- <dd><a href="#">Team</a></dd> -->
 						<dd><?= caNavLink($this->request, _t("Credits"), "", "", "About", "credits"); ?></dd>
-						<dd><a href="#">Overview</a></dd>
-						<dd><a href="#">Labs</a></dd>
+						<!-- <dd><a href="#">Overview</a></dd>
+						<dd><a href="#">Labs</a></dd> -->
 						</dl>
 					</div>
 
