@@ -49,14 +49,23 @@
 					</div>
 
 					<div class="col-sm-12 col-md-4">
-					<br/>Imagining Futures is an Arts and Humanities Research Council, GCRF Network+ funded by the UKRI
-					<div id="footerLogos" class="d-flex flex-wrap justify-content-between">
-							<a href="https://www.ukri.org/councils/ahrc/" target="_blank"><img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-ukri.png" alt="UK Research and Innovation" class="img-fluid"></a>
-							<a href="https://www.ukri.org/what-we-do/our-main-funds-and-areas-of-support/browse-our-areas-of-investment-and-support/global-challenges-research-fund/" target="_blank"><img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-gcrf.png" alt="Global Challenges Research Fund" class="img-fluid"></a>
-							<a href="https://www.exeter.ac.uk/" target="_blank"><img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer_logo_exeter.png" alt="University of Exeter" class="img-fluid"></a>
+						<p>The Imagining Futures Repository is co-funded by the <a href="https://ugleventisrc.com" target="_blank">Digital Leventis Resource Centre</a> and the Arts and Humanities Research Council's GCRF Network+, funded by UKRI.</p>
+						<div id="footerLogos" class="d-flex flex-wrap justify-content-between align-items-center">
+							<a href="https://ugleventisrc.com" target="_blank" class="footer-logo">
+								<?php print caGetThemeGraphic($this->request, 'LDRC_logo.webp', array('alt' => " A. G. Leventis Digital Resource Centre for African Culture (LDRC)")); ?>
+							</a>
+							<a href="https://www.ukri.org/councils/ahrc/" target="_blank" class="footer-logo">
+								<img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-ukri.png" alt="UK Research and Innovation" class="img-fluid">
+							</a>
+							<a href="https://www.ukri.org/what-we-do/our-main-funds-and-areas-of-support/browse-our-areas-of-investment-and-support/global-challenges-research-fund/" target="_blank" class="footer-logo">
+								<img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-gcrf.png" alt="Global Challenges Research Fund" class="img-fluid">
+							</a>
+							<a href="https://www.exeter.ac.uk/" target="_blank" class="footer-logo">
+								<img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer_logo_exeter.png" alt="University of Exeter" class="img-fluid">
+							</a>
 						</div>
-
 					</div>
+
 				</div>
 			</div>
 		</footer><!-- end footer -->

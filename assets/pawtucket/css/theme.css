@@ -539,6 +539,10 @@ a.navbar-brand,
 	text-decoration: none;
 }
 
+#footer a:hover {
+	color: #378bc7;
+}
+
 .footerHighlight {
 	color: #c1d2df;
 	font-weight: 600;
@@ -547,19 +551,37 @@ a.navbar-brand,
 
 #footerLogos {
     display: flex;
-    justify-content: space-between; /* Distributes logos evenly */
-    align-items: center; /* Aligns logos vertically centered */
-    margin-top: 20px; /* Adjust as needed */
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px; 
 }
 
-#footerLogos a {
-    margin-right: 20px; /* Space between logos */
+.footer-logo {
+    flex: 1 1 calc(25% - 10px); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100px; /* Ensures logos don’t get too large */
 }
 
-#footerLogos img {
-    max-width: 100px; /* Adjust image size */
+.footer-logo img, .footer-logo picture {
+    max-width: 100%;
     height: auto;
 }
+
+@media (max-width: 768px) {
+    .footer-logo {
+        flex: 1 1 calc(50% - 10px); /* Adjust for smaller screens (2 in a row) */
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-logo {
+        flex: 1 1 calc(100% - 10px); /* Adjust for smallest screens (1 in a row) */
+    }
+}
+
 
 
 /*
