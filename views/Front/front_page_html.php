@@ -93,7 +93,7 @@
 				<?php print caGetThemeGraphic($this->request, 'projects_thumbnail.jpg', array('alt' => "Imagining Futures, Trough Un/Archived Pasts", 'class' => "card-img-top")); ?></a>
 				</div>
 			<div class="card-body">
-			<?php print caNavLink($this->request, "<h3 class='card-title'>Projects</h3>", "card-title-link", "", "Collections", "index"); ?>
+			<?php print caNavLink($this->request, "<h3 class='card-title'>Projects</h3>", "card-title-link", "", "Browse", "collections"); ?>
   			</div>
             </div>
         </div>
