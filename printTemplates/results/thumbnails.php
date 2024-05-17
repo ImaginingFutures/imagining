@@ -73,7 +73,13 @@
 ?>
 			<div class="thumbnail" style="left: <?php print $vn_left; ?>px; top: <?php print $vn_top; ?>px;">
 				<?php print "<div class='imgThumb'><img src='".$vo_result->getMediaPath('ca_object_representations.media', 'preview170')."'/></div>"; ?>
-				<?php print "<div class='caption'>".$vo_result->getWithTemplate('^ca_objects.preferred_labels.name')."</div>"; ?>
+				<?php 	print "<div class='ID'>".$vo_result->getWithTemplate('^ca_objects.idno')."</div>";					
+					print "<div class='title'>".$vo_result->getWithTemplate('^ca_objects.preferred_labels.name')."</div>"; 
+
+					
+					print "<div class='projects'>".$vo_result->getWithTemplate("<unit relativeTo='ca_collections'>^ca_collections.hierarchy.preferred_labels%delimiter=_>_</unit>")."</div>";
+					print "<div class='entities'>".$vo_result->getWithTemplate("<unit relativeTo='ca_entities' delimiter='<br/>'>^ca_entities.preferred_labels (^relationship_typename)</unit>")."</div>";
+					?>
 			</div>
 <?php
 
