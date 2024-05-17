@@ -153,6 +153,15 @@
 					$vs_add_to_set_link = "<a href='#' onclick='caMediaPanel.showPanel(\"".caNavUrl($this->request, '', $va_add_to_set_link_info["controller"], 'addItemForm', array($vs_pk => $vn_id))."\"); return false;' title='".$va_add_to_set_link_info["link_text"]."'>".$va_add_to_set_link_info["icon"]."</a>";
 				}
 
+				$entity_ids = $qr_res->get('ca_entities.entity_id', array('returnAsArray' => true));
+				$entity_labels = $qr_res->get('ca_entities.preferred_labels.displayname', array('returnAsArray' => true));
+
+				$creators = "";
+				foreach ($entity_ids as $index => $id) {
+					$label = $entity_labels[$index];
+					$creators .= caDetailLink($this->request, $label, 'creator-link', 'ca_entities', $id) . " | ";
+				}
+
 				if($vs_table == 'ca_objects') {
 					$mimeType = $qr_res->get('ca_object_representations.mimetype', array("checkAccess" => $va_access_values));
 					$mimeTypes = new MimeTypes();
@@ -166,14 +175,7 @@
 						$licenseIcon = 'far fa-copyright';
 					};
 
-					$entity_ids = $qr_res->get('ca_entities.entity_id', array('returnAsArray' => true));
-					$entity_labels = $qr_res->get('ca_entities.preferred_labels.displayname', array('returnAsArray' => true));
-
-					$creators = "";
-					foreach ($entity_ids as $index => $id) {
-						$label = $entity_labels[$index];
-						$creators .= caDetailLink($this->request, $label, 'creator-link', 'ca_entities', $id) . " ";
-					}
+				
 
 					$collection_ids = $qr_res->get('ca_collections.collection_id', array('returnAsArray' => true));
 					$collection_labels = $qr_res->get('ca_collections.preferred_labels', array('returnAsArray' => true));
@@ -184,31 +186,49 @@
 						$collection_links .= caDetailLink($this->request, $label, 'collection-link', 'ca_collections', $id);
 					}
 
-					$detailInfo = "<p class='expandable-mini'>$creators</p>
+					$detailInfo = "	<p class='expandable-mini'>$vs_idno_detail</p>
+									<p class='expandable-mini'>$creators</p>
 									<p class='expandable'>$collection_links</p>";
 
 
 				} elseif ($vs_table == 'ca_collections') {
 					$wrapper_class = 'bResultItemWrapper';
 
-					$project_type = $qr_res->get('ca_collections.prjtype.preferred_labels');
-					$project_region = $qr_res->get('ca_collections.prjregion.preferred_labels');
-
-					$detailInfo = "<p class='expandable-mini'>$project_type</p>
-									<p class='expandable-mini'>$project_region</p>";
+				    $project_type = $qr_res->get('ca_list_items.preferred_labels.name_singular', [
+						'restrictToRelationshipTypes' => 'prjtype',
+						'min' => 1
+					]);
+					$project_region = $qr_res->get('ca_list_items.preferred_labels.name_singular', [
+						'restrictToRelationshipTypes' => 'prjregion',
+						'min' => 1
+					]);
+					$project_synopsis = $qr_res->get('ca_collections.synopsis');
+					
+					$detailInfo = "
+									<p class='expandable-mini'>$vs_idno_detail</p>
+									<p class='expandable-mini'>$creators</p>
+									<p class='expandable'>$project_type</p>
+									<p class='expandable-mini'>$project_region</p>
+									<p class='expandable-mini'>$project_synopsis</p>";
 
 				} elseif ($vs_table == 'ca_entities') {
 					$wrapper_class = 'bResultItemWrapper';
 					$collection_ids = $qr_res->get('ca_collections.collection_id', array('returnAsArray' => true));
 					$collection_labels = $qr_res->get('ca_collections.preferred_labels', array('returnAsArray' => true));
-
+					$entity_type = $qr_res->get('ca_entities.type_id.preferred_labels.name_singular');
+#I hate the line above
 					$collection_links = "";
+					
 					foreach ($collection_ids as $index => $id) {
 						$label = $collection_labels[$index];
 						$collection_links .= caDetailLink($this->request, $label, 'collection-link', 'ca_collections', $id);
+					
 					}
-
-					$detailInfo = "<p class='expandable'>$collection_links</p>";
+					
+					$detailInfo = "
+									<p class='expandable-mini'>$vs_idno_detail</p>
+									<p class='expandable-mini'>$entity_type</p>
+									<p class='expandable'>$collection_links</p>";
 				}
 
 				$vs_expanded_info = $qr_res->getWithTemplate($vs_extended_info_template);
@@ -241,9 +261,11 @@
 							
 							
 							<div class='bResultItemExpandedInfo' id='bResultItemExpandedInfo{$vn_id}'>
-							<p class='expandable'>{$trimmedExpandedInfo}</p>
 							{$detailInfo}
+							<p class='expandable'>{$trimmedExpandedInfo}</p>
+							
 							</div><!-- bResultItemExpandedInfo -->
+							
 							<div class='bResultItemFooter'>
 								<div class='icons-container'>
 								<i class='{$mediaTypeIcon}' aria-hidden='true'></i>
