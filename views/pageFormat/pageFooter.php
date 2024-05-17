@@ -42,7 +42,8 @@
 						<dl class="nav-list">
 						<dt>About</dt> <!-- You can style this header as needed -->
 						<!-- <dd><a href="#">Team</a></dd> -->
-						<dd><?= caNavLink($this->request, _t("Credits"), "", "", "About", "credits"); ?></dd>
+						<dd><?= caNavLink($this->request, _t("Repository Policies"), "", "", "About", "policies"); ?></dd>
+						<dd><?= caNavLink($this->request, _t("Image Credits"), "", "", "About", "credits"); ?></dd>
 						<!-- <dd><a href="#">Overview</a></dd>
 						<dd><a href="#">Labs</a></dd> -->
 						</dl>
