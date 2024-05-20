@@ -8,7 +8,9 @@
             <button type="button" name="btn2" onclick="resetSize()">A</button>
             <button type="button" name="btn3" onclick="changeSizeByBtn(2)">A+</button>
 		</div>
-
+        <div class="policies-version">
+            [2024-05-17]
+        </div>
         <div class="policies-text" id="policies-text-container">
         <h1 class="text-center">Imagining Futures Repository Policies</h1>
         

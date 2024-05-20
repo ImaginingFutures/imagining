@@ -32,7 +32,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-12 col-md-4">
-					<p><a href="https://imaginingfutures.world/" target="_blank"><?php print caGetThemeGraphic($this->request, 'logo-one-line-light-bg.png', array('alt' => "Imagining Futures, Trough Un/Archived Pasts")); ?></a></p>
+					<p><a href="https://imaginingfutures.world/" target="_blank"><?php print caGetThemeGraphic($this->request, 'logo-one-line-light-bg.webp', array('alt' => "Imagining Futures, Trough Un/Archived Pasts")); ?></a></p>
 					<br/><b><i class="fas fa-envelope"></i> <a href="mailto:admin@ifrepo.world">admin@ifrepo.world</a>	
 					<br/><b><i class="fas fa-envelope"></i> <a href="mailto:imaginingfutures@exeter.ac.uk">imaginingfutures@exeter.ac.uk</a>	
 				
@@ -51,10 +51,13 @@
 
 					<div class="col-sm-12 col-md-4">
 						<p>The Imagining Futures Repository is co-funded by the <a href="https://ugleventisrc.com" target="_blank">Digital Leventis Resource Centre</a> and the Arts and Humanities Research Council's GCRF Network+, funded by UKRI.</p>
+						<div class="main-logo">
+						<a href="https://ugleventisrc.com" target="_blank">
+								<?php print caGetThemeGraphic($this->request, 'LDRC_logo_2024.webp', array('alt' => " A. G. Leventis Digital Resource Centre for African Culture (LDRC)")); ?>
+ 						</a>
+						</div>
 						<div id="footerLogos" class="d-flex flex-wrap justify-content-between align-items-center">
-							<a href="https://ugleventisrc.com" target="_blank" class="footer-logo">
-								<?php print caGetThemeGraphic($this->request, 'LDRC_logo.webp', array('alt' => " A. G. Leventis Digital Resource Centre for African Culture (LDRC)")); ?>
-							</a>
+							
 							<a href="https://www.ukri.org/councils/ahrc/" target="_blank" class="footer-logo">
 								<img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-ukri.png" alt="UK Research and Innovation" class="img-fluid">
 							</a>

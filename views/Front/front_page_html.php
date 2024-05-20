@@ -90,7 +90,7 @@
             <div class="card">
 				<div class="card-img-top-container">
 				<a href=<?php print caNavUrl($this->request, "Browse", "collections", "") ?>>
-				<?php print caGetThemeGraphic($this->request, 'projects_thumbnail.jpg', array('alt' => "Imagining Futures, Trough Un/Archived Pasts", 'class' => "card-img-top")); ?></a>
+				<?php print caGetThemeGraphic($this->request, 'projects_thumbnail.webp', array('alt' => "Imagining Futures, Trough Un/Archived Pasts", 'class' => "card-img-top")); ?></a>
 				</div>
 			<div class="card-body">
 			<?php print caNavLink($this->request, "<h3 class='card-title'>Projects</h3>", "card-title-link", "", "Browse", "collections"); ?>
@@ -103,7 +103,7 @@
             <div class="card">
 			<div class="card-img-top-container">
 			<a href=<?php print caNavUrl($this->request, "Browse", "participants", "") ?>>
-			<?php print caGetThemeGraphic($this->request, 'people_thumbnail.jpg', array('alt' => "Imagining Futures, Trough Un/Archived Pasts", 'class' => "card-img-top")); ?></a>
+			<?php print caGetThemeGraphic($this->request, 'people_thumbnail.webp', array('alt' => "Imagining Futures, Trough Un/Archived Pasts", 'class' => "card-img-top")); ?></a>
 			</div>
 			<div class="card-body">
     		<?php print caNavLink($this->request, "<h3 class='card-title'>People</h3>", "card-title-link", "", "Browse", "participants"); ?>
@@ -116,7 +116,7 @@
             <div class="card">
 			<div class="card-img-top-container">
 			<a href=<?php print caNavUrl($this->request, "Browse", "objects", "") ?>>
-			<?php print caGetThemeGraphic($this->request, 'resources_thumbnail.jpg', array('alt' => "Imagining Futures, Trough Un/Archived Pasts", 'class' => "card-img-top")); ?></a>
+			<?php print caGetThemeGraphic($this->request, 'resources_thumbnail.webp', array('alt' => "Imagining Futures, Trough Un/Archived Pasts", 'class' => "card-img-top")); ?></a>
 			</div>
 			<div class="card-body">
     		<?php print caNavLink($this->request, "<h3 class='card-title'>Resources</h3>", "card-title-link", "", "Browse", "objects"); ?>

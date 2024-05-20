@@ -59,7 +59,7 @@
 
 	$va_add_to_set_link_info = caGetAddToSetInfo($this->request);
 
-	$vs_default_placeholder_tag = "<div class='bResultItemImgPlaceholder'>".caGetThemeGraphic($this->request, 'IF_logo.png') ."</div>";
+	$vs_default_placeholder_tag = "<div class='bResultItemImgPlaceholder'>".caGetThemeGraphic($this->request, 'IF_logo.webp') ."</div>";
 	
 	function getColumnSpan($isFacetAvailable) {
 		if ($isFacetAvailable) {

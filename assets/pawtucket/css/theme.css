@@ -550,6 +550,7 @@ a.navbar-brand,
 	font-weight: 300;
 	font-size: 18px;
 	background-color: #1c1b1a;
+	padding-bottom: 10px;
 }
 
 #footer a {
@@ -573,6 +574,19 @@ a.navbar-brand,
     justify-content: space-between;
     align-items: center;
     gap: 10px; 
+}
+
+.main-logo {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.main-logo img {
+	height: auto;
+	width: 300px;
+	border-radius: 5px;
+	margin: 0 0 10px;
 }
 
 .footer-logo {
@@ -812,7 +826,7 @@ h3.card-title {
 	top: 0;
 	left: 0;
 	border-radius: 50%;
-	background-image: url("../graphics/IF_default.jpg") ;
+	background-image: url("../graphics/IF_default.webp") ;
 	color: white;
 	opacity: 0;
 	transition: opacity 0.3s;
@@ -846,7 +860,7 @@ h3.card-title {
 	position: absolute;
 	top: 0;
 	left: 0;
-	background-image: url("../graphics/IF_default.jpg");
+	background-image: url("../graphics/IF_default.webp");
 	color: white;
 	opacity: 0;
 	transition: opacity 0.3s;
@@ -1778,7 +1792,7 @@ body.frontContainer #footer {
 
 .parallax {
 	position: relative;
-	background-image: url("../graphics/hero_1.jpg");
+	background-image: url("../graphics/hero_1.webp");
 	/* Full height */
 	height: 100vh;
 

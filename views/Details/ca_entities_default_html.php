@@ -51,7 +51,7 @@
 						$ca_entity_media = $t_item->get('ca_object_representations.media.medium');
 		
 						if (!$ca_entity_media) {
-							$ca_entity_media = caGetThemeGraphic($this->request, "people.png");
+							$ca_entity_media = caGetThemeGraphic($this->request, "people.webp");
 						}
 						print "<div class='entitiesThumbnailDetail'>" . $ca_entity_media . "</div>";
 						print "</div>";

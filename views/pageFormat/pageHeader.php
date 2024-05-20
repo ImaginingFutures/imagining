@@ -133,7 +133,7 @@
 					}
 				?>
 
-				<a href="<?php print $homeurl ?>" class="navbar-brand"><?php print caGetThemeGraphic($this->request, 'IF_logo.png') ?> Imagining Futures</a>
+				<a href="<?php print $homeurl ?>" class="navbar-brand"><?php print caGetThemeGraphic($this->request, 'IF_logo.webp') ?> Imagining Futures</a>
 			</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->

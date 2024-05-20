@@ -12,7 +12,7 @@
         <div class="about-card mb-3">
             <div class="row no-gutters">
             <div class="col-md-4 about-thumbnail">
-            <?php print caGetThemeGraphic($this->request, 'hero_1.jpg', array('alt' => "Fashion of Resistance, Manu Luksch © 2023", 'class' => 'img-thumbnail')); ?>
+            <?php print caGetThemeGraphic($this->request, 'hero_1.webp', array('alt' => "Fashion of Resistance, Manu Luksch © 2023", 'class' => 'img-thumbnail')); ?>
             </div>
             <div class="col-md-8">
             <div class="about-card-body">
@@ -33,7 +33,7 @@
         <div class="about-card mb-3">
             <div class="row no-gutters">
             <div class="col-md-4 about-thumbnail">
-            <?php print caGetThemeGraphic($this->request, 'projects_thumbnail.jpg', array('alt' => "Projects thumbnail", 'class' => 'img-thumbnail')); ?>
+            <?php print caGetThemeGraphic($this->request, 'projects_thumbnail.webp', array('alt' => "Projects thumbnail", 'class' => 'img-thumbnail')); ?>
             </div>
             <div class="col-md-8">
             <div class="about-card-body">
@@ -51,7 +51,7 @@
         <div class="about-card mb-3">
             <div class="row no-gutters">
             <div class="col-md-4 about-thumbnail">
-            <?php print caGetThemeGraphic($this->request, 'people_thumbnail.jpg', array('alt' => "People thumbnail", 'class' => 'img-thumbnail')); ?>
+            <?php print caGetThemeGraphic($this->request, 'people_thumbnail.webp', array('alt' => "People thumbnail", 'class' => 'img-thumbnail')); ?>
             </div>
             <div class="col-md-8">
             <div class="about-card-body">
@@ -67,7 +67,7 @@
         <div class="about-card mb-3">
             <div class="row no-gutters">
             <div class="col-md-4 about-thumbnail">
-            <?php print caGetThemeGraphic($this->request, 'resources_thumbnail.jpg', array('alt' => "Resources thumbnail", 'class' => 'img-thumbnail')); ?>
+            <?php print caGetThemeGraphic($this->request, 'resources_thumbnail.webp', array('alt' => "Resources thumbnail", 'class' => 'img-thumbnail')); ?>
             </div>
             <div class="col-md-8">
             <div class="about-card-body">

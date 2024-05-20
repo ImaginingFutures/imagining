@@ -135,7 +135,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 				$ca_entity_media = $q_res->get('ca_object_representations.media.preview170');
 
 				if (!$ca_entity_media) {
-					$ca_entity_media = caGetThemeGraphic($this->request, "people.png");
+					$ca_entity_media = caGetThemeGraphic($this->request, "people.webp");
 				}
 				print "<div class='entitiesThumbnail'>" . $ca_entity_media . "</div>";
 				print caDetailLink($this->request, "<div class='entityName'>" . $q_res->get('ca_entities.preferred_labels') . "</div>", "", "ca_entities", $q_res->get('ca_entities.entity_id'));
