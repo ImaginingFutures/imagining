@@ -44,7 +44,7 @@
 				<div class="heroSearch">
 					<H1>
 						<div class="line1">Welcome to</div>
-						<div class="line2">Imagining Futures<br/> Repository (Pilot)</div>
+						<div class="line2">Imagining Futures<br/> Repository</div>
 					</H1>
 					<form role="search" action="<?php print caNavUrl($this->request, '', 'MultiSearch', 'Index'); ?>">
 						<div class="formOutline">
@@ -60,29 +60,69 @@
 	</div>
 </div>
 
+<!-- Description -->
+<div class="container description-container">
 	<div class="row">
-		<div class="col-sm-8 col-sm-offset-2">
-			<div class="hpCallout">{{{FrontWelcome}}}</div>
-		</div><!--end col-sm-8-->
-	</div>
-	<div class="row">
-		<div class="col-sm-8 col-sm-offset-2">
-			{{{FrontAbout}}}
-		</div><!--end col-sm-8-->
-	</div>
-	<div class="row">
-		<div class="col-sm-12">
-<?php
-		print $this->render("Front/featured_set_slideshow_html.php");
-?>
+		<div class="col-md-4 col-lg-3">
+			<div class="hpCallout">Who decides what gets to be remembered into the future, and to shape it?</div>
+		</div>
+		<div class="col-md-8">
+			<div class="description">
+		We draw on the widest meaning of archive by including documents, material remains and creations, landscapes, oral transmissions, song, bodily movements, daily customs and ancestral laws. Join us in our aim is to build methodologies of egalitarian archiving practices that allow for co-existence and recognition of multiple experiences and narratives of the past that challenge a singular ‘we’.
+		</div>
 		</div>
 	</div>
-	<div id="hpScrollBar"><div class="row"><div class="col-sm-12"><i class="fa fa-chevron-down" aria-hidden="true" title="Scroll down for more"></i></div></div></div>
+	<div class="row">
+	<div class="home-more-btn">
+		<a href="https://imaginingfutures.world/imagining-futures-overview/" class="btn btn-outline-dark btn-lg">More <i class="fas fa-angle-double-right"></i></a>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+	<div class="col-md-12">
+            <div class="explore-header"><h1>Explore</h1></div>
+        </div>
+	</div>
+	<div class="row explore-cards">
+        <!-- Card 1 -->
+        <div class="col-sm-4">
+            <div class="card">
+				<div class="card-img-top-container">
+				<a href=<?php print caNavUrl($this->request, "Browse", "collections", "") ?>>
+				<?php print caGetThemeGraphic($this->request, 'projects_thumbnail.webp', array('alt' => "Imagining Futures, Trough Un/Archived Pasts", 'class' => "card-img-top")); ?></a>
+				</div>
+			<div class="card-body">
+			<?php print caNavLink($this->request, "<h3 class='card-title'>Projects</h3>", "card-title-link", "", "Browse", "collections"); ?>
+  			</div>
+            </div>
+        </div>
 
-		<script type="text/javascript">
-			$(document).ready(function(){
-				$(window).scroll(function(){
-					$("#hpScrollBar").fadeOut();
-				});
-			});
-		</script>
+        <!-- Card 2 -->
+        <div class="col-sm-4">
+            <div class="card">
+			<div class="card-img-top-container">
+			<a href=<?php print caNavUrl($this->request, "Browse", "participants", "") ?>>
+			<?php print caGetThemeGraphic($this->request, 'people_thumbnail.webp', array('alt' => "Imagining Futures, Trough Un/Archived Pasts", 'class' => "card-img-top")); ?></a>
+			</div>
+			<div class="card-body">
+    		<?php print caNavLink($this->request, "<h3 class='card-title'>People</h3>", "card-title-link", "", "Browse", "participants"); ?>
+			
+  			</div>
+            </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="col-sm-4">
+            <div class="card">
+			<div class="card-img-top-container">
+			<a href=<?php print caNavUrl($this->request, "Browse", "objects", "") ?>>
+			<?php print caGetThemeGraphic($this->request, 'resources_thumbnail.webp', array('alt' => "Imagining Futures, Trough Un/Archived Pasts", 'class' => "card-img-top")); ?></a>
+			</div>
+			<div class="card-body">
+    		<?php print caNavLink($this->request, "<h3 class='card-title'>Resources</h3>", "card-title-link", "", "Browse", "objects"); ?>
+  			</div>
+            </div>
+        </div>
+    </div>
+	
+</div>

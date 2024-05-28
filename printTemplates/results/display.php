@@ -62,7 +62,7 @@
 ?>
 			<tr <?php print ($i ==1) ? "class='odd'" : ""; ?>>
 			<td>
-				<table  width="100%"  cellpadding="0" cellspacing="0" class='summary' style='border:1px solid #ccc;'>
+				<table  width="100%"   cellpadding="0" cellspacing="0" class='summary' style='border:1px solid #ccc;'>
 					<tr style='background-color:#eeeeee;'>
 <?php
 				$i_field = 0;
@@ -79,6 +79,7 @@
 						$va_colspan = "";
 					}
 					print "<td style='width:250px;' class='value' ".$va_colspan.">".(strlen($vs_display_value) > 1200 ? strip_tags(substr($vs_display_value, 0, 1197))."..." : $vs_display_value)."</td>";
+
 					$i_field++;
 					if ($i_field == 2) {
 						$header_has_ended = "yes";

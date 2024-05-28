@@ -31,20 +31,45 @@
 		<footer id="footer">
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-12 col-md-6">
-					<p><a href="https://imaginingfutures.world/" target="_blank"><?php print caGetThemeGraphic($this->request, 'logo-one-line-light-bg.png', array('alt' => "Imagining Futures, Trough Un/Archived Pasts")); ?></a></p>
-						<br/><b><i class="fas fa-envelope"></i> <a href="mailto:imaginingfutures@exeter.ac.uk">imaginingfutures@exeter.ac.uk</a>	
+					<div class="col-sm-12 col-md-4">
+					<p><a href="https://imaginingfutures.world/" target="_blank"><?php print caGetThemeGraphic($this->request, 'logo-one-line-light-bg.webp', array('alt' => "Imagining Futures, Trough Un/Archived Pasts")); ?></a></p>
+					<br/><b><i class="fas fa-envelope"></i> <a href="mailto:admin@ifrepo.world">admin@ifrepo.world</a>	
+					<br/><b><i class="fas fa-envelope"></i> <a href="mailto:imaginingfutures@exeter.ac.uk">imaginingfutures@exeter.ac.uk</a>	
 				
 					</div>
-					<div class="col-sm-12 col-md-4 col-md-offset-2">
-					<br/>Imagining Futures is an Arts and Humanities Research Council, GCRF Network+ funded by the UKRI
-					<div id="footerLogos" class="d-flex flex-wrap justify-content-between">
-							<a href="https://www.ukri.org/councils/ahrc/" target="_blank"><img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-ukri.png" alt="UK Research and Innovation" class="img-fluid"></a>
-							<a href="https://www.ukri.org/what-we-do/our-main-funds-and-areas-of-support/browse-our-areas-of-investment-and-support/global-challenges-research-fund/" target="_blank"><img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-gcrf.png" alt="Global Challenges Research Fund" class="img-fluid"></a>
-							<a href="https://www.exeter.ac.uk/" target="_blank"><img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer_logo_exeter.png" alt="University of Exeter" class="img-fluid"></a>
-						</div>
 
+					<div class="col-sm-12 col-md-4">
+						<dl class="nav-list">
+						<dt>About</dt> <!-- You can style this header as needed -->
+						<!-- <dd><a href="#">Team</a></dd> -->
+						<dd><?= caNavLink($this->request, _t("Repository Policies"), "", "", "About", "policies"); ?></dd>
+						<dd><?= caNavLink($this->request, _t("Image Credits"), "", "", "About", "credits"); ?></dd>
+						<!-- <dd><a href="#">Overview</a></dd>
+						<dd><a href="#">Labs</a></dd> -->
+						</dl>
 					</div>
+
+					<div class="col-sm-12 col-md-4">
+						<p>The Imagining Futures Repository is co-funded by the <a href="https://ugleventisrc.com" target="_blank">Digital Leventis Resource Centre</a> and the Arts and Humanities Research Council's GCRF Network+, funded by UKRI.</p>
+						<div class="main-logo">
+						<a href="https://ugleventisrc.com" target="_blank">
+								<?php print caGetThemeGraphic($this->request, 'LDRC_logo_2024.webp', array('alt' => " A. G. Leventis Digital Resource Centre for African Culture (LDRC)")); ?>
+ 						</a>
+						</div>
+						<div id="footerLogos" class="d-flex flex-wrap justify-content-between align-items-center">
+							
+							<a href="https://www.ukri.org/councils/ahrc/" target="_blank" class="footer-logo">
+								<img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-ukri.png" alt="UK Research and Innovation" class="img-fluid">
+							</a>
+							<a href="https://www.ukri.org/what-we-do/our-main-funds-and-areas-of-support/browse-our-areas-of-investment-and-support/global-challenges-research-fund/" target="_blank" class="footer-logo">
+								<img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer-logo-gcrf.png" alt="Global Challenges Research Fund" class="img-fluid">
+							</a>
+							<a href="https://www.exeter.ac.uk/" target="_blank" class="footer-logo">
+								<img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer_logo_exeter.png" alt="University of Exeter" class="img-fluid">
+							</a>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</footer><!-- end footer -->
@@ -63,6 +88,18 @@
 			
 			</div>
 		</div>
+
+		<!-- Tooltip and Select2 scripts -->
+		<script>
+			$(document).ready(function(){
+		$('[data-toggle="tooltip"]').tooltip();   
+		});
+
+		</script>
+
+
+
+
 		<script type="text/javascript">
 			/*
 				Set up the "caMediaPanel" panel that will be triggered by links in object detail

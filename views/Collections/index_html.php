@@ -26,7 +26,7 @@
 			print "<div class='grid-item collectionTile'>";
 			
 			if (!$vs_thumbnail) {
-				$vs_thumbnail = caGetThemeGraphic($this->request, 'IF_logo.png');
+				$vs_thumbnail = caGetThemeGraphic($this->request, 'IF_logo.webp');
 			}
 			print "<div class='collectionThumbnail'>". $vs_thumbnail. "</div>";
 			print caDetailLink($this->request, "<div class='title'><i class='fas fa-hand-pointer'></i></div>", "", "ca_collections",  $qr_collections->get("ca_collections.collection_id"));

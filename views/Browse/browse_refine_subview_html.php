@@ -69,23 +69,56 @@
 <?php
 		}
 		if((is_array($va_facets) && sizeof($va_facets)) || ($vs_criteria)){
-			print "<a href='#' class='pull-right' id='bRefineClose' onclick='jQuery(\"#bRefine\").toggle(); return false;'><i class='far fa-times-circle'></i></a>";
-			print "<H2>"._t("Filter by")."</H2>";
+			print "<a href='#' class='pull-right' id='bRefineClose' onclick='document.getElementById(\"bRefine\").classList.remove(\"visible\"); document.getElementById(\"bRefine\").classList.add(\"collapsed\"); return false;'><i class='far fa-times-circle'></i></a>"; 
+			print "<H2>"._t("Filters")."</H2>";
 			if($vs_criteria){
 				print "<div class='bCriteria'>".$vs_criteria."</div>";
 			}
+			
 			foreach($va_facets as $vs_facet_name => $va_facet_info) {
 			
 				if ((caGetOption('deferred_load', $va_facet_info, false) || ($va_facet_info["group_mode"] == 'hierarchical')) && ($o_browse->getFacet($vs_facet_name))) {
 					print "<H3>".$va_facet_info['label_singular']."</H3>";
 					print "<p>".$va_facet_info['description']."</p>";
+					echo "<select class='filter-dropdown-hierarchical' id='select_{$vs_facet_name}' style='width: 100%;'></select>"; 
+
 	?>
 						<script type="text/javascript">
-							jQuery(document).ready(function() {
-								jQuery("#bHierarchyList_<?php print $vs_facet_name; ?>").load("<?php print caNavUrl($this->request, '*', '*', 'getFacetHierarchyLevel', array('facet' => $vs_facet_name, 'browseType' => $vs_browse_type, 'key' => $vs_key, 'linkTo' => 'morePanel')); ?>");
+							jQuery(document).ready(function () {
+								var selectElement = jQuery('#select_<?php echo $vs_facet_name; ?>').select2({
+									data: [{id: 0, text: 'Select a filter'}],
+									allowClear: true
+								});
+
+								jQuery.ajax({
+									url: "<?php print caNavUrl($this->request, '*', '*', 'getFacetHierarchyLevel', array('facet' => $vs_facet_name, 'browseType' => $vs_browse_type, 'key' => $vs_key, 'linkTo' => 'morePanel')); ?>",
+									success: function(htmlResponse) {
+										var data = [];
+										jQuery(htmlResponse).find('a').each(function() {
+											var link = jQuery(this);
+											var id = link.attr('href').match(/id\/(\d+)/)[1];
+											var url = link.attr('href');
+											var text = link.text();
+											data.push({id:url, text:text})
+										});
+
+										selectElement.select2({
+											data: data
+										});
+									},
+									error: function(xhr, status, error) {
+										console.log("Error fetching data: ", status, error)
+									}
+								});
+							}).on('change', function() {
+								var selectedUrl = jQuery(this).val(); 
+								if(selectedUrl) { 
+									window.location.href = selectedUrl; // Navigate to the selected URL
+								}
 							});
-						</script>
-						<div id='bHierarchyList_<?php print $vs_facet_name; ?>'><?php print caBusyIndicatorIcon($this->request).' '.addslashes(_t('Loading...')); ?></div>
+							</script>
+						<!-- Busy indicator not required for Select2 -->
+						<!-- <div id='bHierarchyList_<?php print $vs_facet_name; ?>'><?php print caBusyIndicatorIcon($this->request).' '.addslashes(_t('Loading...')); ?></div> -->
 	<?php
 				} else {				
 					if (!is_array($va_facet_info['content']) || !sizeof($va_facet_info['content'])) { continue; }
@@ -94,30 +127,18 @@
 						case "alphabetical":
 						case "list":
 						default:
-							$vn_facet_size = sizeof($va_facet_info['content']);
-							$vn_c = 0;
+							echo "<select class='filter-dropdown' name='filter' style='width: 100%;'>";
+							echo " <option></option>";
 							foreach($va_facet_info['content'] as $va_item) {
 								$vs_content_count = (isset($va_item['content_count']) && ($va_item['content_count'] > 0)) ? " (".$va_item['content_count'].")" : "";
-								print "<div>".caNavLink($this->request, $va_item['label'].$vs_content_count, '', '*', '*','*', array('key' => $vs_key, 'facet' => $vs_facet_name, 'id' => $va_item['id'], 'view' => $vs_view))."</div>";
-								$vn_c++;
-						
-								if (($vn_c == $vn_facet_display_length_initial) && ($vn_facet_size > $vn_facet_display_length_initial) && ($vn_facet_size <= $vn_facet_display_length_maximum)) {
-									print "<span id='{$vs_facet_name}_more' style='display: none;'>";
-								} else {
-									if(($vn_c == $vn_facet_display_length_initial) && ($vn_facet_size > $vn_facet_display_length_maximum))  {
-										break;
-									}
-								}
-							}
-							if (($vn_facet_size > $vn_facet_display_length_initial) && ($vn_facet_size <= $vn_facet_display_length_maximum)) {
-								print "</span>\n";
-						
-								$vs_link_open_text = _t("and %1 more", $vn_facet_size - $vn_facet_display_length_initial);
-								$vs_link_close_text = _t("close", $vn_facet_size - $vn_facet_display_length_initial);
-								print "<div><a href='#' class='more' id='{$vs_facet_name}_more_link' onclick='jQuery(\"#{$vs_facet_name}_more\").slideToggle(250, function() { jQuery(this).is(\":visible\") ? jQuery(\"#{$vs_facet_name}_more_link\").text(\"".addslashes($vs_link_close_text)."\") : jQuery(\"#{$vs_facet_name}_more_link\").text(\"".addslashes($vs_link_open_text)."\")}); return false;'><em>{$vs_link_open_text}</em></a></div>";
-							} elseif (($vn_facet_size > $vn_facet_display_length_initial) && ($vn_facet_size > $vn_facet_display_length_maximum)) {
-								print "<div><a href='#' class='more' onclick='jQuery(\"#bMorePanel\").load(\"".caNavUrl($this->request, '*', '*', '*', array('getFacet' => 1, 'facet' => $vs_facet_name, 'view' => $vs_view, 'key' => $vs_key))."\", function(){jQuery(\"#bMorePanel\").show(); jQuery(\"#bMorePanel\").mouseleave(function(){jQuery(\"#bMorePanel\").hide();});}); return false;'><em>"._t("and %1 more", $vn_facet_size - $vn_facet_display_length_initial)."</em></a></div>";
-							}
+								
+								$facet_link = caNavUrl($this->request, '', '*', '*', array('key' => $vs_key, 'facet' => $vs_facet_name, 'id' => $va_item['id'], 'view' => $vs_view));
+								
+								echo "<option value='{$facet_link}'>" . htmlspecialchars($va_item['label'].$vs_content_count) . "</option>";
+								
+							} echo "</select>";
+
+							
 						break;
 						# ---------------------------------------------
 					}
@@ -144,6 +165,59 @@
             }
 		});
 	</script>
+
+<script>
+	$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function updateRefineVisibility() {
+        var bRefine = document.getElementById('bRefine');
+        if (window.innerWidth < 767) {
+            bRefine.classList.add('collapsed');
+            bRefine.classList.remove('visible');
+        } else {
+            bRefine.classList.remove('collapsed');
+            bRefine.classList.add('visible');
+        }
+    }
+
+    updateRefineVisibility();
+    window.addEventListener('resize', updateRefineVisibility);
+
+    document.getElementById('sidebarCollapse').addEventListener('click', function () {
+        var bRefine = document.getElementById('bRefine');
+        if (bRefine.classList.contains('visible')) {
+            bRefine.classList.remove('visible');
+            bRefine.classList.add('collapsed');
+        } else {
+            bRefine.classList.add('visible');
+            bRefine.classList.remove('collapsed');
+        }
+    });
+});
+</script>
+
+<!-- Script to handle the dropdown selection -->
+<script>
+	$(document).ready(function() {
+    $('.filter-dropdown').select2({
+        placeholder: "Select a filter",
+        allowClear: true,
+		dropdownParent: $('#bRefine')
+    }).on('change', function() {
+        var selectedUrl = $(this).val(); 
+        if(selectedUrl) { 
+            window.location.href = selectedUrl;
+        }
+    });
+});
+
+</script>
+
 <?php	
 	}
 ?>

@@ -58,6 +58,17 @@
 <html lang="en" <?php print ((strtoLower($this->request->getController()) == "front")) ? "class='frontContainer'" : ""; ?>>
 	<head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="<?php print caGetThemeAssetURL('graphics/favicon/apple-touch-icon.png') ?>">
+	<link rel="icon" type="image/png" sizes="32x32" href="<?php print caGetThemeAssetURL('graphics/favicon/favicon-32x32.png') ?>">
+	<link rel="icon" type="image/png" sizes="16x16" href="<?php print caGetThemeAssetURL('graphics/favicon/favicon-16x16.png') ?>">
+	<link rel="manifest" href="<?php print caGetThemeAssetURL('graphics/favicon/site.webmanifest') ?>">
+	<link rel="mask-icon" href="<?php print caGetThemeAssetURL('graphics/favicon/safari-pinned-tab.svg') ?>" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+
+
 	<?= AssetLoadManager::getLoadHTML($this->request); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 	
@@ -65,10 +76,14 @@
 
 	<meta property="og:url" content="<?php print $this->request->config->get("site_host").caNavUrl($this->request, "*", "*", "*"); ?>" />
 	<meta property="og:type" content="website" />
-
+	
 	<!-- Dynamic meta tags -->
 	<?= MetaTagManager::getHTML(); ?>
-	<script src="https://kit.fontawesome.com/122ccc1a9c.js" crossorigin="anonymous"></script>
+	<!-- Select2 CSS -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+	<!-- Select2 JavaScript -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 
 <?php
@@ -100,7 +115,7 @@
 
 <body class='<?php print (strtoLower($this->request->getController()) == "front") ? "frontContainer" : ""; ?>'>
 	<div id="skipNavigation"><a href="#main">Skip to main content</a></div>
-	<nav class="navbar navbar-default yamm" style="background-color: #171f5c;" role="navigation">
+	<nav class="navbar navbar-default yamm" role="navigation">
 		<div class="container menuBar">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
@@ -127,7 +142,7 @@
 					}
 				?>
 
-				<a href="<?php print $homeurl ?>" class="navbar-brand"><?php print caGetThemeGraphic($this->request, 'IF_logo.png') ?> Imagining Futures</a>
+				<a href="<?php print $homeurl ?>" class="navbar-brand"><?php print caGetThemeGraphic($this->request, 'IF_logo.webp') ?> Imagining Futures</a>
 			</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -189,11 +204,10 @@
 
 				<ul class="nav navbar-nav navbar-right menuItems" role="list" aria-label="<?php print _t("Primary Navigation"); ?>">
 				<li <?php print (strToLower($this->request->getController()) == "front") ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Home"), "", "", "", ""); ?></li>
-					<li <?= ($this->request->getController() == "Collections") ? 'class="active"' : ''; ?>><?= caNavLink($this->request, _t("Projects"), "", "", "Collections", "index"); ?></li>
+					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "collections")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Projects"), "", "", "Browse", "collections"); ?></li>
 					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "entities")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Participants"), "", "", "Browse", "participants"); ?></li>				
 					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "objects")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Resources"), "", "", "Browse", "objects"); ?></li>				
 					
-					<li><a href="https://imaginingfutures.world/imagining-futures-overview/" target="_blank">About</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- end container -->

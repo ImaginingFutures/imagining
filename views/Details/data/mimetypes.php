@@ -9,11 +9,7 @@
 class MimeTypes
 {
 
-	/**
-	* @return array associative array with types and label from each group of mimetypes. Key names match with font awesome endings (aka 'file-pdf').
-	*/
-	function mimetypes(){
-		$mimetypes = [
+	private $mimetypes = [
 			'image' => [
 				'types' => [
 					'image/jpeg',
@@ -47,7 +43,7 @@ class MimeTypes
 			],
 			'file-pdf' => [
 				'types' => ['application/pdf'],
-				'label' => 'pdf'
+				'label' => 'file-pdf'
 			],
 			'file-alt' => [
 				'types' => [
@@ -58,7 +54,7 @@ class MimeTypes
 					'application/vnd.ms-powerpoint',
 					'application/vnd.openxmlformats-officedocument.presentationml.presentation'
 				],
-				'label' => 'document'
+				'label' => 'file-alt'
 			],
 			'file-audio' => [
 				'types' => [
@@ -68,11 +64,11 @@ class MimeTypes
 					'audio/wav',
 					'audio/mp4'
 				],
-				'label' => 'audio'
+				'label' => 'file-audio'
 			],
 			'align-left' => [
 				'types' => ['text/xml'],
-				'label' => 'text'
+				'label' => 'paragraph'
 			],
 			'cubes' => [
 				'types' => [
@@ -80,11 +76,11 @@ class MimeTypes
 					'application/surf',
 					'application/ply'
 				],
-				'label' => '3D'
+				'label' => 'cube'
 			],
 			'vr-cardboard' => [
 				'types' => ['application/spincar'],
-				'label' => '360'
+				'label' => 'cube'
 			],
 			'file-archive' => [
 				'types' => ['application/octet-stream'],
@@ -92,6 +88,22 @@ class MimeTypes
 			]
 		];
 
-		return $mimetypes;
+	/**
+    * Returns the FontAwesome icon class based on MIME type.
+    * @param string $mimeType The MIME type of the file.
+    * @return string FontAwesome icon class.
+    */
+    public function getIconClass($mimeType) {
+        foreach ($this->mimetypes as $group => $info) {
+            if (in_array($mimeType, $info['types'])) {
+                return 'fas fa-' . $info['label'];
+            }
+        }
+        return 'fas fa-file'; 
+    }
+
+
+	public function mimetypes() {
+		return $this->mimetypes;
 	}
 }

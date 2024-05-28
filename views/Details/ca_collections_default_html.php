@@ -58,6 +58,8 @@ if ($t_item->get("ca_collections.children.collection_id", array("checkAccess" =>
 	$vb_show_collections_link = true;
 }
 
+$qr_res = $o_browse->getResults(); // retrieve all objects
+
 # --------------------
 # Mimetypes
 #$mimetypes = $this->render("Details/data/mimetypes.php");
@@ -133,7 +135,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 				$ca_entity_media = $q_res->get('ca_object_representations.media.preview170');
 
 				if (!$ca_entity_media) {
-					$ca_entity_media = caGetThemeGraphic($this->request, "people.png");
+					$ca_entity_media = caGetThemeGraphic($this->request, "people.webp");
 				}
 				print "<div class='entitiesThumbnail'>" . $ca_entity_media . "</div>";
 				print caDetailLink($this->request, "<div class='entityName'>" . $q_res->get('ca_entities.preferred_labels') . "</div>", "", "ca_entities", $q_res->get('ca_entities.entity_id'));
@@ -151,22 +153,40 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		}
 
 		?>
-
-			<div class="row">
+			<div class="font-size-control">
+				<button type="button" name="btn1" onclick="changeSizeByBtn(-2)">-A</button>
+				<button type="button" name="btn2" onclick="resetSize()">A</button>
+				<button type="button" name="btn3" onclick="changeSizeByBtn(2)">A+</button>
+			</div>
+			<div class="row projects-description" id="projects-description-container">
 				
-
-				<div class='col-sm-8 col-md-8 col-lg-8'>
 					{{{
+						<ifcount code="ca_list_items" restrictToRelationshipTypes="prjtype" min="1">    						
+						<label>Project Type:</label>
+						<unit relativeTo="ca_list_items" restrictToRelationshipTypes="prjtype" delimiter="</br>">   
+						<l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+						</ifcount>
+
+						<ifcount code="ca_list_items" restrictToRelationshipTypes="prjregion" min="1">       
+						<label>Project Region:</label>
+						<unit relativeTo="ca_list_items" restrictToRelationshipTypes="prjregion" delimiter="</br>">   
+						<l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+						</ifcount>
+						<ifdef code="ca_collections.synopsis"><label>Synopsis and Position</label>^ca_collections.synopsis<br/></ifdef>
+						<ifdef code="ca_collections.objectivesmethods"><label>Objectives and Methods</label>^ca_collections.objectivesmethods<br/></ifdef>
+						<ifdef code="ca_collections.workshopsevents"><label>Workshops and Events</label>^ca_collections.workshopsevents<br/></ifdef>
+						<ifdef code="ca_collections.activities"><label>Activities</label>^ca_collections.activities<br/></ifdef>
+						<ifdef code="ca_collections.descriptionalt"><label>Project Description Alternative</label>^ca_collections.descriptionalt<br/></ifdef>
+
+						<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
+						<label>Keywords:</label>
+						<unit relativeTo="ca_list_items" restrictToRelationshipTypes="keyword" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+						</ifcount>
+						<ifdef code="ca_collections.ifwebpage"><label>Project IF Page:</label><a href="^ca_collections.ifwebpage" target="_blank">^ca_collections.ifwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
 						<ifdef code="ca_collections.exwebpage"><label>Project Website:</label><a href="^ca_collections.exwebpage" target="_blank">^ca_collections.exwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
-					
-						<ifdef code="ca_collections.prjtype"><label>Project type:</label>^ca_collections.prjtype</ifdef>
-
-						<ifdef code="ca_collections.prjregion"><label>Region:</label>^ca_collections.prjregion</ifdef>
-
-						<ifdef code="ca_collections.description"><label>About</label>^ca_collections.description<br/></ifdef>
 					}}}
 
-
+					
 					<?php
 					# Comment and Share Tools
 					if ($vn_comments_enabled | $vn_share_enabled) {
@@ -185,11 +205,59 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					}
 					?>
 
-				</div><!-- end col -->
+				
 				
 					
 
 			</div><!-- end row -->
+
+			<?php if ($vb_show_objects_link || $t_item->get('ca_collections.exresource')): ?>
+				<?php
+				$icon_map = [
+						'Map' => 'fa-map',
+						'Interactive Form' => 'fa-file-alt',
+						'Channel' => 'fa-video',
+						'Exhibition' => 'fa-photo-video',
+					];?>
+
+				<div class="row">
+				<?php 
+				$exresource = $t_item->get('ca_collections.exresource');
+				$resource_types = $t_item->get('ca_collections.exresource.exlist.preferred_labels'); // Assuming this also returns a semicolon-separated string
+				
+				if ($exresource) {
+					$resources = explode(';', $exresource);
+					$types = explode(';', $resource_types);
+				
+					if (count($resources) % 3 == 0) {
+						echo '<div class="row">';
+						echo '<label>External Resources:</label>';
+						for ($i = 0; $i < count($resources); $i += 3) {
+							$name = $resources[$i];
+							$url = $resources[$i + 1];
+							$id = $resources[$i + 2];
+							$type = $types[intval($i / 3)];
+							$icon = $icon_map[$type] ?? 'fa-question'; // Fallback to a generic icon if type is not defined
+							?>
+							<div class="col-sm-4">
+								<div class="card">
+									<div class="card-body">
+										<a href="<?= htmlspecialchars($url); ?>">
+										<i class="fas <?= htmlspecialchars($icon); ?>"></i> <?= htmlspecialchars($name); ?>
+										</a>
+									</div>
+								</div>
+							</div>
+
+							<?php
+						}
+						echo '</div>';
+					} 
+				}
+				?>
+				</div>
+			<?php endif; ?>
+
 
 			<?php
 
@@ -197,9 +265,6 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 			# Retrieving objects data for map
 			$vs_cache_key = md5($vs_browse_key);
-			
-			$qr_res = $o_browse->getResults();
-
 			
 
 			if (($o_collections_config->get("cache_timeout") > 0) && ExternalCache::contains($vs_cache_key,'ca_collections_default')) {
@@ -242,6 +307,32 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 				print "</div>";
 			} 
 		?>
+
+<div class="row">
+
+{{{<ifcount code="ca_objects" min="1">
+	<div class="row">
+		<div id="browseResultsContainer">
+			<?php print caBusyIndicatorIcon($this->request).' '.addslashes(_t('Loading...')); ?>
+		</div><!-- end browseResultsContainer -->
+	</div><!-- end row -->
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			jQuery("#browseResultsContainer").load("<?php print caNavUrl($this->request, '', 'Search', 'objects', array('search' => 'collection_id:^ca_collections.collection_id'), array('dontURLEncodeParameters' => true)); ?>", function() {
+				jQuery('#browseResultsContainer').jscroll({
+					autoTrigger: true,
+					loadingHtml: '<?php print caBusyIndicatorIcon($this->request).' '.addslashes(_t('Loading...')); ?>',
+					padding: 20,
+					nextSelector: 'a.jscroll-next'
+				});
+			});
+			
+			
+		});
+	</script>
+</ifcount>}}}
+</div>
+
 
 			<?php
 			 
@@ -378,7 +469,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					<div class='counter'>
 						<?php
 						if (!$category_counts) {
-							echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-folder-minus'></i><div class='value'>0</div><div class='mimeLabel'>No items yet</div></div>";
+							echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-plus-circle'></i><div class='value'>0</div><div class='mimeLabel'>No items yet</div></div>";
 						}
 						$colors = ['first', 'second', 'third', 'fourth'];
 
@@ -419,10 +510,13 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 				</div><!-- end col -->
 			</div><!-- end row -->
+			</div>
+		
+		
+			
 
-		</div>
+		</div><!-- end col -->
 
-	</div><!-- end col -->
 	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
 		<div class="detailNavBgRight">
 			{{{nextLink}}}
@@ -538,4 +632,21 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
     }));
 
     map.fitBounds(bounds);
+</script>
+
+
+<script>
+	// Control the size of the font in projects-description
+
+	let cont = document.getElementById("projects-description-container");
+
+	function changeSizeByBtn(increment) {
+		let currentSize = window.getComputedStyle(cont, null).getPropertyValue('font-size');
+		let newSize = parseFloat(currentSize) + increment;
+		cont.style.fontSize = newSize + 'px';
+	}
+
+	function resetSize() {
+		cont.style.fontSize = ''; // Resets to the original CSS value
+	}
 </script>

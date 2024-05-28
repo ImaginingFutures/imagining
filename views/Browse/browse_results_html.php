@@ -71,7 +71,22 @@
 if (!$vb_ajax) {	// !ajax
 ?>
 <div class="row" style="clear:both;">
-	<div class='<?php print ($vs_result_col_class) ? $vs_result_col_class : "col-sm-8 col-md-8 col-lg-8"; ?>'>
+
+
+<div class="container-fluid col-sm-4 col-md-3 col-lg-3">
+  <!-- Hamburger toggle button -->
+  <div id="sidebar" class="<?php print ($vs_refine_col_class) ? $vs_refine_col_class : ""; ?>">
+  
+		<?php
+		print $this->render("Browse/browse_refine_subview_html.php");
+	?>
+	</div>
+
+</div>
+
+
+	<div class='<?php print ($vs_result_col_class) ? $vs_result_col_class : "col-sm-8 col-md-9 col-lg-9  elements_browse"; ?>'>
+	
 <?php 
 			if($vs_sort_control_type == 'list'){
 				if(is_array($va_sorts = $this->getVar('sortBy')) && sizeof($va_sorts)) {
@@ -145,7 +160,7 @@ if (!$vb_ajax) {	// !ajax
 <?php
 			if(is_array($va_facets) && sizeof($va_facets)){
 ?>
-			<a href='#' id='bRefineButton' onclick='jQuery("#bRefine").toggle(); return false;'><i class="fa fa-table"></i></a>
+			<a href='#' id='bRefineButton' onclick='jQuery("#bRefine").toggle(); return false;'><i class="fa fa-filter"></i></a>
 <?php
 			}
 			if(is_array($va_add_to_set_link_info) && sizeof($va_add_to_set_link_info)){
@@ -168,7 +183,22 @@ if (!$vb_ajax) {	// !ajax
 			print " | ".caNavLink($this->request, _t("All"), (!$vs_letter) ? 'selectedLetter' : '', '*', '*', '*', array('key' => $vs_browse_key, 'l' => 'all')); 
 			print "</div>";
 		}
-?>
+?>		
+		<div id="bViewButtons" class="bFacetDescription pull-right">
+
+			<?php
+				if(is_array($va_views) && (sizeof($va_views) > 1)){
+					foreach($va_views as $vs_view => $va_view_info) {
+						if ($vs_current_view === $vs_view) {
+							print '<a href="#" class="active"><span class="glyphicon  '.$va_view_icons[$vs_view]['icon'].'" aria-label="'.$vs_view.'" role="button"></span></a> ';
+						} else {
+							print caNavLink($this->request, '<span class="glyphicon '.$va_view_icons[$vs_view]['icon'].'" aria-label="'.$vs_view.'" role="button"></span>', 'disabled', '*', '*', '*', array('view' => $vs_view, 'key' => $vs_browse_key), array('data-toggle' => 'tooltip', 'data-placemente' => 'top', 'title'=> ucwords($vs_view) . " view")).' ';
+						}
+					}
+				}
+			?>
+				</div>
+
 		<form id="setsSelectMultiple">
 		<div class="row">
 			<div id="browseResultsContainer">
@@ -192,24 +222,7 @@ if (!$vb_ajax) {	// !ajax
 		</div><!-- end row -->
 		</form>
 	</div><!-- end col-8 -->
-	<div class="<?php print ($vs_refine_col_class) ? $vs_refine_col_class : "col-sm-4 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"; ?>">
-		<div id="bViewButtons">
-<?php
-		if(is_array($va_views) && (sizeof($va_views) > 1)){
-			foreach($va_views as $vs_view => $va_view_info) {
-				if ($vs_current_view === $vs_view) {
-					print '<a href="#" class="active"><span class="glyphicon  '.$va_view_icons[$vs_view]['icon'].'" aria-label="'.$vs_view.'" role="button"></span></a> ';
-				} else {
-					print caNavLink($this->request, '<span class="glyphicon '.$va_view_icons[$vs_view]['icon'].'" aria-label="'.$vs_view.'" role="button"></span>', 'disabled', '*', '*', '*', array('view' => $vs_view, 'key' => $vs_browse_key)).' ';
-				}
-			}
-		}
-?>
-		</div>
-<?php
-		print $this->render("Browse/browse_refine_subview_html.php");
-?>			
-	</div><!-- end col-2 -->
+	
 	
 	
 </div><!-- end row -->
@@ -252,3 +265,5 @@ if (!$vb_ajax) {	// !ajax
 		print $this->render('Browse/browse_panel_subview_html.php');
 } //!ajax
 ?>
+
+</script>
