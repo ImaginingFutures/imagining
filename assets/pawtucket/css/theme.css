@@ -86,8 +86,7 @@ label {
 /* Media Viewer */
 
 .detail {
-    height: fit-content;
-	padding-bottom: 100px;
+	padding-bottom: 150px;
 }
 
 .detail .repViewerNoCont img {
@@ -241,6 +240,10 @@ a:hover {
 
 .browse .btn:hover .glyphicon {
 	color: #378bc7 !important;
+}
+
+#browseResultsContainer {
+	padding-bottom: 150px;
 }
 
 .bgGray {
