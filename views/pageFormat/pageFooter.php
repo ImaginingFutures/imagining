@@ -33,9 +33,8 @@
 				<div class="row">
 					<div class="col-sm-12 col-md-4">
 					<p><a href="https://imaginingfutures.world/" target="_blank"><?php print caGetThemeGraphic($this->request, 'logo-one-line-light-bg.webp', array('alt' => "Imagining Futures, Trough Un/Archived Pasts")); ?></a></p>
-					<br/><b><i class="fas fa-envelope"></i> <a href="mailto:admin@ifrepo.world">admin@ifrepo.world</a>	
-					<br/><b><i class="fas fa-envelope"></i> <a href="mailto:imaginingfutures@exeter.ac.uk">imaginingfutures@exeter.ac.uk</a>	
-				
+					<br/><b><i class="fas fa-envelope"></i> <a href="mailto:admin@ifrepo.world">admin@ifrepo.world</a></b>	
+					<br/><b><i class="fas fa-envelope"></i> <a href="mailto:imaginingfutures@exeter.ac.uk">imaginingfutures@exeter.ac.uk</a></b>
 					</div>
 
 					<div class="col-sm-12 col-md-4">
@@ -70,6 +69,10 @@
 						</div>
 					</div>
 
+
+				</div>
+				<div class="row">
+				<p><span class="text-muted version">Repository Version: 1.0.0 [28-05-2024]</span></p>
 				</div>
 			</div>
 		</footer><!-- end footer -->

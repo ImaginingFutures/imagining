@@ -530,8 +530,8 @@ a.navbar-brand,
 	color: #FFFFFF;
 	font-family: "Source Sans 3", Verdana, sans-serif;
 	font-weight: 300;
-	padding: 25px 0px 25px 0px;
-	height: 250px;
+	padding: 25px;
+	height: auto;
 }
 
 @media (max-width:990px) {
