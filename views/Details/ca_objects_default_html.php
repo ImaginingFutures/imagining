@@ -564,7 +564,7 @@ try {
 									if (!empty($contributorString)) {
 										$contributorString .= ', ';
 									}
-									$contributorString .= implode(', ', $entities) . " ($type)";
+									$contributorString .= implode(', ', $entities);
 								}
 							}
 
