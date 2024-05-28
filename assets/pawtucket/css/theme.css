@@ -85,6 +85,11 @@ label {
 
 /* Media Viewer */
 
+.detail {
+    height: fit-content;
+	padding-bottom: 100px;
+}
+
 .detail .repViewerNoCont img {
 	width: 100%;
     height: auto;
