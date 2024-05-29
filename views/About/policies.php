@@ -3,6 +3,8 @@
 ?>
 
     <div class="container">
+        <!-- about details div -->
+        <div class="about">
         <div class="font-size-control">
             <button type="button" name="btn1" onclick="changeSizeByBtn(-2)">-A</button>
             <button type="button" name="btn2" onclick="resetSize()">A</button>
@@ -89,7 +91,8 @@
             <br /><sup id="fn3">3. “Examples of a Creator include a person, an organization, or a service. Typically, the name of a Creator should be used to indicate the entity.” Dublin Core Metadata Initiative. <a href="http://purl.org/dc/elements/1.1/creator" target="_blank">	http://purl.org/dc/elements/1.1/creator</a>. <a href="#ref3">↩</a></sup>
             <br /><sup id="fn4">4.  Since copyright legislation varies globally, there are four common ways that works enter the public domain: expiration of copyright, failure by the copyright owner to follow copyright renewal rules, voluntary placement of their work into the public domain by the copyright owner (dedication), or because the type of work is not protected by copyright. Stim, Rich. "Welcome to the Public Domain." <i>Stanford Copyright and Fair Use Center</i>, Stanford University, <a href="https://fairuse.stanford.edu/overview/public-domain/welcome/" target="_blank"> https://fairuse.stanford.edu/overview/public-domain/welcome/</a>. Accessed [02/02/2024]. <a href="#ref4">↩</a></sup>
         </div>
-    </div>
+        </div><!-- End of about div -->
+    </div> <!-- End of container -->
 
     <script>
 	// Control the size of the font in policies-text
