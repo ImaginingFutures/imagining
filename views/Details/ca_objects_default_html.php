@@ -36,6 +36,7 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 $va_access_values = caGetUserAccessValues($this->request);
 
 require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.php");
+require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/cite.php");
 
 # This condition is required to avoid the error Cannot redeclare get_embed_html() (previously declared in
 if (!function_exists('get_embed_html')) {
@@ -582,11 +583,32 @@ try {
 
 						$domain = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
 
-						$citation = $contributors . " (" . $yearofcreation . ") \"" . $title . ".\" " . $object_id . ". " . $collection . ". " . "Imagining Futures. " . $domain . "/Detail/objects/" . $vn_id . ". Accessed " . date("F j, Y") . ".";
+						$citation = new Cite($contributors, $yearofcreation, $title, $object_id, $collection, $domain);
 
-						echo "<div class='unit'><label>Use and reproduction:</label>Cite as: " . $citation . "</div>";
+						$citations = array(
+							'apa' => $citation->apa(),
+							'mla' => $citation->mla(),
+							'chicago' => $citation->chicago()
+						);
 
 						?>
+
+						<div>
+							<label for="citation-style">Choose citation style:</label>
+							<select id="citation-style" onchange="updateCitation()">
+								<option value="apa">APA</option>
+								<option value="mla">MLA</option>
+								<option value="chicago">Chicago</option>
+							</select>
+							<button onclick="copyCitation()" title="Copy to Clipboard">
+								<i class="far fa-copy"></i>
+							</button>
+						</div>
+
+						<div class='unit'>
+							<label>Use and reproduction:</label>
+							<span id="citation-text"><?= $citation->apa(); ?></span>
+						</div>
 
 						<div id="detailAnnotations"></div>
 
@@ -656,4 +678,24 @@ try {
 				$('#panelContent').slideToggle();
 			});
 		});
+	</script>
+
+	<script>
+
+		var citations = <?= json_encode($citations); ?>;
+
+		function updateCitation() {
+			var style = document.getElementById('citation-style').value;
+			var citationText = citations[style];
+			document.getElementById('citation-text').innerHTML = citationText;
+    	}
+
+		function copyCitation() {
+			var citationText = document.getElementById('citation-text').innerText;
+			navigator.clipboard.writeText(citationText).then(function() {
+				alert('Citation copied to clipboard!');
+			}, function(err) {
+				alert('Failed to copy citation: ', err);
+			});
+		}
 	</script>
