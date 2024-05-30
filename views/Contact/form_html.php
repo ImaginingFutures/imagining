@@ -24,7 +24,7 @@
 <div class="row">
 	<div class="col-sm-12 col-lg-8 col-lg-offset-2">
 	<H1><?php print $vs_page_title; ?></H1>
-	<p>{{{contact_page_intro}}}</p>
+	<p>{{{contactIntro}}}</p>
 	<hr/>
 <?php
 	if(is_array($va_errors["display_errors"]) && sizeof($va_errors["display_errors"])){
