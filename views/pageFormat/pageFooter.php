@@ -42,6 +42,7 @@
 						<dt>About</dt> <!-- You can style this header as needed -->
 						<!-- <dd><a href="#">Team</a></dd> -->
 						<dd><?= caNavLink($this->request, _t("Repository Policies"), "", "", "About", "policies"); ?></dd>
+						<dd><?= caNavLink($this->request, _t("Privacy Policy"), "", "", "About", "privacy"); ?></dd>
 						<dd><?= caNavLink($this->request, _t("Image Credits"), "", "", "About", "credits"); ?></dd>
 						<!-- <dd><a href="#">Overview</a></dd>
 						<dd><a href="#">Labs</a></dd> -->
@@ -125,5 +126,9 @@
 			});
 			/*(function(e,d,b){var a=0;var f=null;var c={x:0,y:0};e("[data-toggle]").closest("li").on("mouseenter",function(g){if(f){f.removeClass("open")}d.clearTimeout(a);f=e(this);a=d.setTimeout(function(){f.addClass("open")},b)}).on("mousemove",function(g){if(Math.abs(c.x-g.ScreenX)>4||Math.abs(c.y-g.ScreenY)>4){c.x=g.ScreenX;c.y=g.ScreenY;return}if(f.hasClass("open")){return}d.clearTimeout(a);a=d.setTimeout(function(){f.addClass("open")},b)}).on("mouseleave",function(g){d.clearTimeout(a);f=e(this);a=d.setTimeout(function(){f.removeClass("open")},b)})})(jQuery,window,200);*/
 		</script>
+
+		<?php
+			print $this->render("Cookies/banner_html.php");	
+		?>
 	</body>
 </html>
