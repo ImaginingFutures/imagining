@@ -94,9 +94,9 @@ if (!function_exists('get_embed_html')) {
 					echo "
 						<div class='panel panel-default'>
 						<div class='panel-heading'>
-							<h3>Media information</h3>
+							<h5>Media information
 							<button id='togglePanel' data-toggle='tooltip' data-placement='top' title='Media info' class='icon-button'>
-							<i id='toggleIcon' class='fas fa-chevron-down'></i>
+							<i id='toggleIcon' class='fas fa-chevron-down'></i></h5>
 						</button>
 							</button>
 						</div>
@@ -135,6 +135,22 @@ if (!function_exists('get_embed_html')) {
 						echo "<div class='repViewerExtCont'>";
 						echo $embed_media;
 						echo "</div>";
+						echo "
+						<div class='panel panel-default no-media-panel'>
+						<div class='panel-heading'>
+							<h5>Media information
+							<button id='togglePanel' data-toggle='tooltip' data-placement='top' title='Media info' class='icon-button'>
+							<i id='toggleIcon' class='fas fa-chevron-down'></i></h5>
+						</button>
+							</button>
+						</div>
+						<div class='panel-body' id='panelContent'>
+						<b>External resource:</b> <a href='$external_media' target='_blank'>$external_media <i class='fas fa-external-link-alt'></i> </a>
+
+						</div>
+						</div>
+							";
+						
 					} else {
 						echo $no_media_placeholder;
 					}

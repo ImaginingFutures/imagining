@@ -155,6 +155,10 @@ a:hover {
 	background: white;
 }
 
+.no-media-panel {
+	margin: 15px 0 0;
+}
+
 
 /* This class is shared with other icon buttons that doesn't require the default button */
 .icon-button {
