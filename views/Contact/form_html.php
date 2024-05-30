@@ -77,21 +77,6 @@
 				</div>
 			</div><!-- end col -->
 		</div><!-- end row -->
-		<div class="row">
-			<div class="col-sm-3 col-md-2">
-				<div class="form-group<?php print (($va_errors["security"]) ? " has-error" : ""); ?>">
-					<label for="security">Security Question</label>
-					<div class='row'>
-						<div class='col-sm-6'>
-							<p class="form-control-static"><?php print $vn_num1; ?> + <?php print $vn_num2; ?> = </p>
-						</div>
-						<div class='col-sm-6'>
-							<input name="security" value="" id="security" type="text" class="form-control input-sm" />
-						</div>
-					</div><!--end row-->	
-				</div><!-- end form-group -->
-			</div><!-- end col -->
-		</div>
 		
 <?php
 	if(!$this->request->isLoggedIn() && defined("__CA_GOOGLE_RECAPTCHA_KEY__") && __CA_GOOGLE_RECAPTCHA_KEY__){
