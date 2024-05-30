@@ -94,17 +94,16 @@ if (!function_exists('get_embed_html')) {
 					echo "
 						<div class='panel panel-default'>
 						<div class='panel-heading'>
-							{{{
-							<ifdef code='ca_objects.idno'><div class='unit'>Object ID: ^ca_objects.idno
-				<button class='btn btn-default btn-xs pull-left button-circled' id='togglePanel' data-toggle='tooltip' data-placement='top' title='Media info'>
-				<i class='fas fa-info-circle'></i>
-							</button></div></ifdef>
-						}}}
+							<h3>Media information</h3>
+							<button id='togglePanel' data-toggle='tooltip' data-placement='top' title='Media info' class='icon-button'>
+							<i id='toggleIcon' class='fas fa-chevron-down'></i>
+						</button>
+							</button>
 						</div>
 						<div class='panel-body' id='panelContent'>
 							<!-- Content to be shown/hidden goes here -->
 							<!-- Content and Scope -->
-							<h3>Media information</h3>
+							
 							{{{
 							<ifdef code='ca_object_representations.media_class'><div class='unit'><unit relativeTo='ca_object_representations.media_class' delimiter='<br/>'><b>Format:</b> ^ca_object_representations.media_class</unit></div></ifdef>
 							}}}
@@ -151,6 +150,7 @@ if (!function_exists('get_embed_html')) {
 
 					<div class='col-sm-6 col-md-6'>
 						{{{
+					<ifdef code="ca_objects.idno"><div class='unit'><label>Resource id:</label> ^ca_objects.idno</div></ifdef>
 					<ifdef code="ca_objects.alternativetitle"><div class="unit">
 					<ifdef code="ca_objects.ai"><button class="btn btn-warning btn-xs pull-left warning-translation-button" id="togglePanel" data-toggle="tooltip" data-placement="top" title="^ca_objects.ai">
                     <i class="fas fa-exclamation-triangle"></i>
@@ -600,7 +600,7 @@ try {
 								<option value="mla">MLA</option>
 								<option value="chicago">Chicago</option>
 							</select>
-							<button onclick="copyCitation()" title="Copy to Clipboard">
+							<button onclick="copyCitation()" title="Copy to Clipboard" class='icon-button'>
 								<i class="far fa-copy"></i>
 							</button>
 						</div>
@@ -658,7 +658,7 @@ try {
 
 
 
-	<script type='text/javascript'>
+	<script type="text/javascript">
 		jQuery(document).ready(function() {
 			$('.trimText').readmore({
 				speed: 75,
@@ -673,12 +673,20 @@ try {
 			// Hide the panel content initially
 			$('#panelContent').hide();
 
-			// Toggle panel content when the button is clicked
+			// Toggle panel content and icon when the button is clicked
 			$('#togglePanel').click(function() {
-				$('#panelContent').slideToggle();
+				$('#panelContent').slideToggle(function() {
+					var icon = $('#toggleIcon');
+					if ($('#panelContent').is(':visible')) {
+						icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+					} else {
+						icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+					}
+				});
 			});
 		});
 	</script>
+
 
 	<script>
 

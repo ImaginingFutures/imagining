@@ -144,6 +144,35 @@ a:hover {
 		color: white;
 	}
 
+
+/* Panel for image metadata  */
+
+.panel-default {
+	border-color: black;
+}
+
+.panel-default .panel-heading {
+	background: white;
+}
+
+
+/* This class is shared with other icon buttons that doesn't require the default button */
+.icon-button {
+	background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+	padding: 0 5px 0;
+}
+
+.icon-button i {
+    font-size: inherit;
+    color: inherit;
+	transition: transform 0.5s ease;
+}
+
+/* Resources metadata */
+
 .projects-description {
 	line-height: normal;
 }
