@@ -312,6 +312,23 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 			} 
 		?>
 
+		<div class="row">
+		<?php
+
+					if ($vb_show_hierarchy_viewer) {
+					?>
+						<div id="collectionHierarchy"><?php print caBusyIndicatorIcon($this->request) . ' ' . addslashes(_t('Loading...')); ?></div>
+						<script>
+							$(document).ready(function() {
+								$('#collectionHierarchy').load("<?php print caNavUrl($this->request, '', 'Collections', 'collectionHierarchy', array('collection_id' => $t_item->get('collection_id'))); ?>");
+							})
+						</script>
+					<?php
+					}
+					?>
+
+		</div>
+
 <div class="row">
 
 {{{<ifcount code="ca_objects" min="1">
@@ -392,7 +409,24 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 			<div class="row">
 				<div class='col-sm-12'>
 
-					<?php
+				<?php
+					if ($vb_show_objects_link || $vb_show_collections_link) {
+						?>
+							<div class='collectionBrowseItems'>
+
+								<?php
+								if ($vb_show_objects_link) {
+									print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Look inside the Collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+								}
+								if ($vb_show_collections_link) {
+									print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-eye' aria-label='Search'></i> Look in all collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+								}
+								?>
+
+							</div>
+						<?php
+						}
+
 					if ($object_id_array and count($object_id_array) > 0) {
 						# search for case studies or words into actions objects types.
 
@@ -438,35 +472,6 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						}
 					}
 
-					?>
-					<?php
-					if ($vb_show_objects_link || $vb_show_collections_link) {
-					?>
-						<div class='collectionBrowseItems'>
-
-							<?php
-							if ($vb_show_objects_link) {
-								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Look inside the Collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-							}
-							if ($vb_show_collections_link) {
-								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-eye' aria-label='Search'></i> Look in all collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-							}
-							?>
-
-						</div>
-					<?php
-					}
-
-					if ($vb_show_hierarchy_viewer) {
-					?>
-						<div id="collectionHierarchy"><?php print caBusyIndicatorIcon($this->request) . ' ' . addslashes(_t('Loading...')); ?></div>
-						<script>
-							$(document).ready(function() {
-								$('#collectionHierarchy').load("<?php print caNavUrl($this->request, '', 'Collections', 'collectionHierarchy', array('collection_id' => $t_item->get('collection_id'))); ?>");
-							})
-						</script>
-					<?php
-					}
 					?>
 
 
