@@ -408,47 +408,34 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		<div class="col-sm-4 col-md-3 col-lg-3">
 			<div class="row">
 				<div class='col-sm-12'>
+					<div class="row">
+					<?php if ($vb_show_objects_link || $vb_show_collections_link) : ?>
+						<div class='collectionBrowseItems'>
+							<?php if ($vb_show_objects_link) : ?>
+								<?php print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Look inside the Collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id"))); ?>
+							<?php endif; ?>
+							<?php if ($vb_show_collections_link) : ?>
+								<?php print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-eye' aria-label='Search'></i> Look in all collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id"))); ?>
+							<?php endif; ?>
+						</div>
+					<?php endif; ?>
+					</div>
 
-				<?php
-					if ($vb_show_objects_link || $vb_show_collections_link) {
-						?>
-							<div class='collectionBrowseItems'>
-
-								<?php
-								if ($vb_show_objects_link) {
-									print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Look inside the Collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-								}
-								if ($vb_show_collections_link) {
-									print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-eye' aria-label='Search'></i> Look in all collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-								}
-								?>
-
-							</div>
+					<div class="row">
+					<?php if ($object_id_array && count($object_id_array) > 0) : ?>
 						<?php
-						}
-
-					if ($object_id_array and count($object_id_array) > 0) {
-						# search for case studies or words into actions objects types.
-
 						$case_study_id = $o_db->query("SELECT item_id, name_singular FROM ca_list_item_labels WHERE name_singular = 'Case Study' OR name_singular = 'Words into Action'");
-
-						# get the label_id for cases or words
 						$works_ids = [];
 						while ($case_study_id->nextRow()) {
 							$works_ids[] = [$case_study_id->get("name_singular") => $case_study_id->get("item_id")];
 						}
-
-						# construct the panel (bootstrap 3)
-
 						if ($works_ids) {
 							$works_for_search = [];
-
 							foreach ($works_ids as $work) {
 								foreach ($work as $item_id) {
 									$works_for_search[] = $item_id;
 								}
 							}
-
 							$works_cases = $o_db->query("SELECT object_id FROM ca_objects WHERE object_id IN (?) AND type_id IN (?)", array($object_id_array, $works_for_search));
 							while ($works_cases->nextRow()) {
 								$works_objects = $s_object->search("ca_objects.object_id:" . $works_cases->get('ca_objects.object_id'));
@@ -461,70 +448,50 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 											}
 										}
 									}
-									print "<div class='panel panel-primary'>";
-									print "<div class='panel-heading'>";
-									print "<h3 class='panel-title'>" . $label . "</h3></div>";
-									print "<div class='panel-body'>";
-									print caDetailLink($this->request, $works_objects->get("ca_objects.preferred_labels") . " <i class='fas fa-file-pdf'></i>", "", "ca_objects", $works_objects->get("ca_objects.object_id"));
-									print("</div></div>");
+									echo "<div class='panel panel-primary'>";
+									echo "<div class='panel-heading'><h3 class='panel-title'>" . $label . "</h3></div>";
+									echo "<div class='panel-body'>";
+									echo caDetailLink($this->request, $works_objects->get("ca_objects.preferred_labels") . " <i class='fas fa-file-pdf'></i>", "", "ca_objects", $works_objects->get("ca_objects.object_id"));
+									echo "</div></div>";
 								}
 							}
 						}
-					}
-
-					?>
-
+						?>
+					<?php endif; ?>
 
 					<div class='counter'>
+						<?php if (!$category_counts) : ?>
+							<div class='mimetypeCat'><i class='fas fa-plus-circle'></i><div class='value'>0</div><div class='mimeLabel'>No items yet</div></div>
+						<?php endif; ?>
 						<?php
-						if (!$category_counts) {
-							echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-plus-circle'></i><div class='value'>0</div><div class='mimeLabel'>No items yet</div></div>";
-						}
 						$colors = ['first', 'second', 'third', 'fourth'];
-
 						$counter = 0;
 						foreach ($category_counts as $category => $count) {
 							$catData = $mimetypes[$category];
 							$colorClass = 'value ' . $colors[$counter % count($colors)];
-							if ($count > 1) {
-								$cat_label = $catData['label'] . 's';
-							} else {
-								$cat_label = $catData['label'];
-							}
+							$cat_label = ($count > 1) ? $catData['label'] . 's' : $catData['label'];
 							echo "<div class='mimetypeCat'><i class='fas fa-" . strtolower($category) . "'></i><div class='$colorClass' akhi='$count'>0</div><div class='mimeLabel'>" . strtoupper($cat_label) . "</div></div>";
-
-							if ($counter == 4) {
-								$counter = 0;
-							} else {
-								$counter++;
-							}
+							$counter = ($counter == 4) ? 0 : $counter + 1;
 						}
 						?>
 					</div>
-					
+					</div>
+
 					<div class='col-sm-8 col-md-8 col-lg-8'>
-					{{{<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label> This project </ifcount>}}}
-					{{{<ifcount code="ca_collections.related" min="2"><label>Related collections</label> This project </ifcount>}}}
-					{{{<unit relativeTo="ca_collections_x_collections" delimiter="<br/>">^relationship_typename <l>^ca_collections.related.preferred_labels.name</l></unit>}}}
-
-
-					{{{<ifcount code="ca_occurrences" min="1" max="1"><label>Related occurrence</label></ifcount>}}}
-					{{{<ifcount code="ca_occurrences" min="2"><label>Related occurrences</label></ifcount>}}}
-					{{{<unit relativeTo="ca_occurrences" delimiter="<br/>"><l>^ca_occurrences.preferred_labels.name</l> ^relationship_typename</unit>}}}
-
-					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
-					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
-					{{{<unit relativeTo="ca_places" delimiter="<br/>">This project ^relationship_typename <l>^ca_places.preferred_labels</l></unit>}}}
-				</div><!-- end col -->
-
+						{{{<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label> This project </ifcount>}}}
+						{{{<ifcount code="ca_collections.related" min="2"><label>Related collections</label> This project </ifcount>}}}
+						{{{<unit relativeTo="ca_collections_x_collections" delimiter="<br/>">^relationship_typename <l>^ca_collections.related.preferred_labels.name</l></unit>}}}
+						{{{<ifcount code="ca_occurrences" min="1" max="1"><label>Related occurrence</label></ifcount>}}}
+						{{{<ifcount code="ca_occurrences" min="2"><label>Related occurrences</label></ifcount>}}}
+						{{{<unit relativeTo="ca_occurrences" delimiter="<br/>"><l>^ca_occurrences.preferred_labels.name</l> ^relationship_typename</unit>}}}
+						{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
+						{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
+						{{{<unit relativeTo="ca_places" delimiter="<br/>">This project ^relationship_typename <l>^ca_places.preferred_labels</l></unit>}}}
+					</div><!-- end col -->
 				</div><!-- end col -->
 			</div><!-- end row -->
-			</div>
-		
-		
-			
-
 		</div><!-- end col -->
+
 
 	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
 		<div class="detailNavBgRight">
