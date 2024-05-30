@@ -37,37 +37,8 @@ $va_access_values = caGetUserAccessValues($this->request);
 
 require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.php");
 require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/cite.php");
+require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resources.php");
 
-# This condition is required to avoid the error Cannot redeclare get_embed_html() (previously declared in
-if (!function_exists('get_embed_html')) {
-	function get_embed_html($url)
-	{
-		// Check if the URL is for Sketchfab
-		if (preg_match('/https:\/\/sketchfab\.com\/3d-models\/.*-([a-f0-9]{32})/', $url)) {
-			$oembed_url = 'https://sketchfab.com/oembed?url=' . urlencode($url);
-			$response = @file_get_contents($oembed_url);
-			if ($response !== FALSE) {
-				$embed_data = json_decode($response, true);
-				if (json_last_error() === JSON_ERROR_NONE && isset($embed_data['html'])) {
-					return $embed_data['html'];
-				} else {
-					return 'Error parsing Sketchfab embed data: ' . json_last_error_msg();
-				}
-			} else {
-				return 'Error fetching Sketchfab embed data';
-			}
-		}
-
-		// Check if the URL is for YouTube
-		if (preg_match('/https:\/\/(www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/', $url, $matches) || preg_match('/https:\/\/youtu\.be\/([a-zA-Z0-9_-]+)/', $url, $matches)) {
-			$video_id = end($matches);
-			return '<iframe width="560" height="315" src="https://www.youtube.com/embed/' . $video_id . '" frameborder="0" allowfullscreen></iframe>';
-		}
-
-		# If not Sketchfab or Youtube, returns False
-		return False;
-	}
-}
 ?>
 
 <div class="row">
@@ -150,14 +121,11 @@ if (!function_exists('get_embed_html')) {
 						</div>
 						</div>
 							";
-						
 					} else {
 						echo $no_media_placeholder;
 					}
 				}
 				?>
-
-
 
 				<!-- identifiers -->
 				<HR>
@@ -203,23 +171,23 @@ if (!function_exists('get_embed_html')) {
                     <i class="fas fa-exclamation-triangle"></i>
 					</button></ifdef>
 					<label>Translated description:</label>^ca_objects.descriptionalt					
-				</div><HR></ifdef>}}}
+					</div><HR></ifdef>}}}
 
 						{{{<ifcount code="ca_objects.langmaterial.lang" min="1"><div class="unit"><label>Language:</label><unit relativeTo="ca_objects.langmaterial" delimiter="<br/>">^ca_objects.langmaterial.langlabel: ^ca_objects.langmaterial.lang</unit></div></ifcount>}}}
 
 						{{{
-<ifcount code="ca_list_items" restrictToRelationshipTypes="resource_type" min="1">    
-     <label>Resource Type:</label>
-        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="resource_type" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
-</ifcount>
-}}}
+					<ifcount code="ca_list_items" restrictToRelationshipTypes="resource_type" min="1">    
+						<label>Resource Type:</label>
+							<unit relativeTo="ca_list_items" restrictToRelationshipTypes="resource_type" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+					</ifcount>
+					}}}
 
-						{{{
-<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
-     <label>Keywords:</label>
-        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="keyword" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
-</ifcount>
-}}}
+											{{{
+					<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
+						<label>Keywords:</label>
+							<unit relativeTo="ca_list_items" restrictToRelationshipTypes="keyword" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+					</ifcount>
+					}}}
 
 						{{{
 					<ifdef code="ca_objects.notes"><div class="unit"><label>Notes:</label>^ca_objects.notes</div></ifdef>
@@ -705,14 +673,13 @@ try {
 
 
 	<script>
-
 		var citations = <?= json_encode($citations); ?>;
 
 		function updateCitation() {
 			var style = document.getElementById('citation-style').value;
 			var citationText = citations[style];
 			document.getElementById('citation-text').innerHTML = citationText;
-    	}
+		}
 
 		function copyCitation() {
 			var citationText = document.getElementById('citation-text').innerText;
