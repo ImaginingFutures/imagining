@@ -173,7 +173,8 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resourc
 					<label>Translated description:</label>^ca_objects.descriptionalt					
 					</div><HR></ifdef>}}}
 
-						{{{<ifcount code="ca_objects.langmaterial.lang" min="1"><div class="unit"><label>Language:</label><unit relativeTo="ca_objects.langmaterial" delimiter="<br/>">^ca_objects.langmaterial.langlabel: ^ca_objects.langmaterial.lang</unit></div></ifcount>}}}
+						{{{<ifcount code="ca_objects.primarylang" min="1"><div class="unit"><label>Primary Language:</label><unit relativeTo="ca_objects.primarylang" delimiter="<br/>">^ca_objects.primarylang</unit></div></ifcount>}}}
+						{{{<ifcount code="ca_objects.otherlang" min="1"><div class="unit"><label>Other Language:</label><unit relativeTo="ca_objects.otherlang" delimiter="<br/>">^ca_objects.otherlang</unit></div></ifcount>}}}
 
 						{{{
 					<ifcount code="ca_list_items" restrictToRelationshipTypes="resource_type" min="1">    
@@ -288,8 +289,9 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resourc
 
 					<div class='col-sm-5 col-md-4 col-lg-4'>
 						<!-- Dates -->
-
-						{{{<ifcount code="ca_objects.dates.dates_value" min="1"><div class="unit"><label>Dates:</label><unit relativeTo="ca_objects.dates" delimiter="<br/>">^ca_objects.dates.dates_type: ^ca_objects.dates.dates_value</unit></div></ifcount>}}}
+						{{{<ifcount code="ca_objects.date_create" min="1"><div class="unit"><label>Creation Date:</label><unit relativeTo="ca_objects.date_create" delimiter="<br/>">^ca_objects.date_create</unit></div></ifcount>}}}
+						{{{<ifcount code="ca_objects.date_digit" min="1"><div class="unit"><label>Digitization Date:</label><unit relativeTo="ca_objects.date_digit" delimiter="<br/>">^ca_objects.date_digit</unit></div></ifcount>}}}
+						{{{<ifcount code="ca_objects.date_publish" min="1"><div class="unit"><label>Publication Date:</label><unit relativeTo="ca_objects.date_publish" delimiter="<br/>">^ca_objects.date_publish</unit></div></ifcount>}}}
 
 						<!-- end of Dates labels -->
 

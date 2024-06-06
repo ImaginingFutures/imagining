@@ -81,8 +81,20 @@
 					print '</div><!-- end detailTools -->';
 				}				
 ?>
+				{{{
+					<ifcount code="ca_list_items" restrictToRelationshipTypes="role" min="1">    
+						<label>Role:</label>
+							<unit relativeTo="ca_list_items" restrictToRelationshipTypes="role" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+					</ifcount>
+					<ifdef code="ca_entities.affiliation"><label>Organisation:</label> ^ca_entities.affiliation</ifdef>
+				
 					
+					<ifdef code="ca_entities.ifwebpage"><label>IF Page:</label><a href="^ca_entities.ifwebpage" target="_blank">^ca_entities.ifwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
+				}}}
+
 				</div><!-- end col -->
+
+				
 				<div class='col-sm-6 col-md-6 col-lg-6'>
 					{{{<ifdef code="ca_entities.description"><div class='unit'><label>Biography</label>^ca_entities.description</div></ifdef>}}}
 					
@@ -102,6 +114,9 @@
 					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
 					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
 					{{{<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels.name</l> (^relationship_typename)</unit>}}}				
+				
+				
+
 				</div><!-- end col -->
 			</div><!-- end row -->
 			
