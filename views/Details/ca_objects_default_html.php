@@ -196,12 +196,6 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resourc
 
 						<!-- end of Content and Scope labels -->
 
-
-
-
-
-
-
 						<!-- Custom labels -->
 
 						{{{<ifdef code="ca_objects.timeperiod">
@@ -533,33 +527,14 @@ try {
 						$contributors = '';
 
 						// Check if there are creators in the array
-						if (isset($va_entities_by_type['had as creator'])) {
-							$creators = array_unique($va_entities_by_type['had as creator']);
+						if (isset($va_entities_by_type['creator'])) {
+							$creators = array_unique($va_entities_by_type['creator']);
 							$contributors = implode(', ', $creators);
+						} else if (isset($va_entities_by_type['contributor'])) {
+							$authors = array_unique($va_entities_by_type['contributor']);
+							$contributors = implode(', ', $authors);
 						} else {
-							// If no creators, check for contributors and other entity types
-							$contributorString = '';
-
-							// Check if there are contributors in the array
-							if (isset($va_entities_by_type['had as contributor'])) {
-								$contributorString .= implode(', ', $va_entities_by_type['had as contributor']);
-							}
-
-							// Iterate through other entity types and add them to the contributorString
-							foreach ($va_entities_by_type as $type => $entities) {
-								if ($type !== 'had as contributor') {
-									if (!empty($contributorString)) {
-										$contributorString .= ', ';
-									}
-									$contributorString .= implode(', ', $entities);
-								}
-							}
-
-							if (!empty($contributorString)) {
-								$contributors = $contributorString;
-							} else {
-								$contributors = 'Unknown';
-							}
+							$contributors = "";
 						}
 
 						$yearofcreation = date("Y", $date_created);

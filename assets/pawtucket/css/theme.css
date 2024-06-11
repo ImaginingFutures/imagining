@@ -2127,27 +2127,27 @@ body.frontContainer #footer {
     justify-content: center;
     align-items: center;
     position: relative;
-    font-size: 24px; /* Adjusted for better fit */
+    font-size: 24px; 
     color: rgba(23, 31, 92, 0.1);
-    padding: 20px 40px 20px; /* Adjusted padding for better centering */
+    padding: 20px 40px 20px; 
 }
 
 .mimetypeCat i {
-    font-size: 100px; /* Ensure the icon is large */
+    font-size: 100px; 
     position: absolute;
-    top: 10px; /* Adjusted to ensure proper placement */
+    top: 10px; 
     left: 50%;
     transform: translateX(-50%);
-    z-index: 0; /* Ensure it is behind the number */
+    z-index: 0; 
 }
 
 .value {
     font-family: "Source Sans 3", Verdana, sans-serif;
-    font-size: 100px; /* Large font size for the number */
+    font-size: 100px; 
     font-weight: bold;
     color: #1c1b1a;
     position: relative;
-    z-index: 1; /* Ensure it is in front of the icon */
+    z-index: 1; 
     text-align: center;
     margin: 0;
 }

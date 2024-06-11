@@ -53,10 +53,6 @@ $vb_show_objects_link = false;
 if ($o_browse->numResults() && !$t_item->get("ca_collections.children.collection_id", array("checkAccess" => $va_access_values))) {
 	$vb_show_objects_link = true;
 }
-$vb_show_collections_link = false;
-if ($t_item->get("ca_collections.children.collection_id", array("checkAccess" => $va_access_values))) {
-	$vb_show_collections_link = true;
-}
 
 $qr_res = $o_browse->getResults(); // retrieve all objects
 
@@ -409,14 +405,11 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 			<div class="row">
 				<div class='col-sm-12'>
 					<div class="row">
-					<?php if ($vb_show_objects_link || $vb_show_collections_link) : ?>
+					<?php if ($vb_show_objects_link) : ?>
 						<div class='collectionBrowseItems'>
-							<?php if ($vb_show_objects_link) : ?>
+							
 								<?php print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Look inside the Collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id"))); ?>
-							<?php endif; ?>
-							<?php if ($vb_show_collections_link) : ?>
-								<?php print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-eye' aria-label='Search'></i> Look in all collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id"))); ?>
-							<?php endif; ?>
+							
 						</div>
 					<?php endif; ?>
 					</div>
