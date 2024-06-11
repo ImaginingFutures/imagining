@@ -98,9 +98,20 @@
 				<div class='col-sm-6 col-md-6 col-lg-6'>
 					{{{<ifdef code="ca_entities.description"><div class='unit'><label>Biography</label>^ca_entities.description</div></ifdef>}}}
 					
-					{{{<ifcount code="ca_collections" min="1" max="1"><label>Related collection</label></ifcount>}}}
-					{{{<ifcount code="ca_collections" min="2"><label>Related collections</label></ifcount>}}}
-					{{{<unit relativeTo="ca_collections" delimiter="<br/>"><l>^ca_collections.preferred_labels.name</l> (^relationship_typename)</unit>}}}
+					{{{
+					<ifcount code="ca_collections" restrictToTypes="project" min="1">    
+						<label>Related Projects:</label>
+							<unit relativeTo="ca_collections" restrictToTypes="project" delimiter="</br>">   <l>^ca_collections.preferred_labels.name</l></unit><HR>
+					</ifcount>
+					}}}
+
+					{{{
+					<ifcount code="ca_collections" restrictToTypes="labs" min="1">    
+						<label>Related Lab:</label>
+							<unit relativeTo="ca_collections" restrictToTypes="labs" delimiter="</br>">   <l>^ca_collections.preferred_labels.name</l></unit><HR>
+					</ifcount>
+					}}}
+
 
 					
 					{{{<ifcount code="ca_entities.related" min="1" max="1"><label>Related person</label></ifcount>}}}
