@@ -176,7 +176,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						<ifdef code="ca_collections.objectivesmethods"><label>Objectives and Methods</label>^ca_collections.objectivesmethods<br/></ifdef>
 						<ifdef code="ca_collections.workshopsevents"><label>Workshops and Events</label>^ca_collections.workshopsevents<br/></ifdef>
 						<ifdef code="ca_collections.activities"><label>Activities</label>^ca_collections.activities<br/></ifdef>
-						<ifdef code="ca_collections.descriptionalt"><label>Project Description Alternative</label>^ca_collections.descriptionalt<br/></ifdef>
+						<ifdef code="ca_collections.descriptionalt"><label>Other Related Information</label>^ca_collections.descriptionalt<br/></ifdef>
 
 						<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
 						<label>Keywords:</label>
