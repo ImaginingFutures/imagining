@@ -184,6 +184,14 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						</ifcount>
 						<ifdef code="ca_collections.ifwebpage"><label>Project IF Page:</label><a href="^ca_collections.ifwebpage" target="_blank">^ca_collections.ifwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
 						<ifdef code="ca_collections.exwebpage"><label>Project Website:</label><a href="^ca_collections.exwebpage" target="_blank">^ca_collections.exwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
+						<ifdef code="ca_collections.handle"><label>Handle:</label><a href="^ca_collections.handle" target="_blank">^ca_collections.handle</a></ifdef>
+						<ifdef code="ca_collections.publication"><label>Publication:</label>^ca_collections.publication.pub_title<br/>
+						^ca_collections.publication.vol_type<br/>
+						^ca_collections.publication.pub_url<br/>
+					</ifdef>
+
+					
+					
 					}}}
 
 					

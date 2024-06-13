@@ -194,6 +194,10 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resourc
 					<ifdef code="ca_objects.notes"><div class="unit"><label>Notes:</label>^ca_objects.notes</div></ifdef>
 					}}}
 
+					{{{
+					<ifdef code="ca_objects.handle"><div class="unit"><label>Handle:</label>^ca_objects.handle</div></ifdef>
+					}}}
+					
 						<!-- end of Content and Scope labels -->
 
 						<!-- Custom labels -->
