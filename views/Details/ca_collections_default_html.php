@@ -176,7 +176,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						<ifdef code="ca_collections.objectivesmethods"><label>Objectives and Methods</label>^ca_collections.objectivesmethods<br/></ifdef>
 						<ifdef code="ca_collections.workshopsevents"><label>Workshops and Events</label>^ca_collections.workshopsevents<br/></ifdef>
 						<ifdef code="ca_collections.activities"><label>Activities</label>^ca_collections.activities<br/></ifdef>
-						<ifdef code="ca_collections.descriptionalt"><label>Project Description Alternative</label>^ca_collections.descriptionalt<br/></ifdef>
+						<ifdef code="ca_collections.descriptionalt"><label>Other Related Information</label>^ca_collections.descriptionalt<br/></ifdef>
 
 						<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
 						<label>Keywords:</label>
@@ -184,6 +184,14 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						</ifcount>
 						<ifdef code="ca_collections.ifwebpage"><label>Project IF Page:</label><a href="^ca_collections.ifwebpage" target="_blank">^ca_collections.ifwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
 						<ifdef code="ca_collections.exwebpage"><label>Project Website:</label><a href="^ca_collections.exwebpage" target="_blank">^ca_collections.exwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
+						<ifdef code="ca_collections.handle"><label>Handle:</label><a href="^ca_collections.handle" target="_blank">^ca_collections.handle</a></ifdef>
+						<ifdef code="ca_collections.publication"><label>Publication:</label>^ca_collections.publication.pub_title<br/>
+						^ca_collections.publication.vol_type<br/>
+						^ca_collections.publication.pub_url<br/>
+					</ifdef>
+
+					
+					
 					}}}
 
 					
