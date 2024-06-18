@@ -2268,3 +2268,72 @@ body.frontContainer #footer {
 .policies-text {
 	line-height: normal;
 }
+
+
+.collected-container {
+    width: 90%;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding-bottom: 100px;
+}
+
+.volumes-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.collected-thumbnail {
+    position: relative; /* Needed for absolute positioning of text */
+    height: auto;
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: white; /* Adjust text color for readability */
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay for text readability */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-text h2 {
+	color: white;
+    text-align: center;
+    font-weight: 600;
+    font-size: xx-large;
+}
+
+.collected-card {
+    margin-top: 20px;
+    padding: 0; /* No padding around the image */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.075);
+    overflow: hidden; /* Keeps everything within the rounded borders */
+}
+
+@media (max-width: 768px) {
+    .collected-card {
+        margin-top: 10px;
+        padding: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .collected-card {
+        flex: 0 0 100%;
+        margin-top: 20px;
+    }
+}
