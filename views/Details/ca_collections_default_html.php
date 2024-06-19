@@ -105,7 +105,8 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					</ifdef>
 				}}}
 
-		
+		<div class="collection-container">
+
 		<div class="col-sm-8 col-md-8 col-lg-8">
 
 		<div class="row">
@@ -168,6 +169,18 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						<unit relativeTo="ca_list_items" restrictToRelationshipTypes="prjregion" delimiter="</br>">   
 						<l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
 						</ifcount>
+
+
+						
+						<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label></ifcount>
+						<ifcount code="ca_collections.related" min="2"><label>Related collections</label> This project </ifcount>
+						<unit relativeTo="ca_collections_x_collections" delimiter="<br/>"><l>^ca_collections.related.preferred_labels.name</l></unit>
+						
+						<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>
+						<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>
+						<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels</l></unit>
+						<hr>
+
 						<ifdef code="ca_collections.description">
 							<label>Description</label>
 							^ca_collections.description<br />
@@ -184,7 +197,6 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						</ifcount>
 						<ifdef code="ca_collections.ifwebpage"><label>Project IF Page:</label><a href="^ca_collections.ifwebpage" target="_blank">^ca_collections.ifwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
 						<ifdef code="ca_collections.exwebpage"><label>Project Website:</label><a href="^ca_collections.exwebpage" target="_blank">^ca_collections.exwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
-						<ifdef code="ca_collections.handle"><label>Handle:</label><a href="^ca_collections.handle" target="_blank">^ca_collections.handle</a></ifdef>
 						<ifdef code="ca_collections.publication"><label>Publication:</label>^ca_collections.publication.pub_title<br/>
 						^ca_collections.publication.vol_type<br/>
 						^ca_collections.publication.pub_url<br/>
@@ -413,10 +425,13 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 			<div class="row">
 				<div class='col-sm-12'>
 					<div class="row">
+
+					{{{ <ifdef code="ca_collections.handle"><label>URI:</label><a href="^ca_collections.handle" target="_blank">^ca_collections.handle</a></ifdef> }}}
+
 					<?php if ($vb_show_objects_link) : ?>
 						<div class='collectionBrowseItems'>
 							
-								<?php print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Look inside the Collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id"))); ?>
+								<?php print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Browse Project Resources</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id"))); ?>
 							
 						</div>
 					<?php endif; ?>
@@ -478,20 +493,10 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					</div>
 					</div>
 
-					<div class='col-sm-8 col-md-8 col-lg-8'>
-						{{{<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label> This project </ifcount>}}}
-						{{{<ifcount code="ca_collections.related" min="2"><label>Related collections</label> This project </ifcount>}}}
-						{{{<unit relativeTo="ca_collections_x_collections" delimiter="<br/>">^relationship_typename <l>^ca_collections.related.preferred_labels.name</l></unit>}}}
-						{{{<ifcount code="ca_occurrences" min="1" max="1"><label>Related occurrence</label></ifcount>}}}
-						{{{<ifcount code="ca_occurrences" min="2"><label>Related occurrences</label></ifcount>}}}
-						{{{<unit relativeTo="ca_occurrences" delimiter="<br/>"><l>^ca_occurrences.preferred_labels.name</l> ^relationship_typename</unit>}}}
-						{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
-						{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
-						{{{<unit relativeTo="ca_places" delimiter="<br/>">This project ^relationship_typename <l>^ca_places.preferred_labels</l></unit>}}}
-					</div><!-- end col -->
 				</div><!-- end col -->
 			</div><!-- end row -->
 		</div><!-- end col -->
+		</div><!-- -->
 
 
 	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>

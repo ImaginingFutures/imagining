@@ -640,8 +640,6 @@ try {
 		});
 
 		$(document).ready(function() {
-			// Initialize Bootstrap Tooltip
-			$('[data-toggle="tooltip"]').tooltip();
 
 			// Hide the panel content initially
 			$('#panelContent').hide();
