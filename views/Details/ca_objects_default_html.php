@@ -83,6 +83,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resourc
 							}}}";
 
 					$media_format = $t_object->get('ca_object_representations.media_format');
+					
 					if ($media_format != 'PDF') {
 						echo '{{{<ifcode code=\'ca_object_representations.media_dimensions\'><div class=\'unit\'><unit relativeTo=\'ca_object_representations.media_dimensions\' delimiter=\'<br/>\'><b>Media dimensions:</b> ^ca_object_representations.media_dimensions</unit></div></ifcode>}}}';
 					} elseif ($media_format == 'PDF') {
@@ -143,7 +144,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resourc
 					</div><HR></ifdef>
 					}}}
 
-						{{{<unit relativeTo="ca_collections" delimiter="<br/>"><label>Member of:</label><l>^ca_collections.preferred_labels.name</l></unit><ifcount min="1" code="ca_collections"><HR></ifcount>}}}
+						{{{<unit relativeTo="ca_collections" delimiter="<br/>"><label>Project:</label><l>^ca_collections.preferred_labels.name</l></unit><ifcount min="1" code="ca_collections"><HR></ifcount>}}}
 						{{{
 					<ifcount code="ca_objects.exlink.exlink_name" min="1"><div class="unit">
 						<label>External Link:</label>
@@ -192,10 +193,6 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resourc
 
 						{{{
 					<ifdef code="ca_objects.notes"><div class="unit"><label>Notes:</label>^ca_objects.notes</div></ifdef>
-					}}}
-
-					{{{
-					<ifdef code="ca_objects.handle"><div class="unit"><label>Handle:</label>^ca_objects.handle</div></ifdef>
 					}}}
 					
 						<!-- end of Content and Scope labels -->
@@ -286,6 +283,10 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resourc
 
 
 					<div class='col-sm-5 col-md-4 col-lg-4'>
+						<!-- PID -->
+						{{{
+						<ifdef code="ca_objects.handle"><div class="unit"><label>URI:</label><a href ="^ca_objects.handle">^ca_objects.handle</a></div></ifdef>
+						}}}
 						<!-- Dates -->
 						{{{<ifcount code="ca_objects.date_create" min="1"><div class="unit"><label>Creation Date:</label><unit relativeTo="ca_objects.date_create" delimiter="<br/>">^ca_objects.date_create</unit></div></ifcount>}}}
 						{{{<ifcount code="ca_objects.date_digit" min="1"><div class="unit"><label>Digitization Date:</label><unit relativeTo="ca_objects.date_digit" delimiter="<br/>">^ca_objects.date_digit</unit></div></ifcount>}}}
@@ -296,29 +297,29 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resourc
 						<!-- Socio-cultural Context -->
 
 						{{{
-<ifcount code="ca_objects.cultgroup" min="1"><div class="unit">
-	<label>Cultural Group:</label>
-	<unit relativeTo="ca_objects.cultgroup" delimiter="<br/>">
-		^ca_objects.cultgroup
-	</unit>
-</div></ifcount>
-}}}
+						<ifcount code="ca_objects.cultgroup" min="1"><div class="unit">
+							<label>Cultural Group:</label>
+							<unit relativeTo="ca_objects.cultgroup" delimiter="<br/>">
+								^ca_objects.cultgroup
+							</unit>
+						</div></ifcount>
+						}}}
 
-						{{{
-<ifcount code="ca_list_items" restrictToRelationshipTypes="culturalcontext" min="1">    
-<label>Cultural Context:</label>
-<unit relativeTo="ca_list_items" restrictToRelationshipTypes="culturalcontext" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
-</ifcount>
-}}}
+												{{{
+						<ifcount code="ca_list_items" restrictToRelationshipTypes="culturalcontext" min="1">    
+						<label>Cultural Context:</label>
+						<unit relativeTo="ca_list_items" restrictToRelationshipTypes="culturalcontext" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+						</ifcount>
+						}}}
 
-						{{{
-<ifcount code="ca_objects.socialgroup" min="1"><div class="unit">
-	<label>Social Group:</label>
-	<unit relativeTo="ca_objects.socialgroup" delimiter="<br/>">
-		^ca_objects.socialgroup
-	</unit>
-</div></ifcount>
-}}}
+												{{{
+						<ifcount code="ca_objects.socialgroup" min="1"><div class="unit">
+							<label>Social Group:</label>
+							<unit relativeTo="ca_objects.socialgroup" delimiter="<br/>">
+								^ca_objects.socialgroup
+							</unit>
+						</div></ifcount>
+						}}}
 
 
 						<!-- end of Socio-cultural Context -->
@@ -543,7 +544,7 @@ try {
 
 						$yearofcreation = date("Y", $date_created);
 						$title = $t_object->get('ca_objects.preferred_labels.name');
-						$object_id = $t_object->get('ca_objects.idno');
+						$object_idno = $t_object->get('ca_objects.idno');
 						$collection = $t_object->get('ca_collections.preferred_labels.name');
 
 						// retrieve PID from object
@@ -552,10 +553,10 @@ try {
 						// fallback URL if PID is not set.
 						if(empty($pid)) {
 							$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
-							$pid = "{$protocol}://{$_SERVER['HTTP_HOST']}/Detail/objects/{$object_id}";
+							$pid = "{$protocol}://{$_SERVER['HTTP_HOST']}/Detail/objects/{$object_idno}";
 						}
 
-						$citation = new Cite($contributors, $yearofcreation, $title, $object_id, $collection, $pid);
+						$citation = new Cite($contributors, $yearofcreation, $title, $object_idno, $collection, $pid);
 
 						$citations = array(
 							'apa' => $citation->apa(),
