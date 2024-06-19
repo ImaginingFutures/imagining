@@ -17,15 +17,24 @@ class Cite {
     }
 
     public function apa() {
-        return "{$this->authors} ({$this->year}). \"{$this->title}.\" {$this->object_id}. {$this->collection}. Imagining Futures. {$this->domain}/Detail/objects/{$this->object_id}. Accessed " . date("F j, Y") . ".";
+        if(!$this->authors){
+            return "\"{$this->title}.\" ({$this->year}). {$this->object_id}. {$this->collection}. Imagining Futures. {$this->domain}. Accessed " . date("F j, Y") . ".";
+        } 
+        return "{$this->authors} ({$this->year}). \"{$this->title}.\" {$this->object_id}. {$this->collection}. Imagining Futures. {$this->domain}. Accessed " . date("F j, Y") . ".";
     }
 
     public function mla() {
-        return "{$this->authors}. \"{$this->title}.\" {$this->year}, {$this->collection}, {$this->object_id}, Imagining Futures, {$this->domain}/Detail/objects/{$this->object_id}. Accessed " . date("F j, Y") . ".";
+        if(!$this->authors){
+            return "\"{$this->title}.\" {$this->year}, {$this->collection}, {$this->object_id}, Imagining Futures, {$this->domain}. Accessed " . date("F j, Y") . ".";
+        }
+        return "{$this->authors}. \"{$this->title}.\" {$this->year}, {$this->collection}, {$this->object_id}, Imagining Futures, {$this->domain}. Accessed " . date("F j, Y") . ".";
     }
 
     public function chicago() {
-        return "{$this->authors}. \"{$this->title}.\" {$this->object_id}. {$this->collection}. Imagining Futures. {$this->domain}/Detail/objects/{$this->object_id} ({$this->year}).";
+        if(!$this->authors){
+            return "\"{$this->title}.\" {$this->object_id}. {$this->collection}. Imagining Futures. {$this->domain} ({$this->year}).";
+        }
+        return "{$this->authors}. \"{$this->title}.\" {$this->object_id}. {$this->collection}. Imagining Futures. {$this->domain} ({$this->year}).";
     }
 }
 ?>

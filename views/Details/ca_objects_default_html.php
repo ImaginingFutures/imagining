@@ -384,7 +384,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resourc
 						$right_id = $t_object->get("ca_objects.rights");
 
 						if ($right_id) {
-							echo "<label>Rights:</label>";
+							
 							$rights_idno = $t_object->get("ca_objects.rights.idno");
 							$rights_label = $t_object->get("ca_objects.rights.preferred_labels");
 
@@ -546,9 +546,16 @@ try {
 						$object_id = $t_object->get('ca_objects.idno');
 						$collection = $t_object->get('ca_collections.preferred_labels.name');
 
-						$domain = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+						// retrieve PID from object
+						$pid = $t_object->get('ca_objects.handle');
 
-						$citation = new Cite($contributors, $yearofcreation, $title, $object_id, $collection, $domain);
+						// fallback URL if PID is not set.
+						if(empty($pid)) {
+							$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+							$pid = "{$protocol}://{$_SERVER['HTTP_HOST']}/Detail/objects/{$object_id}";
+						}
+
+						$citation = new Cite($contributors, $yearofcreation, $title, $object_id, $collection, $pid);
 
 						$citations = array(
 							'apa' => $citation->apa(),
@@ -561,7 +568,7 @@ try {
 						<div>
 							<label for="citation-style">Choose citation style:</label>
 							<select id="citation-style" onchange="updateCitation()">
-								<option value="apa">APA</option>
+								<option value="apa">APA 7</option>
 								<option value="mla">MLA</option>
 								<option value="chicago">Chicago</option>
 							</select>
