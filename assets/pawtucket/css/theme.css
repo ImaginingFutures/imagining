@@ -1047,6 +1047,10 @@ h3.card-title {
 	font-size: 11px;
 }
 
+.collection-container {
+	padding-top: 20px;
+}
+
 a.readmore-js-toggle,
 .detail a {
 	color: #1c1b1a;

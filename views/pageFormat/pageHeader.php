@@ -70,7 +70,6 @@
 
 
 	<?= AssetLoadManager::getLoadHTML($this->request); ?>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 	
 	<title><?= (MetaTagManager::getWindowTitle()) ? MetaTagManager::getWindowTitle() : $this->request->config->get("app_display_name"); ?></title>
 
