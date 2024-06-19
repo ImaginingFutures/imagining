@@ -1051,7 +1051,6 @@ h3.card-title {
 	padding-top: 20px;
 }
 
-
 .list-collections {
 	border-color: #fff;
 }
@@ -2299,6 +2298,7 @@ body.frontContainer #footer {
     width: 90%;
     margin: auto;
     background: white;
+	margin-bottom: 20px;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

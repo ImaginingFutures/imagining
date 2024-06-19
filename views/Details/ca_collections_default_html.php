@@ -174,12 +174,12 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						
 						<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label></ifcount>
 						<ifcount code="ca_collections.related" min="2"><label>Related collections</label> This project </ifcount>
-						<unit relativeTo="ca_collections_x_collections" delimiter="<br/>"><l>^ca_collections.related.preferred_labels.name</l></unit>
+						<unit relativeTo="ca_collections_x_collections" delimiter="<br/>"><l>^ca_collections.related.preferred_labels.name</l><hr></unit>
 						
 						<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>
 						<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>
-						<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels</l></unit>
-						<hr>
+						<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels</l><hr></unit>
+						
 
 						<ifdef code="ca_collections.description">
 							<label>Description</label>
@@ -197,9 +197,6 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						</ifcount>
 						<ifdef code="ca_collections.ifwebpage"><label>Project IF Page:</label><a href="^ca_collections.ifwebpage" target="_blank">^ca_collections.ifwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
 						<ifdef code="ca_collections.exwebpage"><label>Project Website:</label><a href="^ca_collections.exwebpage" target="_blank">^ca_collections.exwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
-						
-
-					
 					
 					}}}
 
@@ -227,54 +224,6 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					
 
 			</div><!-- end row -->
-
-			<?php if ($vb_show_objects_link || $t_item->get('ca_collections.exresource')): ?>
-				<?php
-				$icon_map = [
-						'Map' => 'fa-map',
-						'Interactive Form' => 'fa-file-alt',
-						'Channel' => 'fa-video',
-						'Exhibition' => 'fa-photo-video',
-					];?>
-
-				<div class="row">
-				<?php 
-				$exresource = $t_item->get('ca_collections.exresource');
-				$resource_types = $t_item->get('ca_collections.exresource.exlist.preferred_labels'); // Assuming this also returns a semicolon-separated string
-				
-				if ($exresource) {
-					$resources = explode(';', $exresource);
-					$types = explode(';', $resource_types);
-				
-					if (count($resources) % 3 == 0) {
-						echo '<div class="row">';
-						echo '<label>External Resources:</label>';
-						for ($i = 0; $i < count($resources); $i += 3) {
-							$name = $resources[$i];
-							$url = $resources[$i + 1];
-							$id = $resources[$i + 2];
-							$type = $types[intval($i / 3)];
-							$icon = $icon_map[$type] ?? 'fa-question'; // Fallback to a generic icon if type is not defined
-							?>
-							<div class="col-sm-4">
-								<div class="card">
-									<div class="card-body">
-										<a href="<?= htmlspecialchars($url); ?>">
-										<i class="fas <?= htmlspecialchars($icon); ?>"></i> <?= htmlspecialchars($name); ?>
-										</a>
-									</div>
-								</div>
-							</div>
-
-							<?php
-						}
-						echo '</div>';
-					} 
-				}
-				?>
-				</div>
-			<?php endif; ?>
-
 
 			<?php
 
@@ -525,6 +474,49 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 							echo "</div>";
 						}
 					?>
+
+					<?php 
+					$exresource = $t_item->get('ca_collections.exresource');
+					$resource_types = $t_item->get('ca_collections.exresource.exlist.preferred_labels'); // Assuming this also returns a semicolon-separated string
+
+					if ($exresource) {
+						$icon_map = [
+							'Map' => 'fa-map',
+							'Interactive Form' => 'fa-file-alt',
+							'Channel' => 'fa-video',
+							'Exhibition' => 'fa-photo-video',
+						];
+
+						$resources = explode(';', $exresource);
+						$types = explode(';', $resource_types);
+						
+						// Check for correct array sizes and ensure they're divisible by 3
+						if (count($resources) % 3 == 0) {
+							echo '<div class="collected-container">';
+							echo '<h3>External Resources</h3>';
+							echo '<hr>';
+							echo '<ul class="list-group list-resources">';
+							
+							for ($i = 0; $i < count($resources); $i += 3) {
+								$name = $resources[$i];
+								$url = $resources[$i + 1];
+								$id = $resources[$i + 2];
+								$type = $types[intval($i / 3)];
+								$icon = $icon_map[$type] ?? 'fa-question'; // Fallback to a generic icon if type is not defined
+								
+								echo '<li class="list-group-item">';
+								echo '<a href="' . htmlspecialchars($url) . '" class="resource-link">';
+								echo '<i class="fas ' . htmlspecialchars($icon) . '"></i> ' . htmlspecialchars($name);
+								echo '</a>';
+								echo '</li>';
+							}
+							
+							echo '</ul>';
+							echo '</div>';
+						} 
+					}
+					?>
+
 
 
 						
