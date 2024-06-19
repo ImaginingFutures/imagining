@@ -1051,6 +1051,27 @@ h3.card-title {
 	padding-top: 20px;
 }
 
+
+.list-collections {
+	border-color: #fff;
+}
+
+.list-group-item {
+	border-color: #fff;
+}
+
+.list-group-item a {
+	font-size: small;
+	display: inline-block;
+}
+
+.list-group-item a:hover {
+	text-decoration: underline;
+}
+
+
+
+
 a.readmore-js-toggle,
 .detail a {
 	color: #1c1b1a;

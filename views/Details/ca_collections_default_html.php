@@ -197,10 +197,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						</ifcount>
 						<ifdef code="ca_collections.ifwebpage"><label>Project IF Page:</label><a href="^ca_collections.ifwebpage" target="_blank">^ca_collections.ifwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
 						<ifdef code="ca_collections.exwebpage"><label>Project Website:</label><a href="^ca_collections.exwebpage" target="_blank">^ca_collections.exwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
-						<ifdef code="ca_collections.publication"><label>Publication:</label>^ca_collections.publication.pub_title<br/>
-						^ca_collections.publication.vol_type<br/>
-						^ca_collections.publication.pub_url<br/>
-					</ifdef>
+						
 
 					
 					
@@ -492,7 +489,45 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						?>
 					</div>
 					</div>
+						
+					<?php 
+						$publicationString = $t_item->get("ca_collections.publication");
 
+						if ($publicationString) {
+							echo "<div class='collected-container'>";
+							echo "<h3>Collected Works</h3>";
+							echo "<hr>";
+							$parts = explode(';', $publicationString);
+							$publications = [];
+							for ($i = 0; $i < count($parts); $i += 3) {
+								$title = $parts[$i];
+								$type = $parts[$i + 1];
+								$url = $parts[$i + 2];
+
+								$publications[$type] = [
+									'title' => $title,
+									'url' => $url
+								];
+							}
+
+							// Sort publications by publication type (key)
+							ksort($publications);
+
+							// Output using Bootstrap's list group for better styling and layout
+							echo '<ul class="list-group list-collections">';
+							foreach ($publications as $type => $data) {
+								echo '<li class="list-group-item">';
+								echo htmlspecialchars($data['title']);
+								echo '<a href="' . htmlspecialchars($data['url']) . '" class="collected-detail"><i class="fas fa-book-open"></i> View Chapter</a>';
+								echo '</li>';
+							}
+							echo '</ul>';
+							echo "</div>";
+						}
+					?>
+
+
+						
 				</div><!-- end col -->
 			</div><!-- end row -->
 		</div><!-- end col -->
