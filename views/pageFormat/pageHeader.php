@@ -70,7 +70,6 @@
 
 
 	<?= AssetLoadManager::getLoadHTML($this->request); ?>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 	
 	<title><?= (MetaTagManager::getWindowTitle()) ? MetaTagManager::getWindowTitle() : $this->request->config->get("app_display_name"); ?></title>
 
@@ -111,6 +110,9 @@
 		print $o_debugbar_renderer->renderHead();
 	}
 ?>
+	<!-- manually download the css for versioning -->
+	<link rel="stylesheet" href="<?php print caGetThemeAssetURL('css/theme.css') ?>?v=20240619" type="text/css" media="all">
+
 </head> 
 
 <body class='<?php print (strtoLower($this->request->getController()) == "front") ? "frontContainer" : ""; ?>'>
@@ -205,9 +207,11 @@
 				<ul class="nav navbar-nav navbar-right menuItems" role="list" aria-label="<?php print _t("Primary Navigation"); ?>">
 				<li <?php print (strToLower($this->request->getController()) == "front") ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Home"), "", "", "", ""); ?></li>
 					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "collections")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Projects"), "", "", "Browse", "collections"); ?></li>
+					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "labs")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Labs"), "", "", "Browse", "labs"); ?></li>
 					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "entities")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Participants"), "", "", "Browse", "participants"); ?></li>				
 					<li <?php print (strToLower($this->request->getController()) == "Browse") && ((strToLower($this->request->getAction()) == "objects")) ? 'class="active"' : ''; ?>><?php print caNavLink($this->request, _t("Resources"), "", "", "Browse", "objects"); ?></li>				
-					
+					<li><?= caNavLink($this->request, _t("Collected Works"), "", "", "CollectedWorks", "Index"); ?></li>
+
 				</ul>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- end container -->

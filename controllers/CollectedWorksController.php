@@ -100,7 +100,7 @@ class CollectedWorksController extends ActionController {
 		$qr_collections = ca_collections::find(array('type_id' => $vn_collection_type_id, 'preferred_labels' => ['is_preferred' => 1]), array('returnAs' => 'searchResult', 'checkAccess' => $this->opa_access_values, 'sort' => $vs_sort));
 		$this->view->setVar("collection_results", $qr_collections);
 		caSetPageCSSClasses(array("collections", "landing"));
-		$this->render("CollectedWorks/index_html.php");
+		$this->render("CollectedWorks/Index.php");
 	}
 		# -------------------------------------------------------
 	/** 

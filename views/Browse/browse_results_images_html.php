@@ -216,7 +216,6 @@
 					$collection_ids = $qr_res->get('ca_collections.collection_id', array('returnAsArray' => true));
 					$collection_labels = $qr_res->get('ca_collections.preferred_labels', array('returnAsArray' => true));
 					$entity_type = $qr_res->getWithTemplate('^ca_entities.type_id');
-#I hate the line above
 					$collection_links = "";
 					
 					foreach ($collection_ids as $index => $id) {

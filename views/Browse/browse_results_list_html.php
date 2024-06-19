@@ -113,7 +113,7 @@
 				
 					#$vs_idno_detail_link 	= caDetailLink($this->request, $qr_res->get("{$vs_table}.idno"), '', $vs_table, $vn_id);
 					if($vs_table == "ca_collections"){
-						if(strToLower($this->request->getAction()) == "archival_collections"){
+						if(strToLower($this->request->getAction()) == "labs"){
 							$vs_label_detail_link 	= caDetailLink($this->request, $qr_res->getWithTemplate('<unit relativeTo="ca_collections.hierarchy" delimiter=" &gt; ">^ca_collections.preferred_labels.name</unit>'), '', $vs_table, $vn_id);
 							$vs_label_detail_link 	.= $qr_res->getWithTemplate('<ifdef code="ca_collections.unitdate.dacs_date_text"><div class="bResultListItemTextDate"><l><ifdef code="ca_collections.unitdate.dacs_date_text"><unit relativeTo="ca_collections.unitdate" delimiter="<br/>"><ifdef code="ca_collections.unitdate.dacs_dates_labels">^ca_collections.unitdate.dacs_dates_labels: </ifdef>^ca_collections.unitdate.dacs_date_text <ifdef code="ca_collections.unitdate.dacs_dates_types">^ca_collections.unitdate.dacs_dates_types</ifdef></unit></l></div></ifdef>');
 					

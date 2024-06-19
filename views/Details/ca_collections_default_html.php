@@ -53,10 +53,6 @@ $vb_show_objects_link = false;
 if ($o_browse->numResults() && !$t_item->get("ca_collections.children.collection_id", array("checkAccess" => $va_access_values))) {
 	$vb_show_objects_link = true;
 }
-$vb_show_collections_link = false;
-if ($t_item->get("ca_collections.children.collection_id", array("checkAccess" => $va_access_values))) {
-	$vb_show_collections_link = true;
-}
 
 $qr_res = $o_browse->getResults(); // retrieve all objects
 
@@ -109,7 +105,8 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					</ifdef>
 				}}}
 
-		
+		<div class="collection-container">
+
 		<div class="col-sm-8 col-md-8 col-lg-8">
 
 		<div class="row">
@@ -172,11 +169,27 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						<unit relativeTo="ca_list_items" restrictToRelationshipTypes="prjregion" delimiter="</br>">   
 						<l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
 						</ifcount>
+
+
+						
+						<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label></ifcount>
+						<ifcount code="ca_collections.related" min="2"><label>Related collections</label> This project </ifcount>
+						<unit relativeTo="ca_collections_x_collections" delimiter="<br/>"><l>^ca_collections.related.preferred_labels.name</l><hr></unit>
+						
+						<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>
+						<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>
+						<unit relativeTo="ca_places" delimiter="<br/>"><l>^ca_places.preferred_labels</l><hr></unit>
+						
+
+						<ifdef code="ca_collections.description">
+							<label>Description</label>
+							^ca_collections.description<br />
+						</ifdef>
 						<ifdef code="ca_collections.synopsis"><label>Synopsis and Position</label>^ca_collections.synopsis<br/></ifdef>
 						<ifdef code="ca_collections.objectivesmethods"><label>Objectives and Methods</label>^ca_collections.objectivesmethods<br/></ifdef>
 						<ifdef code="ca_collections.workshopsevents"><label>Workshops and Events</label>^ca_collections.workshopsevents<br/></ifdef>
 						<ifdef code="ca_collections.activities"><label>Activities</label>^ca_collections.activities<br/></ifdef>
-						<ifdef code="ca_collections.descriptionalt"><label>Project Description Alternative</label>^ca_collections.descriptionalt<br/></ifdef>
+						<ifdef code="ca_collections.descriptionalt"><label>Other Related Information</label>^ca_collections.descriptionalt<br/></ifdef>
 
 						<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
 						<label>Keywords:</label>
@@ -184,6 +197,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						</ifcount>
 						<ifdef code="ca_collections.ifwebpage"><label>Project IF Page:</label><a href="^ca_collections.ifwebpage" target="_blank">^ca_collections.ifwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
 						<ifdef code="ca_collections.exwebpage"><label>Project Website:</label><a href="^ca_collections.exwebpage" target="_blank">^ca_collections.exwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
+					
 					}}}
 
 					
@@ -210,54 +224,6 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					
 
 			</div><!-- end row -->
-
-			<?php if ($vb_show_objects_link || $t_item->get('ca_collections.exresource')): ?>
-				<?php
-				$icon_map = [
-						'Map' => 'fa-map',
-						'Interactive Form' => 'fa-file-alt',
-						'Channel' => 'fa-video',
-						'Exhibition' => 'fa-photo-video',
-					];?>
-
-				<div class="row">
-				<?php 
-				$exresource = $t_item->get('ca_collections.exresource');
-				$resource_types = $t_item->get('ca_collections.exresource.exlist.preferred_labels'); // Assuming this also returns a semicolon-separated string
-				
-				if ($exresource) {
-					$resources = explode(';', $exresource);
-					$types = explode(';', $resource_types);
-				
-					if (count($resources) % 3 == 0) {
-						echo '<div class="row">';
-						echo '<label>External Resources:</label>';
-						for ($i = 0; $i < count($resources); $i += 3) {
-							$name = $resources[$i];
-							$url = $resources[$i + 1];
-							$id = $resources[$i + 2];
-							$type = $types[intval($i / 3)];
-							$icon = $icon_map[$type] ?? 'fa-question'; // Fallback to a generic icon if type is not defined
-							?>
-							<div class="col-sm-4">
-								<div class="card">
-									<div class="card-body">
-										<a href="<?= htmlspecialchars($url); ?>">
-										<i class="fas <?= htmlspecialchars($icon); ?>"></i> <?= htmlspecialchars($name); ?>
-										</a>
-									</div>
-								</div>
-							</div>
-
-							<?php
-						}
-						echo '</div>';
-					} 
-				}
-				?>
-				</div>
-			<?php endif; ?>
-
 
 			<?php
 
@@ -307,6 +273,23 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 				print "</div>";
 			} 
 		?>
+
+		<div class="row">
+		<?php
+
+					if ($vb_show_hierarchy_viewer) {
+					?>
+						<div id="collectionHierarchy"><?php print caBusyIndicatorIcon($this->request) . ' ' . addslashes(_t('Loading...')); ?></div>
+						<script>
+							$(document).ready(function() {
+								$('#collectionHierarchy').load("<?php print caNavUrl($this->request, '', 'Collections', 'collectionHierarchy', array('collection_id' => $t_item->get('collection_id'))); ?>");
+							})
+						</script>
+					<?php
+					}
+					?>
+
+		</div>
 
 <div class="row">
 
@@ -387,30 +370,34 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		<div class="col-sm-4 col-md-3 col-lg-3">
 			<div class="row">
 				<div class='col-sm-12'>
+					<div class="row">
 
-					<?php
-					if ($object_id_array and count($object_id_array) > 0) {
-						# search for case studies or words into actions objects types.
+					{{{ <ifdef code="ca_collections.handle"><label>URI:</label><a href="^ca_collections.handle" target="_blank">^ca_collections.handle</a></ifdef> }}}
 
+					<?php if ($vb_show_objects_link) : ?>
+						<div class='collectionBrowseItems'>
+							
+								<?php print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Browse Project Resources</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id"))); ?>
+							
+						</div>
+					<?php endif; ?>
+					</div>
+
+					<div class="row">
+					<?php if ($object_id_array && count($object_id_array) > 0) : ?>
+						<?php
 						$case_study_id = $o_db->query("SELECT item_id, name_singular FROM ca_list_item_labels WHERE name_singular = 'Case Study' OR name_singular = 'Words into Action'");
-
-						# get the label_id for cases or words
 						$works_ids = [];
 						while ($case_study_id->nextRow()) {
 							$works_ids[] = [$case_study_id->get("name_singular") => $case_study_id->get("item_id")];
 						}
-
-						# construct the panel (bootstrap 3)
-
 						if ($works_ids) {
 							$works_for_search = [];
-
 							foreach ($works_ids as $work) {
 								foreach ($work as $item_id) {
 									$works_for_search[] = $item_id;
 								}
 							}
-
 							$works_cases = $o_db->query("SELECT object_id FROM ca_objects WHERE object_id IN (?) AND type_id IN (?)", array($object_id_array, $works_for_search));
 							while ($works_cases->nextRow()) {
 								$works_objects = $s_object->search("ca_objects.object_id:" . $works_cases->get('ca_objects.object_id'));
@@ -423,99 +410,121 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 											}
 										}
 									}
-									print "<div class='panel panel-primary'>";
-									print "<div class='panel-heading'>";
-									print "<h3 class='panel-title'>" . $label . "</h3></div>";
-									print "<div class='panel-body'>";
-									print caDetailLink($this->request, $works_objects->get("ca_objects.preferred_labels") . " <i class='fas fa-file-pdf'></i>", "", "ca_objects", $works_objects->get("ca_objects.object_id"));
-									print("</div></div>");
+									echo "<div class='panel panel-primary'>";
+									echo "<div class='panel-heading'><h3 class='panel-title'>" . $label . "</h3></div>";
+									echo "<div class='panel-body'>";
+									echo caDetailLink($this->request, $works_objects->get("ca_objects.preferred_labels") . " <i class='fas fa-file-pdf'></i>", "", "ca_objects", $works_objects->get("ca_objects.object_id"));
+									echo "</div></div>";
 								}
 							}
 						}
-					}
-
-					?>
-					<?php
-					if ($vb_show_objects_link || $vb_show_collections_link) {
-					?>
-						<div class='collectionBrowseItems'>
-
-							<?php
-							if ($vb_show_objects_link) {
-								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Look inside the Collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-							}
-							if ($vb_show_collections_link) {
-								print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='fas fa-eye' aria-label='Search'></i> Look in all collection</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
-							}
-							?>
-
-						</div>
-					<?php
-					}
-
-					if ($vb_show_hierarchy_viewer) {
-					?>
-						<div id="collectionHierarchy"><?php print caBusyIndicatorIcon($this->request) . ' ' . addslashes(_t('Loading...')); ?></div>
-						<script>
-							$(document).ready(function() {
-								$('#collectionHierarchy').load("<?php print caNavUrl($this->request, '', 'Collections', 'collectionHierarchy', array('collection_id' => $t_item->get('collection_id'))); ?>");
-							})
-						</script>
-					<?php
-					}
-					?>
-
+						?>
+					<?php endif; ?>
 
 					<div class='counter'>
+						<?php if (!$category_counts) : ?>
+							<div class='mimetypeCat'><i class='fas fa-plus-circle'></i><div class='value'>0</div><div class='mimeLabel'>No items yet</div></div>
+						<?php endif; ?>
 						<?php
-						if (!$category_counts) {
-							echo "<div class='mimetypeCat  col-4 col-xs-4 col-sm-4 col-md-2'><i class='fas fa-plus-circle'></i><div class='value'>0</div><div class='mimeLabel'>No items yet</div></div>";
-						}
 						$colors = ['first', 'second', 'third', 'fourth'];
-
 						$counter = 0;
 						foreach ($category_counts as $category => $count) {
 							$catData = $mimetypes[$category];
 							$colorClass = 'value ' . $colors[$counter % count($colors)];
-							if ($count > 1) {
-								$cat_label = $catData['label'] . 's';
-							} else {
-								$cat_label = $catData['label'];
-							}
+							$cat_label = ($count > 1) ? $catData['label'] . 's' : $catData['label'];
 							echo "<div class='mimetypeCat'><i class='fas fa-" . strtolower($category) . "'></i><div class='$colorClass' akhi='$count'>0</div><div class='mimeLabel'>" . strtoupper($cat_label) . "</div></div>";
-
-							if ($counter == 4) {
-								$counter = 0;
-							} else {
-								$counter++;
-							}
+							$counter = ($counter == 4) ? 0 : $counter + 1;
 						}
 						?>
 					</div>
-					
-					<div class='col-sm-8 col-md-8 col-lg-8'>
-					{{{<ifcount code="ca_collections.related" min="1" max="1"><label>Related collection</label> This project </ifcount>}}}
-					{{{<ifcount code="ca_collections.related" min="2"><label>Related collections</label> This project </ifcount>}}}
-					{{{<unit relativeTo="ca_collections_x_collections" delimiter="<br/>">^relationship_typename <l>^ca_collections.related.preferred_labels.name</l></unit>}}}
+					</div>
+						
+					<?php 
+						$publicationString = $t_item->get("ca_collections.publication");
+
+						if ($publicationString) {
+							echo "<div class='collected-container'>";
+							echo "<h3>Collected Works</h3>";
+							echo "<hr>";
+							$parts = explode(';', $publicationString);
+							$publications = [];
+							for ($i = 0; $i < count($parts); $i += 3) {
+								$title = $parts[$i];
+								$type = $parts[$i + 1];
+								$url = $parts[$i + 2];
+
+								$publications[$type] = [
+									'title' => $title,
+									'url' => $url
+								];
+							}
+
+							// Sort publications by publication type (key)
+							ksort($publications);
+
+							// Output using Bootstrap's list group for better styling and layout
+							echo '<ul class="list-group list-collections">';
+							foreach ($publications as $type => $data) {
+								echo '<li class="list-group-item">';
+								echo htmlspecialchars($data['title']);
+								echo '<a href="' . htmlspecialchars($data['url']) . '" class="collected-detail"><i class="fas fa-book-open"></i> View Chapter</a>';
+								echo '</li>';
+							}
+							echo '</ul>';
+							echo "</div>";
+						}
+					?>
+
+					<?php 
+					$exresource = $t_item->get('ca_collections.exresource');
+					$resource_types = $t_item->get('ca_collections.exresource.exlist.preferred_labels'); // Assuming this also returns a semicolon-separated string
+
+					if ($exresource) {
+						$icon_map = [
+							'Map' => 'fa-map',
+							'Interactive Form' => 'fa-file-alt',
+							'Channel' => 'fa-video',
+							'Exhibition' => 'fa-photo-video',
+						];
+
+						$resources = explode(';', $exresource);
+						$types = explode(';', $resource_types);
+						
+						// Check for correct array sizes and ensure they're divisible by 3
+						if (count($resources) % 3 == 0) {
+							echo '<div class="collected-container">';
+							echo '<h3>External Resources</h3>';
+							echo '<hr>';
+							echo '<ul class="list-group list-resources">';
+							
+							for ($i = 0; $i < count($resources); $i += 3) {
+								$name = $resources[$i];
+								$url = $resources[$i + 1];
+								$id = $resources[$i + 2];
+								$type = $types[intval($i / 3)];
+								$icon = $icon_map[$type] ?? 'fa-question'; // Fallback to a generic icon if type is not defined
+								
+								echo '<li class="list-group-item">';
+								echo '<a href="' . htmlspecialchars($url) . '" class="resource-link">';
+								echo '<i class="fas ' . htmlspecialchars($icon) . '"></i> ' . htmlspecialchars($name);
+								echo '</a>';
+								echo '</li>';
+							}
+							
+							echo '</ul>';
+							echo '</div>';
+						} 
+					}
+					?>
 
 
-					{{{<ifcount code="ca_occurrences" min="1" max="1"><label>Related occurrence</label></ifcount>}}}
-					{{{<ifcount code="ca_occurrences" min="2"><label>Related occurrences</label></ifcount>}}}
-					{{{<unit relativeTo="ca_occurrences" delimiter="<br/>"><l>^ca_occurrences.preferred_labels.name</l> ^relationship_typename</unit>}}}
 
-					{{{<ifcount code="ca_places" min="1" max="1"><label>Related place</label></ifcount>}}}
-					{{{<ifcount code="ca_places" min="2"><label>Related places</label></ifcount>}}}
-					{{{<unit relativeTo="ca_places" delimiter="<br/>">This project ^relationship_typename <l>^ca_places.preferred_labels</l></unit>}}}
-				</div><!-- end col -->
-
+						
 				</div><!-- end col -->
 			</div><!-- end row -->
-			</div>
-		
-		
-			
-
 		</div><!-- end col -->
+		</div><!-- -->
+
 
 	<div class='navLeftRight col-xs-1 col-sm-1 col-md-1 col-lg-1'>
 		<div class="detailNavBgRight">

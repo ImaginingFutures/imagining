@@ -36,37 +36,9 @@ $vn_id =				$t_object->get('ca_objects.object_id');
 $va_access_values = caGetUserAccessValues($this->request);
 
 require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.php");
+require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/cite.php");
+require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resources.php");
 
-# This condition is required to avoid the error Cannot redeclare get_embed_html() (previously declared in
-if (!function_exists('get_embed_html')) {
-	function get_embed_html($url)
-	{
-		// Check if the URL is for Sketchfab
-		if (preg_match('/https:\/\/sketchfab\.com\/3d-models\/.*-([a-f0-9]{32})/', $url)) {
-			$oembed_url = 'https://sketchfab.com/oembed?url=' . urlencode($url);
-			$response = @file_get_contents($oembed_url);
-			if ($response !== FALSE) {
-				$embed_data = json_decode($response, true);
-				if (json_last_error() === JSON_ERROR_NONE && isset($embed_data['html'])) {
-					return $embed_data['html'];
-				} else {
-					return 'Error parsing Sketchfab embed data: ' . json_last_error_msg();
-				}
-			} else {
-				return 'Error fetching Sketchfab embed data';
-			}
-		}
-
-		// Check if the URL is for YouTube
-		if (preg_match('/https:\/\/(www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/', $url, $matches) || preg_match('/https:\/\/youtu\.be\/([a-zA-Z0-9_-]+)/', $url, $matches)) {
-			$video_id = end($matches);
-			return '<iframe width="560" height="315" src="https://www.youtube.com/embed/' . $video_id . '" frameborder="0" allowfullscreen></iframe>';
-		}
-
-		# If not Sketchfab or Youtube, returns False
-		return False;
-	}
-}
 ?>
 
 <div class="row">
@@ -93,17 +65,16 @@ if (!function_exists('get_embed_html')) {
 					echo "
 						<div class='panel panel-default'>
 						<div class='panel-heading'>
-							{{{
-							<ifdef code='ca_objects.idno'><div class='unit'>Object ID: ^ca_objects.idno
-				<button class='btn btn-default btn-xs pull-left button-circled' id='togglePanel' data-toggle='tooltip' data-placement='top' title='Media info'>
-				<i class='fas fa-info-circle'></i>
-							</button></div></ifdef>
-						}}}
+							<h5>Media information
+							<button id='togglePanel' data-toggle='tooltip' data-placement='top' title='Media info' class='icon-button'>
+							<i id='toggleIcon' class='fas fa-chevron-down'></i></h5>
+						</button>
+							</button>
 						</div>
 						<div class='panel-body' id='panelContent'>
 							<!-- Content to be shown/hidden goes here -->
 							<!-- Content and Scope -->
-							<h3>Media information</h3>
+							
 							{{{
 							<ifdef code='ca_object_representations.media_class'><div class='unit'><unit relativeTo='ca_object_representations.media_class' delimiter='<br/>'><b>Format:</b> ^ca_object_representations.media_class</unit></div></ifdef>
 							}}}
@@ -112,6 +83,7 @@ if (!function_exists('get_embed_html')) {
 							}}}";
 
 					$media_format = $t_object->get('ca_object_representations.media_format');
+					
 					if ($media_format != 'PDF') {
 						echo '{{{<ifcode code=\'ca_object_representations.media_dimensions\'><div class=\'unit\'><unit relativeTo=\'ca_object_representations.media_dimensions\' delimiter=\'<br/>\'><b>Media dimensions:</b> ^ca_object_representations.media_dimensions</unit></div></ifcode>}}}';
 					} elseif ($media_format == 'PDF') {
@@ -135,13 +107,26 @@ if (!function_exists('get_embed_html')) {
 						echo "<div class='repViewerExtCont'>";
 						echo $embed_media;
 						echo "</div>";
+						echo "
+						<div class='panel panel-default no-media-panel'>
+						<div class='panel-heading'>
+							<h5>Media information
+							<button id='togglePanel' data-toggle='tooltip' data-placement='top' title='Media info' class='icon-button'>
+							<i id='toggleIcon' class='fas fa-chevron-down'></i></h5>
+						</button>
+							</button>
+						</div>
+						<div class='panel-body' id='panelContent'>
+						<b>External resource:</b> <a href='$external_media' target='_blank'>$external_media <i class='fas fa-external-link-alt'></i> </a>
+
+						</div>
+						</div>
+							";
 					} else {
 						echo $no_media_placeholder;
 					}
 				}
 				?>
-
-
 
 				<!-- identifiers -->
 				<HR>
@@ -150,6 +135,7 @@ if (!function_exists('get_embed_html')) {
 
 					<div class='col-sm-6 col-md-6'>
 						{{{
+					<ifdef code="ca_objects.idno"><div class='unit'><label>Resource id:</label> ^ca_objects.idno</div></ifdef>
 					<ifdef code="ca_objects.alternativetitle"><div class="unit">
 					<ifdef code="ca_objects.ai"><button class="btn btn-warning btn-xs pull-left warning-translation-button" id="togglePanel" data-toggle="tooltip" data-placement="top" title="^ca_objects.ai">
                     <i class="fas fa-exclamation-triangle"></i>
@@ -158,7 +144,7 @@ if (!function_exists('get_embed_html')) {
 					</div><HR></ifdef>
 					}}}
 
-						{{{<unit relativeTo="ca_collections" delimiter="<br/>"><label>Member of:</label><l>^ca_collections.preferred_labels.name</l></unit><ifcount min="1" code="ca_collections"><HR></ifcount>}}}
+						{{{<unit relativeTo="ca_collections" delimiter="<br/>"><label>Project:</label><l>^ca_collections.preferred_labels.name</l></unit><ifcount min="1" code="ca_collections"><HR></ifcount>}}}
 						{{{
 					<ifcount code="ca_objects.exlink.exlink_name" min="1"><div class="unit">
 						<label>External Link:</label>
@@ -186,35 +172,30 @@ if (!function_exists('get_embed_html')) {
                     <i class="fas fa-exclamation-triangle"></i>
 					</button></ifdef>
 					<label>Translated description:</label>^ca_objects.descriptionalt					
-				</div><HR></ifdef>}}}
+					</div><HR></ifdef>}}}
 
-						{{{<ifcount code="ca_objects.langmaterial.lang" min="1"><div class="unit"><label>Language:</label><unit relativeTo="ca_objects.langmaterial" delimiter="<br/>">^ca_objects.langmaterial.langlabel: ^ca_objects.langmaterial.lang</unit></div></ifcount>}}}
-
-						{{{
-<ifcount code="ca_list_items" restrictToRelationshipTypes="resource_type" min="1">    
-     <label>Resource Type:</label>
-        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="resource_type" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
-</ifcount>
-}}}
+						{{{<ifcount code="ca_objects.primarylang" min="1"><div class="unit"><label>Primary Language:</label><unit relativeTo="ca_objects.primarylang" delimiter="<br/>">^ca_objects.primarylang</unit></div></ifcount>}}}
+						{{{<ifcount code="ca_objects.otherlang" min="1"><div class="unit"><label>Other Language:</label><unit relativeTo="ca_objects.otherlang" delimiter="<br/>">^ca_objects.otherlang</unit></div></ifcount>}}}
 
 						{{{
-<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
-     <label>Keywords:</label>
-        <unit relativeTo="ca_list_items" restrictToRelationshipTypes="keyword" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
-</ifcount>
-}}}
+					<ifcount code="ca_list_items" restrictToRelationshipTypes="resource_type" min="1">    
+						<label>Resource Type:</label>
+							<unit relativeTo="ca_list_items" restrictToRelationshipTypes="resource_type" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+					</ifcount>
+					}}}
+
+											{{{
+					<ifcount code="ca_list_items" restrictToRelationshipTypes="keyword" min="1">    
+						<label>Keywords:</label>
+							<unit relativeTo="ca_list_items" restrictToRelationshipTypes="keyword" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+					</ifcount>
+					}}}
 
 						{{{
 					<ifdef code="ca_objects.notes"><div class="unit"><label>Notes:</label>^ca_objects.notes</div></ifdef>
 					}}}
-
+					
 						<!-- end of Content and Scope labels -->
-
-
-
-
-
-
 
 						<!-- Custom labels -->
 
@@ -302,38 +283,43 @@ if (!function_exists('get_embed_html')) {
 
 
 					<div class='col-sm-5 col-md-4 col-lg-4'>
+						<!-- PID -->
+						{{{
+						<ifdef code="ca_objects.handle"><div class="unit"><label>URI:</label><a href ="^ca_objects.handle">^ca_objects.handle</a></div></ifdef>
+						}}}
 						<!-- Dates -->
-
-						{{{<ifcount code="ca_objects.dates.dates_value" min="1"><div class="unit"><label>Dates:</label><unit relativeTo="ca_objects.dates" delimiter="<br/>">^ca_objects.dates.dates_type: ^ca_objects.dates.dates_value</unit></div></ifcount>}}}
+						{{{<ifcount code="ca_objects.date_create" min="1"><div class="unit"><label>Creation Date:</label><unit relativeTo="ca_objects.date_create" delimiter="<br/>">^ca_objects.date_create</unit></div></ifcount>}}}
+						{{{<ifcount code="ca_objects.date_digit" min="1"><div class="unit"><label>Digitization Date:</label><unit relativeTo="ca_objects.date_digit" delimiter="<br/>">^ca_objects.date_digit</unit></div></ifcount>}}}
+						{{{<ifcount code="ca_objects.date_publish" min="1"><div class="unit"><label>Publication Date:</label><unit relativeTo="ca_objects.date_publish" delimiter="<br/>">^ca_objects.date_publish</unit></div></ifcount>}}}
 
 						<!-- end of Dates labels -->
 
 						<!-- Socio-cultural Context -->
 
 						{{{
-<ifcount code="ca_objects.cultgroup" min="1"><div class="unit">
-	<label>Cultural Group:</label>
-	<unit relativeTo="ca_objects.cultgroup" delimiter="<br/>">
-		^ca_objects.cultgroup
-	</unit>
-</div></ifcount>
-}}}
+						<ifcount code="ca_objects.cultgroup" min="1"><div class="unit">
+							<label>Cultural Group:</label>
+							<unit relativeTo="ca_objects.cultgroup" delimiter="<br/>">
+								^ca_objects.cultgroup
+							</unit>
+						</div></ifcount>
+						}}}
 
-						{{{
-<ifcount code="ca_list_items" restrictToRelationshipTypes="culturalcontext" min="1">    
-<label>Cultural Context:</label>
-<unit relativeTo="ca_list_items" restrictToRelationshipTypes="culturalcontext" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
-</ifcount>
-}}}
+												{{{
+						<ifcount code="ca_list_items" restrictToRelationshipTypes="culturalcontext" min="1">    
+						<label>Cultural Context:</label>
+						<unit relativeTo="ca_list_items" restrictToRelationshipTypes="culturalcontext" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
+						</ifcount>
+						}}}
 
-						{{{
-<ifcount code="ca_objects.socialgroup" min="1"><div class="unit">
-	<label>Social Group:</label>
-	<unit relativeTo="ca_objects.socialgroup" delimiter="<br/>">
-		^ca_objects.socialgroup
-	</unit>
-</div></ifcount>
-}}}
+												{{{
+						<ifcount code="ca_objects.socialgroup" min="1"><div class="unit">
+							<label>Social Group:</label>
+							<unit relativeTo="ca_objects.socialgroup" delimiter="<br/>">
+								^ca_objects.socialgroup
+							</unit>
+						</div></ifcount>
+						}}}
 
 
 						<!-- end of Socio-cultural Context -->
@@ -399,7 +385,7 @@ if (!function_exists('get_embed_html')) {
 						$right_id = $t_object->get("ca_objects.rights");
 
 						if ($right_id) {
-							echo "<label>Rights:</label>";
+							
 							$rights_idno = $t_object->get("ca_objects.rights.idno");
 							$rights_label = $t_object->get("ca_objects.rights.preferred_labels");
 
@@ -546,47 +532,56 @@ try {
 						$contributors = '';
 
 						// Check if there are creators in the array
-						if (isset($va_entities_by_type['had as creator'])) {
-							$creators = array_unique($va_entities_by_type['had as creator']);
+						if (isset($va_entities_by_type['creator'])) {
+							$creators = array_unique($va_entities_by_type['creator']);
 							$contributors = implode(', ', $creators);
+						} else if (isset($va_entities_by_type['contributor'])) {
+							$authors = array_unique($va_entities_by_type['contributor']);
+							$contributors = implode(', ', $authors);
 						} else {
-							// If no creators, check for contributors and other entity types
-							$contributorString = '';
-
-							// Check if there are contributors in the array
-							if (isset($va_entities_by_type['had as contributor'])) {
-								$contributorString .= implode(', ', $va_entities_by_type['had as contributor']);
-							}
-
-							// Iterate through other entity types and add them to the contributorString
-							foreach ($va_entities_by_type as $type => $entities) {
-								if ($type !== 'had as contributor') {
-									if (!empty($contributorString)) {
-										$contributorString .= ', ';
-									}
-									$contributorString .= implode(', ', $entities) . " ($type)";
-								}
-							}
-
-							if (!empty($contributorString)) {
-								$contributors = $contributorString;
-							} else {
-								$contributors = 'Unknown';
-							}
+							$contributors = "";
 						}
 
 						$yearofcreation = date("Y", $date_created);
 						$title = $t_object->get('ca_objects.preferred_labels.name');
-						$object_id = $t_object->get('ca_objects.idno');
+						$object_idno = $t_object->get('ca_objects.idno');
 						$collection = $t_object->get('ca_collections.preferred_labels.name');
 
-						$domain = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+						// retrieve PID from object
+						$pid = $t_object->get('ca_objects.handle');
 
-						$citation = $contributors . " (" . $yearofcreation . ") \"" . $title . ".\" " . $object_id . ". " . $collection . ". " . "Imagining Futures. " . $domain . "/Detail/objects/" . $vn_id . ". Accessed " . date("F j, Y") . ".";
+						// fallback URL if PID is not set.
+						if(empty($pid)) {
+							$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+							$pid = "{$protocol}://{$_SERVER['HTTP_HOST']}/Detail/objects/{$object_idno}";
+						}
 
-						echo "<div class='unit'><label>Use and reproduction:</label>Cite as: " . $citation . "</div>";
+						$citation = new Cite($contributors, $yearofcreation, $title, $object_idno, $collection, $pid);
+
+						$citations = array(
+							'apa' => $citation->apa(),
+							'mla' => $citation->mla(),
+							'chicago' => $citation->chicago()
+						);
 
 						?>
+
+						<div>
+							<label for="citation-style">Choose citation style:</label>
+							<select id="citation-style" onchange="updateCitation()">
+								<option value="apa">APA 7</option>
+								<option value="mla">MLA</option>
+								<option value="chicago">Chicago</option>
+							</select>
+							<button onclick="copyCitation()" title="Copy to Clipboard" class='icon-button'>
+								<i class="far fa-copy"></i>
+							</button>
+						</div>
+
+						<div class='unit'>
+							<label>Use and reproduction:</label>
+							<span id="citation-text"><?= $citation->apa(); ?></span>
+						</div>
 
 						<div id="detailAnnotations"></div>
 
@@ -636,7 +631,7 @@ try {
 
 
 
-	<script type='text/javascript'>
+	<script type="text/javascript">
 		jQuery(document).ready(function() {
 			$('.trimText').readmore({
 				speed: 75,
@@ -645,15 +640,40 @@ try {
 		});
 
 		$(document).ready(function() {
-			// Initialize Bootstrap Tooltip
-			$('[data-toggle="tooltip"]').tooltip();
 
 			// Hide the panel content initially
 			$('#panelContent').hide();
 
-			// Toggle panel content when the button is clicked
+			// Toggle panel content and icon when the button is clicked
 			$('#togglePanel').click(function() {
-				$('#panelContent').slideToggle();
+				$('#panelContent').slideToggle(function() {
+					var icon = $('#toggleIcon');
+					if ($('#panelContent').is(':visible')) {
+						icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+					} else {
+						icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+					}
+				});
 			});
 		});
+	</script>
+
+
+	<script>
+		var citations = <?= json_encode($citations); ?>;
+
+		function updateCitation() {
+			var style = document.getElementById('citation-style').value;
+			var citationText = citations[style];
+			document.getElementById('citation-text').innerHTML = citationText;
+		}
+
+		function copyCitation() {
+			var citationText = document.getElementById('citation-text').innerText;
+			navigator.clipboard.writeText(citationText).then(function() {
+				alert('Citation copied to clipboard!');
+			}, function(err) {
+				alert('Failed to copy citation: ', err);
+			});
+		}
 	</script>

@@ -2,6 +2,10 @@
 	MetaTagManager::setWindowTitle($this->request->config->get("app_display_name").": Credits");
 ?>
 
+<div class="container">
+        <!-- about details div -->
+        <div class="about">
+
 	<div class="row">
 		<div class="col-sm-12">
 			<H1><?php print _t("Credits"); ?></H1>
@@ -82,3 +86,6 @@
 
 		</div>
 	</div>
+        </div><!-- end of div class about -->
+</div><!-- end of container -->
+
