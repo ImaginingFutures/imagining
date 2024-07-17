@@ -442,7 +442,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					<?php 
 						$publicationString = $t_item->get("ca_collections.publication");
 
-						if ($publicationString) {
+						if ($publicationString AND $publicationString != ";") {
 							echo "<div class='collected-container'>";
 							echo "<h3>Collected Works</h3>";
 							echo "<hr>";
