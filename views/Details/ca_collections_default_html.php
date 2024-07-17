@@ -423,7 +423,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 
 					<div class='counter'>
 						<?php if (!$category_counts) : ?>
-							<div class='mimetypeCat'><i class='fas fa-plus-circle'></i><div class='value'>0</div><div class='mimeLabel'>No items yet</div></div>
+							<div class='mimetypeCat'></div>
 						<?php endif; ?>
 						<?php
 						$colors = ['first', 'second', 'third', 'fourth'];
