@@ -485,6 +485,8 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 							'Interactive Form' => 'fa-file-alt',
 							'Channel' => 'fa-video',
 							'Exhibition' => 'fa-photo-video',
+							'Blog' => 'fas fa-blog',
+							'Web' => 'fas fa-globe',
 						];
 
 						$resources = explode(';', $exresource);
