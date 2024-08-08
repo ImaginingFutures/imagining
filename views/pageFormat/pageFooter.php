@@ -68,12 +68,26 @@
 								<img src="https://imaginingfutures.world/wp-content/uploads/2021/02/footer_logo_exeter.png" alt="University of Exeter" class="img-fluid">
 							</a>
 						</div>
+						<div class="social-media-links">
+						<a href="https://github.com/ImaginingFutures/" target="_blank" title="Follow us on GitHub">
+							<i class="fab fa-github"></i>
+						</a>
+
+						<a href="https://www.youtube.com/channel/UCK0xrPfEPqbSE79-BxtmBGQ" target="_blank" title="Subscribe to our YouTube channel">
+							<i class="fab fa-youtube"></i>
+						</a>
+
+						<a href="https://twitter.com/imaginesfutures" target="_blank" title="Follow us on Twitter">
+							<i class="fab fa-twitter"></i>
+						</a>
+						</div>
+
 					</div>
 
 
 				</div>
 				<div class="row">
-				<p><span class="text-muted version">Repository Version: 1.0.0 [28-05-2024]</span></p>
+				<p><span class="text-muted version">Repository Version: 1.3.14 [19-06-2024]</span></p>
 				</div>
 			</div>
 		</footer><!-- end footer -->
