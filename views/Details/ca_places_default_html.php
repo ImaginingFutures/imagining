@@ -226,7 +226,7 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 
 					if (details.length > 10) {
 						<?php
-							$browseLink = caNavLink($this->request, "<i class='far fa-plus-square' aria-label='Search'></i> Browse all elements", "browseRemoveFacet", "", "browse", "objects", array("facet" => "place_facet", "id" => $t_item->get("ca_places.place_id")));
+							$browseLink = caNavLink($this->request, "<i class='far fa-plus-square' aria-label='Search'></i> Browse all elements", "browseRemoveFacet", "", "Browse", "resources", array("facet" => "place_facet", "id" => $t_item->get("ca_places.place_id")));
 							$escapedBrowseLink = str_replace("'", "\'", $browseLink);
 							echo "popupContent += '<br>{$escapedBrowseLink}';";
 							?>

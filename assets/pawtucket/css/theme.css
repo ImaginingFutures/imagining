@@ -2311,6 +2311,118 @@ body.frontContainer #footer {
 	line-height: normal;
 }
 
+.wrapper-subtitle{
+	margin-bottom: 35px;
+}
+
+.wrapper-subtitle h2 {
+	font-weight: 900;
+	font-size: 36px;
+}
+
+.wrapper-about p {
+	margin-bottom: 1.2em;
+}
+
+.wrapper-about ul {
+	list-style: disc;
+}
+
+.wrapper-about h5 {
+	font-size: 20px;
+}
+
+/* gallery */
+
+.gallery ul.image_grid_ul {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+  }
+  
+  .gallery li.isotope-item {
+	flex: 1 1 150px;
+	margin: 5px;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+	transition: transform 0.3s ease-in-out;
+  }
+  
+  .gallery li.isotope-item:hover {
+	transform: scale(1.05);
+	z-index: 10;
+  }
+  
+  .gallery li.isotope-item a {
+	display: block;
+	position: relative;
+	overflow: hidden;
+  }
+  
+  .gallery li.isotope-item img {
+	width: 100%;
+	height: auto;
+	transition: all 0.3s ease-in-out;
+  }
+  
+  .gallery li.isotope-item:hover img {
+	opacity: 0.7;
+  }
+  
+  .gallery li.isotope-item a::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0,0,0,0.5);
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+  }
+  
+  .gallery li.isotope-item:hover a::after {
+	opacity: 1;
+  }
+  
+  .gallery li.isotope-item a::before {
+	content: attr(data-title);
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	color: white;
+	font-size: 16px;
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+  }
+  
+  .gallery li.isotope-item:hover a::before {
+	opacity: 1;
+  }
+
+  /* about page right column */
+
+.about-right-card {
+	margin-bottom: 37px !important;
+    border-top-width: 3px !important;
+    border-right-width: 3px !important;
+    border-bottom-width: 3px !important;
+    border-left-width: 3px !important;
+    padding-top: 20px !important;
+    padding-right: 20px !important;
+    padding-bottom: 20px !important;
+    padding-left: 20px !important;
+    border-left-color: #0a0a0a !important;
+    border-left-style: solid !important;
+    border-right-color: #0a0a0a !important;
+    border-right-style: solid !important;
+    border-top-color: #0a0a0a !important;
+    border-top-style: solid !important;
+    border-bottom-color: #0a0a0a !important;
+    border-bottom-style: solid !important;
+}
 
 .collected-container {
     width: 90%;

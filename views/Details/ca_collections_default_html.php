@@ -195,7 +195,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 						<label>Keywords:</label>
 						<unit relativeTo="ca_list_items" restrictToRelationshipTypes="keyword" delimiter="</br>">   <l>^ca_list_items.preferred_labels.name_singular</l></unit><HR>
 						</ifcount>
-						<ifdef code="ca_collections.ifwebpage"><label>Project IF Page:</label><a href="^ca_collections.ifwebpage" target="_blank">^ca_collections.ifwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
+						<ifdef code="ca_collections.ifwebpage"><label>Legacy IF page:</label><a href="^ca_collections.ifwebpage" target="_blank">^ca_collections.ifwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
 						<ifdef code="ca_collections.exwebpage"><label>Project Website:</label><a href="^ca_collections.exwebpage" target="_blank">^ca_collections.exwebpage <i class="fas fa-external-link-alt"></i></a></ifdef>
 					
 					}}}
@@ -377,7 +377,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 					<?php if ($vb_show_objects_link) : ?>
 						<div class='collectionBrowseItems'>
 							
-								<?php print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Browse Project Resources</button>", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id"))); ?>
+								<?php print caNavLink($this->request, "<button type='button' class='btn btn-default btn-sm'><i class='far fa-eye' aria-label='Search'></i> Browse Project Resources</button>", "browseRemoveFacet", "", "Browse", "resources", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id"))); ?>
 							
 						</div>
 					<?php endif; ?>
@@ -615,7 +615,7 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/mimetypes.php");
 		// If there are more than 10 items, add a link to browse all elements
 		if (labelsObject[coordsKey].length > 10) {
 			<?php
-			$browseLink = caNavLink($this->request, "<i class='far fa-plus-square' aria-label='Search'></i> Browse all elements", "browseRemoveFacet", "", "browse", "objects", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
+			$browseLink = caNavLink($this->request, "<i class='far fa-plus-square' aria-label='Search'></i> Browse all elements", "browseRemoveFacet", "", "Browse", "resources", array("facet" => "collection_facet", "id" => $t_item->get("ca_collections.collection_id")));
 			$escapedBrowseLink = str_replace("'", "\'", $browseLink);
 			echo "popupContent += '<br>{$escapedBrowseLink}';";
 			?>

@@ -89,11 +89,11 @@
         <div class="col-sm-4">
             <div class="card">
 				<div class="card-img-top-container">
-				<a href=<?php print caNavUrl($this->request, "Browse", "collections", "") ?>>
+				<a href=<?php print caNavUrl($this->request, "Browse", "projects", "") ?>>
 				<?php print caGetThemeGraphic($this->request, 'projects_thumbnail.webp', array('alt' => "Imagining Futures, Trough Un/Archived Pasts", 'class' => "card-img-top")); ?></a>
 				</div>
 			<div class="card-body">
-			<?php print caNavLink($this->request, "<h3 class='card-title'>Projects</h3>", "card-title-link", "", "Browse", "collections"); ?>
+			<?php print caNavLink($this->request, "<h3 class='card-title'>Projects</h3>", "card-title-link", "", "Browse", "projects"); ?>
   			</div>
             </div>
         </div>
@@ -115,11 +115,11 @@
         <div class="col-sm-4">
             <div class="card">
 			<div class="card-img-top-container">
-			<a href=<?php print caNavUrl($this->request, "Browse", "objects", "") ?>>
+			<a href=<?php print caNavUrl($this->request, "Browse", "resources", "") ?>>
 			<?php print caGetThemeGraphic($this->request, 'resources_thumbnail.webp', array('alt' => "Imagining Futures, Trough Un/Archived Pasts", 'class' => "card-img-top")); ?></a>
 			</div>
 			<div class="card-body">
-    		<?php print caNavLink($this->request, "<h3 class='card-title'>Resources</h3>", "card-title-link", "", "Browse", "objects"); ?>
+    		<?php print caNavLink($this->request, "<h3 class='card-title'>Resources</h3>", "card-title-link", "", "Browse", "resources"); ?>
   			</div>
             </div>
         </div>
