@@ -120,8 +120,8 @@
 		print $o_debugbar_renderer->renderHead();
 	}
 ?>
-	<!-- manually download the css for versioning -->
-	<link rel="stylesheet" href="<?php print caGetThemeAssetURL('css/theme.css') ?>?v=20240619" type="text/css" media="all">
+	<!-- css versioning -->
+	<link rel="stylesheet" href="<?php print caGetThemeAssetURL('css/theme.css') ?>?v=20240820" type="text/css" media="all">
 
 </head> 
 
