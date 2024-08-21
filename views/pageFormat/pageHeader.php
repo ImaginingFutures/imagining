@@ -78,6 +78,10 @@
 	
 	<!-- Dynamic meta tags -->
 	<?= MetaTagManager::getHTML(); ?>
+
+	<!-- model-viewer -->
+	<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+
 	<!-- Select2 -->
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>

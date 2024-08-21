@@ -37,7 +37,8 @@ $va_access_values = caGetUserAccessValues($this->request);
 
 require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.php");
 require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/cite.php");
-require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resources.php");
+require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/custom/external_resources.php");
+require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/custom/modelViewer.php")
 
 ?>
 
@@ -53,80 +54,86 @@ require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/external_resourc
 	<div class='col-xs-12 col-sm-10 col-md-10 col-lg-10'>
 		<div class="container">
 			<div class="row">
-				<?php
+			<?php
 
-				$media_access = $t_object->get('ca_object_representations.access');
+			$media_access = $t_object->get('ca_object_representations.access');
+			$media_class = $t_object->get('ca_object_representations.media_class');
+			$no_media_placeholder = "<div class='repViewerNoCont'>" . caGetThemeGraphic($this->request, 'media-.webp') . "</div>";
 
-				$no_media_placeholder = "<div class='repViewerNoCont'>" . caGetThemeGraphic($this->request, 'media-.webp') . "</div>";
-
-				if ($media_access === '1') {
-					echo "{{{representationViewer}}}";
-					echo "</div>";
-					echo "
-						<div class='panel panel-default'>
+			if ($media_access === '1') {
+				$media_format = $t_object->get('ca_object_representations.media_format');
+				
+				// Set media dimensions or page count based on media format
+				$media_dimensions = ($media_format != 'PDF') 
+					? "{{{<ifcode code='ca_object_representations.media_dimensions'><div class='unit'><unit relativeTo='ca_object_representations.media_dimensions' delimiter='<br/>'><b>Media dimensions:</b> ^ca_object_representations.media_dimensions</unit></div></ifcode>}}}"
+					: "{{{<ifcode code='ca_object_representations.page_count'><div class='unit'><unit relativeTo='ca_object_representations.page_count' delimiter='<br/>'><b>Pages:</b> ^ca_object_representations.page_count</unit></div></ifcode>}}}";
+				
+				$media_panel = "
+					<div class='panel panel-default'>
 						<div class='panel-heading'>
 							<h5>Media information
-							<button id='togglePanel' data-toggle='tooltip' data-placement='top' title='Media info' class='icon-button'>
-							<i id='toggleIcon' class='fas fa-chevron-down'></i></h5>
-						</button>
-							</button>
+								<button id='togglePanel' data-toggle='tooltip' data-placement='top' title='Media info' class='icon-button'>
+									<i id='toggleIcon' class='fas fa-chevron-down'></i>
+								</button>
+							</h5>
 						</div>
 						<div class='panel-body' id='panelContent'>
 							<!-- Content to be shown/hidden goes here -->
 							<!-- Content and Scope -->
-							
-							{{{
-							<ifdef code='ca_object_representations.media_class'><div class='unit'><unit relativeTo='ca_object_representations.media_class' delimiter='<br/>'><b>Format:</b> ^ca_object_representations.media_class</unit></div></ifdef>
-							}}}
-							{{{
-							<ifdef code='ca_object_representations.media_filesize'><div class='unit'><unit relativeTo='ca_object_representations.media_filesize' delimiter='<br/>'><b>Extent:</b> ^ca_object_representations.media_filesize</unit></div></ifdef>
-							}}}";
-
-					$media_format = $t_object->get('ca_object_representations.media_format');
-					
-					if ($media_format != 'PDF') {
-						echo '{{{<ifcode code=\'ca_object_representations.media_dimensions\'><div class=\'unit\'><unit relativeTo=\'ca_object_representations.media_dimensions\' delimiter=\'<br/>\'><b>Media dimensions:</b> ^ca_object_representations.media_dimensions</unit></div></ifcode>}}}';
-					} elseif ($media_format == 'PDF') {
-						echo '{{{<ifcode code=\'ca_object_representations.page_count\'><div class=\'unit\'><unit relativeTo=\'ca_object_representations.page_count\' delimiter=\'<br/>\'><b>Pages:</b> ^ca_object_representations.page_count</unit></div></ifcode>}}}';
-					}
-
-					echo "{{{
-							<ifcode code='ca_object_representations.media_format'><div class='unit'><unit relativeTo='ca_object_representations.media_format' delimiter='<br/>'><b>Media format:</b> ^ca_object_representations.media_format</unit></div></ifcode>
-						}}}
+							{{{<ifdef code='ca_object_representations.media_class'><div class='unit'><unit relativeTo='ca_object_representations.media_class' delimiter='<br/>'><b>Format:</b> ^ca_object_representations.media_class</unit></div></ifdef>}}}
+							{{{<ifdef code='ca_object_representations.media_filesize'><div class='unit'><unit relativeTo='ca_object_representations.media_filesize' delimiter='<br/>'><b>Extent:</b> ^ca_object_representations.media_filesize</unit></div></ifdef>}}}
+							{{{<ifcode code='ca_object_representations.media_format'><div class='unit'><unit relativeTo='ca_object_representations.media_format' delimiter='<br/>'><b>Media format:</b> ^ca_object_representations.media_format</unit></div></ifcode>}}}
+							$media_dimensions
 						</div>
-					</div>
-						";
-				} elseif ($media_access === '0') {
-					echo $no_media_placeholder;
-				} else {
-					$external_media = $t_object->get('ca_objects.exlink.exlink_url');
+					</div>";
 
-					// get the embed code
-					$embed_media = get_embed_html($external_media);
-					if ($embed_media) {
-						echo "<div class='repViewerExtCont'>";
-						echo $embed_media;
-						echo "</div>";
-						echo "
-						<div class='panel panel-default no-media-panel'>
-						<div class='panel-heading'>
-							<h5>Media information
-							<button id='togglePanel' data-toggle='tooltip' data-placement='top' title='Media info' class='icon-button'>
-							<i id='toggleIcon' class='fas fa-chevron-down'></i></h5>
-						</button>
-							</button>
-						</div>
-						<div class='panel-body' id='panelContent'>
-						<b>External resource:</b> <a href='$external_media' target='_blank'>$external_media <i class='fas fa-external-link-alt'></i> </a>
+				if ($media_class != 'binary') {
+					echo "{{{representationViewer}}}";
+					echo $media_panel;
 
-						</div>
-						</div>
-							";
+				} elseif ($media_class === 'binary') {
+					$mediarep = $t_object->get('ca_object_representations.media.original.url');
+
+					if (str_ends_with($mediarep, '.glb')) {
+						$embed_media = glbViewer($mediarep);
+
+						if ($embed_media) {
+							echo "<div class='glbViewer'>{$embed_media}</div>";
+							echo str_replace("^ca_object_representations.media_format", "GLB", $media_panel);
+						}
 					} else {
-						echo $no_media_placeholder;
+						echo "{{{representationViewer}}}";
 					}
 				}
-				?>
+			} elseif ($media_access === '0') {
+				echo $no_media_placeholder;
+			} else {
+				$external_media = $t_object->get('ca_objects.exlink.exlink_url');
+				$embed_media = get_embed_html($external_media);
+
+				if ($embed_media) {
+					echo "<div class='repViewerExtCont'>{$embed_media}</div>";
+					echo "
+					<div class='panel panel-default no-media-panel'>
+						<div class='panel-heading'>
+							<h5>Media information
+								<button id='togglePanel' data-toggle='tooltip' data-placement='top' title='Media info' class='icon-button'>
+									<i id='toggleIcon' class='fas fa-chevron-down'></i>
+								</button>
+							</h5>
+						</div>
+						<div class='panel-body' id='panelContent'>
+							<b>External resource:</b> <a href='{$external_media}' target='_blank'>{$external_media} <i class='fas fa-external-link-alt'></i></a>
+						</div>
+					</div>";
+				} else {
+					echo $no_media_placeholder;
+				}
+			}
+
+			?>
+
+
 
 				<!-- identifiers -->
 				<HR>
@@ -677,3 +684,4 @@ try {
 			});
 		}
 	</script>
+
