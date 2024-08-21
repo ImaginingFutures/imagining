@@ -38,7 +38,7 @@ $va_access_values = caGetUserAccessValues($this->request);
 require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/rightsstatement.php");
 require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/data/cite.php");
 require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/custom/external_resources.php");
-require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/custom/modelViewer.php")
+require_once(__CA_THEMES_DIR__ . "/imagining/views/Details/custom/modelViewer.php");
 
 ?>
 
