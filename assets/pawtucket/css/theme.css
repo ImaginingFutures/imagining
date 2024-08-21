@@ -2150,6 +2150,22 @@ body.frontContainer #footer {
 	padding-top: 20px;
 }
 
+div.col-md-12.aims {
+	background-color: rgba(247, 225, 246, 0.5);
+}
+
+div.col-md-12.outcomes {
+	background-color: rgba(237, 237, 203, 0.5);
+}
+
+.aboutcolumncontainer {
+	padding: 1rem 0;
+}
+
+.aboutcolumncontainer h3 {
+	font-weight: 600;
+	font-style: italic;
+}
 
 /* Default styles for larger screens */
 .counter {
@@ -2320,6 +2336,9 @@ body.frontContainer #footer {
 	font-size: 36px;
 }
 
+.wrapper-about {
+	margin-bottom: 15px;
+}
 .wrapper-about p {
 	margin-bottom: 1.2em;
 }
@@ -2332,75 +2351,23 @@ body.frontContainer #footer {
 	font-size: 20px;
 }
 
+.fullrow-about {
+	margin: 2em auto;
+}
+
+.fullrow-about h4 {
+	font-size: x-large;
+	color: #378bc7;
+}
+
+
+
 /* gallery */
 
-.gallery ul.image_grid_ul {
-	display: flex;
-	flex-wrap: wrap;
-	padding: 0;
-	margin: 0;
-	list-style-type: none;
-  }
-  
-  .gallery li.isotope-item {
-	flex: 1 1 150px;
-	margin: 5px;
-	box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-	transition: transform 0.3s ease-in-out;
-  }
-  
-  .gallery li.isotope-item:hover {
-	transform: scale(1.05);
-	z-index: 10;
-  }
-  
-  .gallery li.isotope-item a {
-	display: block;
-	position: relative;
-	overflow: hidden;
-  }
-  
-  .gallery li.isotope-item img {
-	width: 100%;
-	height: auto;
-	transition: all 0.3s ease-in-out;
-  }
-  
-  .gallery li.isotope-item:hover img {
-	opacity: 0.7;
-  }
-  
-  .gallery li.isotope-item a::after {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: rgba(0,0,0,0.5);
-	opacity: 0;
-	transition: opacity 0.3s ease-in-out;
-  }
-  
-  .gallery li.isotope-item:hover a::after {
-	opacity: 1;
-  }
-  
-  .gallery li.isotope-item a::before {
-	content: attr(data-title);
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	color: white;
-	font-size: 16px;
-	opacity: 0;
-	transition: opacity 0.3s ease-in-out;
-  }
-  
-  .gallery li.isotope-item:hover a::before {
-	opacity: 1;
-  }
+h4.gallery-header {
+	color: #FFF;
+	font-size: medium;
+}
 
   /* about page right column */
 

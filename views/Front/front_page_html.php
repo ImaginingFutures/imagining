@@ -74,7 +74,7 @@
 	</div>
 	<div class="row">
 	<div class="home-more-btn">
-		<a href="https://imaginingfutures.world/imagining-futures-overview/" class="btn btn-outline-dark btn-lg">More <i class="fas fa-angle-double-right"></i></a>
+		<a href=<?php print caNavUrl($this->request, "About", "about", "") ?> class="btn btn-outline-dark btn-lg">More <i class="fas fa-angle-double-right"></i></a>
 		</div>
 	</div>
 </div>
