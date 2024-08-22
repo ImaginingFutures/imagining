@@ -26,7 +26,6 @@
  * ----------------------------------------------------------------------
  */
 
-use function PHPUnit\Framework\isType;
 
 $t_item = $this->getVar("item");
 $va_access_values 	= $this->getVar('access_values');
@@ -69,7 +68,7 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					elseif ($idno == "region"){
 						$zoomlevel = 7;
 					}
-					elseif ($idno == "city"){
+					elseif ($idno == "city" || $idno == "town"){
 						$zoomlevel = 12;
 					}
 					else{
@@ -134,23 +133,18 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 				</div><!-- end col -->
 			</div><!-- end row -->
 
-			{{{<ifcount code="ca_objects" min="1">
-						<div class="row">
-						<div class="col-sm-12">
-					<br/><label>Related Archival Item<ifcount code="ca_objects" min="2">s</ifcount></label>
-				   </div>
-				   </div>
-							<div id="browseResultsContainer">
-								
-					<?php print caBusyIndicatorIcon($this->request) . ' ' . addslashes(_t('Loading...')); ?>
-							</div><!-- end browseResultsContainer -->
-						</div><!-- end row -->
-				<script type="text/javascript">
+			{{{<ifcount code="ca_objects" min="2">
+			<div class="row">
+				<div id="browseResultsContainer">
+					<?php print caBusyIndicatorIcon($this->request).' '.addslashes(_t('Loading...')); ?>
+				</div><!-- end browseResultsContainer -->
+			</div><!-- end row -->
+			<script type="text/javascript">
 				jQuery(document).ready(function() {
-					jQuery("#browseResultsContainer").load("<?php print caNavUrl($this->request, '', 'Search', 'objects', array('search' => 'place_id:^ca_places.place_id'), array('dontURLEncodeParameters' => true)); ?>", function() {
+					jQuery("#browseResultsContainer").load("<?php print caNavUrl($this->request, '', 'Browse', 'resources', array('facet' => 'place_id:^ca_places.place_id'), array('dontURLEncodeParameters' => true)); ?>", function() {
 						jQuery('#browseResultsContainer').jscroll({
 							autoTrigger: true,
-							loadingHtml: '<?php print caBusyIndicatorIcon($this->request) . ' ' . addslashes(_t('Loading...')); ?>',
+							loadingHtml: '<?php print caBusyIndicatorIcon($this->request).' '.addslashes(_t('Loading...')); ?>',
 							padding: 20,
 							nextSelector: 'a.jscroll-next'
 						});
@@ -159,7 +153,7 @@ $vn_share_enabled = 	$this->getVar("shareEnabled");
 					
 				});
 			</script>
-            </ifcount>}}}
+</ifcount>}}}
 
 			<script>
 				// CUSTOM LEAFLET SCRIPT
