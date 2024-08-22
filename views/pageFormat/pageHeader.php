@@ -125,7 +125,7 @@
 	}
 ?>
 	<!-- css versioning -->
-	<link rel="stylesheet" href="<?php print caGetThemeAssetURL('css/theme.css') ?>?v=20240820" type="text/css" media="all">
+	<link rel="stylesheet" href="<?php print caGetThemeAssetURL('css/theme.css') ?>?v=20240821" type="text/css" media="all">
 
 </head> 
 
