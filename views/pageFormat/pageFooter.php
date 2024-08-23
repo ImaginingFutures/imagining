@@ -51,7 +51,7 @@
 					</div>
 
 					<div class="col-sm-12 col-md-4">
-						<p>The Imagining Futures Repository is co-funded by the <a href="https://ugleventisrc.com" target="_blank">Digital Leventis Resource Centre</a> and the Arts and Humanities Research Council's GCRF Network+, funded by UKRI.</p>
+						<p>The Imagining Futures Repository is co-funded by the <a href="https://ugleventisrc.com" target="_blank">Leventis Digital Resource Centre</a> and the Arts and Humanities Research Council's GCRF Network+, funded by UKRI.</p>
 						<div class="main-logo">
 						<a href="https://ugleventisrc.com" target="_blank">
 								<?php print caGetThemeGraphic($this->request, 'LDRC_logo_2024.webp', array('alt' => " A. G. Leventis Digital Resource Centre for African Culture (LDRC)")); ?>
